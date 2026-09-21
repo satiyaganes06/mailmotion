@@ -22,7 +22,7 @@ export function createBrowserEnv(opts: BrowserEnvOptions): RenderEnv {
         const canvas = new OffscreenCanvas(width, height);
         return {
           canvas: canvas as unknown as CanvasLike,
-          ctx: canvas.getContext('2d') as unknown as Ctx2D,
+          ctx: canvas.getContext('2d', { willReadFrequently: true }) as unknown as Ctx2D,
         };
       }
       const canvas = document.createElement('canvas');

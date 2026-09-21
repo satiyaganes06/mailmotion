@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { createFromPreset, PRESET_LIST } from '@mailmotion/presets';
 import { createNodeEnv } from '@mailmotion/renderer/node';
 import { renderSignatureAssets, toSignatureAssets, uniqueFiles } from '@mailmotion/renderer';
+import { createCanvas } from '@napi-rs/canvas';
 import { createConfig, type SignatureConfigInput } from '@mailmotion/schema';
 import { serializeSignature } from '@mailmotion/serializer';
 
@@ -70,4 +71,39 @@ for (const preset of PRESET_LIST) {
 }
 
 writeFileSync(join(genOut, 'gallery.json'), JSON.stringify(gallery));
+
+// App icons (PNG for the manifest and iOS home screen). Same mark as public/icon.svg.
+const iconsOut = join(root, 'public', 'icons');
+mkdirSync(iconsOut, { recursive: true });
+for (const [size, maskable] of [
+  [192, false],
+  [512, false],
+  [512, true],
+  [180, false],
+] as const) {
+  const c = createCanvas(size, size);
+  const ctx = c.getContext('2d');
+  const g = ctx.createLinearGradient(0, 0, size, size);
+  g.addColorStop(0, '#b34700');
+  g.addColorStop(1, '#e2793d');
+  ctx.fillStyle = g;
+  if (maskable) ctx.fillRect(0, 0, size, size);
+  else {
+    ctx.beginPath();
+    ctx.roundRect(0, 0, size, size, size * 0.25);
+    ctx.fill();
+  }
+  const k = (maskable ? 0.62 : 1) * (size / 32);
+  ctx.translate(maskable ? size * 0.19 : 0, maskable ? size * 0.19 : 0);
+  ctx.scale(k, k);
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 2.4;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.stroke(new (await import('@napi-rs/canvas')).Path2D('M7 21c2-9 5-9 6-3s3 4 4-2 3-6 4 1'));
+  writeFileSync(
+    join(iconsOut, `icon-${size}${maskable ? '-maskable' : ''}.png`),
+    c.toBuffer('image/png'),
+  );
+}
 console.log(`prepare-assets: ${written.size} gallery files, fonts copied`);

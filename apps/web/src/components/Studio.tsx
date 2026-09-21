@@ -15,6 +15,8 @@ import { Preview } from './Preview';
 import { DesignPanel } from './panels/DesignPanel';
 import { DetailsPanel } from './panels/DetailsPanel';
 import { Notice } from './ui';
+import { Onboarding } from './Onboarding';
+import { RegisterServiceWorker } from './RegisterServiceWorker';
 import { EXTRA_PANELS, RightPanels } from './studio-slots';
 
 type View = 'edit' | 'preview' | 'install';
@@ -42,6 +44,11 @@ export function Studio() {
       setTimeout(() => revokeAll(urls), 4000);
     };
   }, [render.assets, config]);
+
+  // returning from GitHub sign-in: jump to the install panel
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('publish') === '1') setView('install');
+  }, []);
 
   // keyboard: undo/redo when not typing in a text field
   useEffect(() => {
@@ -88,6 +95,8 @@ export function Studio() {
 
   return (
     <StudioContextProvider value={studio}>
+      <RegisterServiceWorker />
+      {studio.firstRun && <Onboarding />}
       <div className="studio">
         <header className="studio-bar">
           <Link href="/" className="brand" aria-label="MailMotion home">

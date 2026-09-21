@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     'Open-source, self-hostable animated email signatures for Gmail, Outlook and Apple Mail. Private by default: no tracking pixels, no accounts.',
   applicationName: 'MailMotion',
   manifest: '/manifest.webmanifest',
-  icons: { icon: '/icon.svg' },
+  icons: { icon: '/icon.svg', apple: '/icons/icon-180.png' },
   robots: { index: true, follow: true },
 };
 

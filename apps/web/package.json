@@ -8,8 +8,8 @@
   "scripts": {
     "prepare-assets": "tsx scripts/prepare-assets.ts",
     "dev": "pnpm prepare-assets && next dev",
-    "build": "pnpm prepare-assets && next build",
-    "start": "pnpm dlx serve out -l 3000",
+    "build": "pnpm prepare-assets && next build && node scripts/csp.mjs",
+    "start": "node scripts/serve-out.mjs",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "e2e": "playwright test"

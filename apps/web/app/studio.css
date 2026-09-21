@@ -981,3 +981,89 @@ details.mini > summary {
 .phone-steps li {
   margin: 4px 0;
 }
+
+/* ---------- onboarding modal ---------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(20, 16, 10, 0.55);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  overflow: auto;
+}
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  width: min(760px, 100%);
+  padding: 24px;
+  display: grid;
+  gap: 14px;
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+}
+.modal h2 {
+  font-size: 28px;
+}
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 4px;
+}
+.ob-designs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+.ob-card {
+  appearance: none;
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  cursor: pointer;
+  display: grid;
+  gap: 2px;
+  align-content: start;
+}
+.ob-card small {
+  color: var(--muted);
+  font-size: 12px;
+}
+.ob-card:hover {
+  border-color: var(--accent);
+}
+.ob-card.on {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 1px var(--accent) inset;
+}
+.ob-preview {
+  display: block;
+  height: 120px;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  position: relative;
+  pointer-events: none;
+}
+.ob-preview > span {
+  display: block;
+  transform: scale(0.42);
+  transform-origin: top left;
+  width: 480px;
+  padding: 14px;
+  color: #1c1b19;
+}
+.ob-form {
+  display: grid;
+  gap: 12px;
+}
