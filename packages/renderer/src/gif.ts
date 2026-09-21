@@ -1,5 +1,16 @@
-import { GIFEncoder, applyPalette, quantize } from 'gifenc';
+/// <reference path="./gifenc.d.ts" />
+import * as gifencNs from 'gifenc';
 import { LIMITS } from '@mailmotion/schema';
+
+// gifenc ships CJS (`main`) and ESM (`module`). In plain Node ESM only the CJS build is available and
+// its API is the `default` export; in bundlers the namespace itself has the named exports (and its
+// `default` is just the GIFEncoder function). Pick whichever object actually carries the API.
+type Gifenc = Pick<typeof gifencNs, 'GIFEncoder' | 'applyPalette' | 'quantize'>;
+const candidates = [gifencNs, (gifencNs as unknown as { default?: unknown }).default] as (
+  Partial<Gifenc> | undefined
+)[];
+const gifenc = candidates.find((c) => c && typeof c.quantize === 'function') as Gifenc;
+const { GIFEncoder, applyPalette, quantize } = gifenc;
 
 export interface RawFrame {
   /** RGBA, straight (non-premultiplied) alpha. */

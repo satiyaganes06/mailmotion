@@ -1,0 +1,11 @@
+{
+  "name": "MailMotion",
+  "short_name": "MailMotion",
+  "description": "Animated email signatures that render in Gmail, Outlook and Apple Mail.",
+  "start_url": "/studio/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#faf9f6",
+  "theme_color": "#b34700",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
