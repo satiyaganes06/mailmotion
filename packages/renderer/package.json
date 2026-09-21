@@ -1,0 +1,32 @@
+{
+  "name": "@mailmotion/renderer",
+  "version": "0.1.0",
+  "description": "Renders signature assets (animated GIFs, PNG icons) in the browser or Node from one shared draw path.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./node": "./src/node.ts",
+    "./browser": "./src/browser.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mailmotion/animations": "workspace:*",
+    "@mailmotion/contrast": "workspace:*",
+    "@mailmotion/icons": "workspace:*",
+    "@mailmotion/ink": "workspace:*",
+    "@mailmotion/layouts": "workspace:*",
+    "@mailmotion/schema": "workspace:*",
+    "gifenc": "^1.0.3",
+    "omggif": "^1.0.10"
+  },
+  "devDependencies": {
+    "@mailmotion/presets": "workspace:*",
+    "@napi-rs/canvas": "^0.1.65",
+    "@types/omggif": "^1.0.5",
+    "@mailmotion/serializer": "workspace:*"
+  }
+}
