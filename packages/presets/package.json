@@ -1,0 +1,17 @@
+{
+  "name": "@mailmotion/presets",
+  "version": "0.1.0",
+  "description": "The six MailMotion designs as presets, colour palettes and a remix helper.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mailmotion/schema": "workspace:*"
+  }
+}

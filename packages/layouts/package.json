@@ -1,0 +1,17 @@
+{
+  "name": "@mailmotion/layouts",
+  "version": "0.1.0",
+  "description": "Layout specs and the asset plan (which images a signature needs, and at what size).",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mailmotion/schema": "workspace:*"
+  }
+}
