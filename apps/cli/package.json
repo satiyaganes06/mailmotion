@@ -1,0 +1,36 @@
+{
+  "name": "mailmotion",
+  "version": "0.1.0",
+  "description": "Render animated email signatures from JSON configs: GIFs, PNGs and email-safe HTML. Built for CI.",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "bin": {
+    "mailmotion": "dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "tsx src/cli.ts",
+    "build": "tsup",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.65"
+  },
+  "devDependencies": {
+    "@mailmotion/ink": "workspace:*",
+    "@mailmotion/presets": "workspace:*",
+    "@mailmotion/renderer": "workspace:*",
+    "@mailmotion/schema": "workspace:*",
+    "@mailmotion/serializer": "workspace:*",
+    "@mailmotion/storage": "workspace:*",
+    "tsup": "^8.3.5",
+    "tsx": "^4.19.2",
+    "fflate": "^0.8.2"
+  }
+}
