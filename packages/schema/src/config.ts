@@ -200,7 +200,9 @@ export const markSchema = z
     holdMs: z.number().int().min(0).max(5000).default(1200),
     loop: z.enum(['forever', 'three']).default('forever'),
     size: z.enum(['S', 'M', 'L']).default('M'),
-    position: z.enum(['above', 'beside', 'replace']).default('above'),
+    position: z.enum(['above', 'below', 'beside', 'replace']).default('below'),
+    /** Neon-style glow behind the ink (baked into the GIF). */
+    glow: z.boolean().default(false),
     /** Vector strokes for `drawn` / `uploaded` marks. */
     strokes: z.array(strokeSchema).max(200).optional(),
     /** Aspect ratio (w/h) of the drawn/uploaded strokes' box. */

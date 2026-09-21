@@ -23,11 +23,42 @@ importers:
 
   packages/contrast: {}
 
+  packages/layouts:
+    dependencies:
+      '@mailmotion/schema':
+        specifier: workspace:*
+        version: link:../schema
+
+  packages/presets:
+    dependencies:
+      '@mailmotion/schema':
+        specifier: workspace:*
+        version: link:../schema
+
   packages/schema:
     dependencies:
       zod:
         specifier: ^3.25.0
         version: 3.25.76
+
+  packages/serializer:
+    dependencies:
+      '@mailmotion/contrast':
+        specifier: workspace:*
+        version: link:../contrast
+      '@mailmotion/layouts':
+        specifier: workspace:*
+        version: link:../layouts
+      '@mailmotion/schema':
+        specifier: workspace:*
+        version: link:../schema
+    devDependencies:
+      '@mailmotion/presets':
+        specifier: workspace:*
+        version: link:../presets
+      fast-check:
+        specifier: ^3.23.0
+        version: 3.23.2
 
 packages:
 
@@ -420,6 +451,10 @@ packages:
     resolution: {integrity: sha512-KfYbmpRm0VbLjEvVa9yGwCi9GI34xvi7A/HXYWQO65CSD2u3MczUJSuwXKFIxlGsgBQizV9q5J9NHj4VG0n+pA==}
     engines: {node: '>=12.0.0'}
 
+  fast-check@3.23.2:
+    resolution: {integrity: sha512-h5+1OzzfCC3Ef7VbtKdcv7zsstUQwUDlYpUTvjeUsJAssPgLn7QzbboPtL5ro04Mq0rPOsMzl7q5hIbRs2wD1A==}
+    engines: {node: '>=8.0.0'}
+
   fdir@6.5.0:
     resolution: {integrity: sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==}
     engines: {node: '>=12.0.0'}
@@ -473,6 +508,9 @@ packages:
     resolution: {integrity: sha512-WRFq3Wn3WId7LLROfMLdH7xaFr2jR62wU8nLO6rQUOLOxNZUviyJQs1M0iIhLexSFy+L+w0ch66wtoO2jRjG0A==}
     engines: {node: '>=14'}
     hasBin: true
+
+  pure-rand@6.1.0:
+    resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
 
   rollup@4.63.4:
     resolution: {integrity: sha512-4U0liVayNIoLp3GFl1FcI8561WepLnZ1rqfraGh7S9B3Ur5F9S283y8Futii7RUU2C/97tOBmBy7nYvhoiOpbQ==}
@@ -878,6 +916,10 @@ snapshots:
 
   expect-type@1.4.0: {}
 
+  fast-check@3.23.2:
+    dependencies:
+      pure-rand: 6.1.0
+
   fdir@6.5.0(picomatch@4.0.7):
     optionalDependencies:
       picomatch: 4.0.7
@@ -912,6 +954,8 @@ snapshots:
       source-map-js: 1.2.1
 
   prettier@3.9.8: {}
+
+  pure-rand@6.1.0: {}
 
   rollup@4.63.4:
     dependencies:

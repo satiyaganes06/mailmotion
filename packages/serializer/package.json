@@ -1,0 +1,23 @@
+{
+  "name": "@mailmotion/serializer",
+  "version": "0.1.0",
+  "description": "Turns a signature config into email-safe, table-based HTML. Single source of truth for preview and export.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mailmotion/contrast": "workspace:*",
+    "@mailmotion/layouts": "workspace:*",
+    "@mailmotion/schema": "workspace:*"
+  },
+  "devDependencies": {
+    "@mailmotion/presets": "workspace:*",
+    "fast-check": "^3.23.0"
+  }
+}
