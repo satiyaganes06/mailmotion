@@ -1,0 +1,29 @@
+{
+  "name": "@mailmotion/storage-server",
+  "version": "0.1.0",
+  "description": "Self-hosted upload server for signature images (disk, S3, R2, MinIO). Path A.",
+  "license": "AGPL-3.0-only",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "start": "tsx src/main.ts",
+    "build": "tsup",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "@mailmotion/serializer": "workspace:*",
+    "@mailmotion/storage": "workspace:*",
+    "hono": "^4.6.14"
+  },
+  "devDependencies": {
+    "@mailmotion/layouts": "workspace:*",
+    "@mailmotion/presets": "workspace:*",
+    "@mailmotion/schema": "workspace:*",
+    "@napi-rs/canvas": "^0.1.65",
+    "tsx": "^4.19.2",
+    "tsup": "^8.3.5"
+  }
+}
