@@ -1,0 +1,18 @@
+{
+  "name": "@mailmotion/icons",
+  "version": "0.1.0",
+  "description": "Social icon glyphs and the style pipeline that renders them to 2x PNG.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mailmotion/schema": "workspace:*",
+    "simple-icons": "^14.0.0"
+  }
+}
