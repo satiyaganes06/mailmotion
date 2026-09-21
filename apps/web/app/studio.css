@@ -643,3 +643,147 @@ details.mini > summary {
   border-color: color-mix(in srgb, var(--good) 50%, var(--line));
   background: color-mix(in srgb, var(--good) 9%, var(--surface));
 }
+
+/* ---------- handwriting font previews (same files the renderer uses) ---------- */
+@font-face {
+  font-family: 'mm-caveat';
+  src: url('/fonts/Caveat.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'mm-dancing-script';
+  src: url('/fonts/DancingScript.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'mm-great-vibes';
+  src: url('/fonts/GreatVibes-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'mm-allura';
+  src: url('/fonts/Allura-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'mm-sacramento';
+  src: url('/fonts/Sacramento-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'mm-homemade-apple';
+  src: url('/fonts/HomemadeApple-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'mm-yellowtail';
+  src: url('/fonts/Yellowtail-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'mm-satisfy';
+  src: url('/fonts/Satisfy-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'mm-mr-dafoe';
+  src: url('/fonts/MrDafoe-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'mm-marck-script';
+  src: url('/fonts/MarckScript-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+.lbl {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--muted);
+}
+.fonts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+.font-btn {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  border-radius: 9px;
+  padding: 8px 10px;
+  font-size: 21px;
+  line-height: 1.2;
+  cursor: pointer;
+  text-align: left;
+  min-height: 46px;
+}
+.font-btn:hover {
+  border-color: var(--accent);
+}
+.font-btn.on {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 1px var(--accent) inset;
+}
+.upload {
+  display: grid;
+  gap: 6px;
+}
+.upload-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.upload-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  background: repeating-conic-gradient(var(--surface-2) 0% 25%, var(--bg) 0% 50%) 50% / 12px 12px;
+  flex: none;
+}
+.paint {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.paint select {
+  flex: 1;
+}
+.paint input[type='color'] {
+  width: 42px;
+  height: 38px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  flex: none;
+}
+.pad {
+  display: grid;
+  gap: 8px;
+}
+.pad-canvas {
+  width: 100%;
+  height: 150px;
+  border: 1px dashed var(--faint);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--accent-ink);
+  touch-action: none;
+  cursor: crosshair;
+}
+.stroke-preview {
+  color: var(--accent-ink);
+  background: var(--surface-2);
+  border-radius: 8px;
+  padding: 6px;
+}
