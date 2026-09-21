@@ -21,12 +21,13 @@
     "@mailmotion/layouts": "workspace:*",
     "@mailmotion/schema": "workspace:*",
     "gifenc": "^1.0.3",
-    "omggif": "^1.0.10"
+    "omggif": "^1.0.10",
+    "fflate": "^0.8.2",
+    "@mailmotion/serializer": "workspace:*"
   },
   "devDependencies": {
     "@mailmotion/presets": "workspace:*",
     "@napi-rs/canvas": "^0.1.65",
-    "@types/omggif": "^1.0.5",
-    "@mailmotion/serializer": "workspace:*"
+    "@types/omggif": "^1.0.5"
   }
 }

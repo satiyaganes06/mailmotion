@@ -77,7 +77,10 @@ export class GitHubPublisher {
 
   constructor(private readonly opts: GitHubOptions) {
     this.api = (opts.apiBase ?? 'https://api.github.com').replace(/\/+$/, '');
-    this.f = opts.fetch ?? fetch;
+    // Always call through a wrapper: invoking `window.fetch` as a method of another object throws
+    // "Illegal invocation" in browsers (whether injected or the global).
+    const raw = opts.fetch;
+    this.f = (input, init) => (raw ?? fetch)(input, init);
     this.repoName = opts.repo ?? DEFAULT_REPO;
   }
 

@@ -22,5 +22,8 @@
     "wrangler": "^3.99.0",
     "@mailmotion/mock-github": "workspace:*",
     "@mailmotion/storage": "workspace:*"
+  },
+  "exports": {
+    "./app": "./src/app.ts"
   }
 }

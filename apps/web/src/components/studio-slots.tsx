@@ -1,6 +1,7 @@
 'use client';
 
 import type { ComponentType } from 'react';
+import { InstallPanel } from './InstallPanel';
 import { AvatarPanel } from './panels/AvatarPanel';
 import { ExtrasPanel } from './panels/ExtrasPanel';
 import { MarkPanel } from './panels/MarkPanel';
@@ -20,5 +21,5 @@ export const EXTRA_PANELS: ComponentType[] = [
 ];
 
 export function RightPanels() {
-  return null;
+  return <InstallPanel />;
 }
