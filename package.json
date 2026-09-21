@@ -12,7 +12,9 @@
     "typecheck": "pnpm -r typecheck",
     "build": "pnpm -r build",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "e2e": "pnpm --filter @mailmotion/web e2e",
+    "prepare": "pnpm --filter @mailmotion/web prepare-assets"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

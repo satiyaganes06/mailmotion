@@ -3,6 +3,11 @@ on:
   push:
     branches: [main]
   pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -14,10 +19,56 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # renders the landing gallery with the real renderer and copies fonts (needed by typecheck/build)
+      - run: pnpm --filter @mailmotion/web prepare-assets
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm format:check
       - run: pnpm --filter @mailmotion/web build
+      - run: pnpm --filter mailmotion build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-out
+          path: apps/web/out
+          retention-days: 3
+
+  e2e:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-out
+          path: apps/web/out
+      - run: pnpm --filter @mailmotion/web exec playwright install --with-deps chromium
+      - run: pnpm --filter @mailmotion/web e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: apps/web/test-results
+          retention-days: 7
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: compose file is valid
+        env:
+          MM_UPLOAD_TOKEN: ci-token-ci-token-ci-token-ci-token
+        run: docker compose --profile minio --profile github config -q
+      - name: images build
+        env:
+          MM_UPLOAD_TOKEN: ci-token-ci-token-ci-token-ci-token
+        run: docker compose build
+
   dco:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
