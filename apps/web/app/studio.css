@@ -787,3 +787,197 @@ details.mini > summary {
   border-radius: 8px;
   padding: 6px;
 }
+
+/* ---------- install panel ---------- */
+.install {
+  display: grid;
+  gap: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.install-title {
+  font-size: 22px;
+}
+.step {
+  display: grid;
+  gap: 10px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+.install > .step:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+.step.disabled .row-actions {
+  opacity: 0.85;
+}
+.step-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.step-head h3 {
+  font-size: 18px;
+}
+.chip.ok {
+  color: var(--good);
+  border-color: color-mix(in srgb, var(--good) 45%, var(--line));
+}
+.chip.bad {
+  color: var(--bad);
+  border-color: color-mix(in srgb, var(--bad) 45%, var(--line));
+}
+.tabs-mini {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  overflow: hidden;
+  flex-wrap: wrap;
+}
+.tabs-mini button {
+  flex: 1;
+  appearance: none;
+  border: none;
+  background: var(--bg);
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 10px;
+  cursor: pointer;
+  min-height: 38px;
+}
+.tabs-mini button + button {
+  border-left: 1px solid var(--line);
+}
+.tabs-mini button.on {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+.tabpanel {
+  display: grid;
+  gap: 10px;
+}
+.inline {
+  display: flex;
+  gap: 8px;
+}
+.inline input {
+  flex: 1;
+  min-width: 0;
+}
+.progress {
+  font-size: 13.5px;
+  color: var(--accent-ink);
+}
+.guide-group {
+  display: grid;
+  gap: 6px;
+}
+.guide {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0 12px;
+  background: var(--bg);
+}
+.guide > summary {
+  cursor: pointer;
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: 500;
+  min-height: 40px;
+}
+.guide ol {
+  margin: 0 0 8px;
+  padding-left: 20px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.guide li {
+  margin: 4px 0;
+}
+.guide .row-actions {
+  padding-bottom: 12px;
+}
+.phone-share {
+  display: grid;
+  gap: 10px;
+}
+.phone-out {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.phone-out img {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+}
+.mini-panel {
+  background: var(--bg);
+}
+.versions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.versions li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+.versions li > span:last-child {
+  display: flex;
+  gap: 4px;
+}
+.phone {
+  padding-top: 32px;
+  padding-bottom: 48px;
+  max-width: 520px;
+  display: grid;
+  gap: 14px;
+}
+.phone h1 {
+  font-size: 30px;
+}
+.phone-frame {
+  width: 100%;
+  height: 330px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+.btn.big {
+  min-height: 52px;
+  font-size: 16px;
+  width: 100%;
+}
+.phone-steps {
+  display: grid;
+  gap: 18px;
+  margin-top: 12px;
+}
+.phone-steps h2 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+.phone-steps ol {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--muted);
+}
+.phone-steps li {
+  margin: 4px 0;
+}

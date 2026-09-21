@@ -1,9 +1,16 @@
-import opentype from 'opentype.js';
+import type opentypeTypes from 'opentype.js';
+import * as opentypeNs from 'opentype.js';
 import type { TextPath } from '@mailmotion/animations';
 import type { FontLoader } from './fonts';
 
-export type Font = opentype.Font;
-type Cmd = opentype.PathCommand;
+// Node ESM exposes the CJS build as `default`; bundlers expose named exports. Use whichever has `parse`.
+type OpenType = typeof opentypeTypes;
+const opentype = (typeof (opentypeNs as unknown as OpenType).parse === 'function'
+  ? opentypeNs
+  : Reflect.get(opentypeNs, 'default')) as unknown as OpenType;
+
+export type Font = opentypeTypes.Font;
+type Cmd = opentypeTypes.PathCommand;
 
 const cache = new Map<string, Promise<Font>>();
 
@@ -22,7 +29,7 @@ export function loadFont(loader: FontLoader, file: string): Promise<Font> {
  * Defensive repair of missing/non-finite coordinates in a path's commands (interpolated from the
  * neighbouring points of the same contour). Belt and braces alongside `toData`.
  */
-export function repairPath(path: opentype.Path): opentype.Path {
+export function repairPath(path: opentypeTypes.Path): opentypeTypes.Path {
   const cmds = path.commands as unknown as Record<string, number | string | undefined>[];
   const required: Record<string, string[]> = {
     M: ['x', 'y'],
@@ -57,7 +64,7 @@ export function repairPath(path: opentype.Path): opentype.Path {
  * Serialize commands to absolute SVG path data ourselves: `Path.toPathData` (opentype.js) can emit
  * NaN for degenerate curves in some fonts, which canvases then silently drop.
  */
-function toData(path: opentype.Path): string {
+function toData(path: opentypeTypes.Path): string {
   const n = (v: number) => (Math.round(v * 100) / 100).toString();
   let d = '';
   for (const c of path.commands as unknown as Record<string, number | string>[]) {
@@ -93,14 +100,14 @@ export function safePaths(
   x: number,
   y: number,
   size: number,
-): opentype.Path[] {
+): opentypeTypes.Path[] {
   try {
     return font.getPaths(text, x, y, size).map(repairPath);
   } catch {
     const scale = size / font.unitsPerEm;
-    const out: opentype.Path[] = [];
+    const out: opentypeTypes.Path[] = [];
     let cx = x;
-    let prev: opentype.Glyph | null = null;
+    let prev: opentypeTypes.Glyph | null = null;
     for (const ch of Array.from(text)) {
       const g = font.charToGlyph(ch);
       if (prev) cx += font.getKerningValue(prev, g) * scale;
@@ -112,7 +119,12 @@ export function safePaths(
   }
 }
 
-function mergedBox(paths: opentype.Path[]): { x1: number; y1: number; x2: number; y2: number } {
+function mergedBox(paths: opentypeTypes.Path[]): {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+} {
   const box = { x1: Infinity, y1: Infinity, x2: -Infinity, y2: -Infinity };
   for (const p of paths) {
     if (!p.commands.length) continue;
