@@ -1,0 +1,49 @@
+{
+  "name": "@mailmotion/web",
+  "version": "0.1.0",
+  "description": "MailMotion builder and landing site (Next.js App Router, static export).",
+  "license": "AGPL-3.0-only",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare-assets": "tsx scripts/prepare-assets.ts",
+    "dev": "pnpm prepare-assets && next dev",
+    "build": "pnpm prepare-assets && next build",
+    "start": "pnpm dlx serve out -l 3000",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "e2e": "playwright test"
+  },
+  "dependencies": {
+    "@fontsource-variable/fraunces": "^5.1.0",
+    "@fontsource-variable/inter": "^5.1.0",
+    "@fontsource/jetbrains-mono": "^5.1.0",
+    "@mailmotion/animations": "workspace:*",
+    "@mailmotion/contrast": "workspace:*",
+    "@mailmotion/ink": "workspace:*",
+    "@mailmotion/layouts": "workspace:*",
+    "@mailmotion/presets": "workspace:*",
+    "@mailmotion/renderer": "workspace:*",
+    "@mailmotion/schema": "workspace:*",
+    "@mailmotion/serializer": "workspace:*",
+    "@mailmotion/storage": "workspace:*",
+    "fflate": "^0.8.2",
+    "idb-keyval": "^6.2.1",
+    "marked": "^15.0.4",
+    "next": "^15.1.0",
+    "qrcode": "^1.5.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@mailmotion/mock-github": "workspace:*",
+    "@napi-rs/canvas": "^0.1.65",
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.10.0",
+    "@types/qrcode": "^1.5.5",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "jsdom": "^25.0.1",
+    "tsx": "^4.19.2"
+  }
+}
