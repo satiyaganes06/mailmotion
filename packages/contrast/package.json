@@ -1,0 +1,14 @@
+{
+  "name": "@mailmotion/contrast",
+  "version": "0.1.0",
+  "description": "WCAG contrast maths and accent-colour fixing for light and dark email backgrounds.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  }
+}

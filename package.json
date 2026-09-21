@@ -4,7 +4,9 @@
   "version": "0.1.0",
   "description": "Open-source animated email signatures that render in Gmail, Outlook and Apple Mail.",
   "packageManager": "pnpm@10.30.2",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "test": "pnpm -r --workspace-concurrency=1 test",
     "typecheck": "pnpm -r typecheck",

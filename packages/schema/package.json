@@ -1,0 +1,17 @@
+{
+  "name": "@mailmotion/schema",
+  "version": "0.1.0",
+  "description": "Signature config schema (zod), limits, validation helpers and portable JSON import/export.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^3.25.0"
+  }
+}
