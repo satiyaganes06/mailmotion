@@ -1,0 +1,43 @@
+# One Caddy serves the builder and fronts the storage server, with automatic HTTPS.
+# MM_DOMAIN     e.g. signatures.example.com   (the builder)
+# MM_IMG_DOMAIN e.g. img.example.com          (public image URLs; must match MM_PUBLIC_BASE_URL)
+# For local trials use `localhost` and `img.localhost` (Caddy issues local certificates).
+
+(security) {
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+		Strict-Transport-Security "max-age=31536000"
+		-Server
+	}
+}
+
+{$MM_DOMAIN:localhost} {
+	import security
+	header X-Frame-Options DENY
+	header /phone/* X-Robots-Tag "noindex, nofollow"
+	@immutable path /_next/static/* /fonts/* /gallery/*
+	header @immutable Cache-Control "public, max-age=31536000, immutable"
+	root * /srv
+	try_files {path} {path}.html {path}/index.html
+	encode zstd gzip
+	file_server
+	handle_errors {
+		rewrite * /404.html
+		file_server
+	}
+}
+
+{$MM_IMG_DOMAIN:img.localhost} {
+	import security
+	encode zstd gzip
+	# Only the upload API, shares, health and content-hashed files are proxied; anything else 404s.
+	@allowed path /upload /share /share/* /healthz /*.gif /*.png
+	handle @allowed {
+		reverse_proxy storage:8787
+	}
+	handle {
+		respond "Not found" 404
+	}
+}
