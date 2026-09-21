@@ -1,0 +1,10 @@
+# Cloudflare Worker for the GitHub token exchange (Path B).
+# Local dev needs no Cloudflare account:  pnpm dev:worker   (wrangler dev runs it locally)
+# Deploy:  wrangler secret put GITHUB_APP_CLIENT_SECRET && wrangler deploy
+name = "mailmotion-publish-fn"
+main = "src/worker.ts"
+compatibility_date = "2025-01-01"
+
+[vars]
+GITHUB_APP_CLIENT_ID = ""
+ALLOWED_ORIGINS = "http://localhost:3000"

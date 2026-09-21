@@ -1,0 +1,25 @@
+{
+  "name": "@mailmotion/mock-github",
+  "version": "0.1.0",
+  "description": "Local stand-in for GitHub (OAuth, Git Data API, Pages) so the publish flow can be developed and tested without a GitHub App.",
+  "license": "AGPL-3.0-only",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "start": "tsx src/main.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "hono": "^4.6.14"
+  },
+  "devDependencies": {
+    "@mailmotion/storage": "workspace:*",
+    "tsx": "^4.19.2"
+  },
+  "exports": {
+    "./app": "./src/app.ts"
+  }
+}

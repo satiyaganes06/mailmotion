@@ -1,0 +1,26 @@
+{
+  "name": "@mailmotion/publish-fn",
+  "version": "0.1.0",
+  "description": "Tiny serverless function that exchanges a GitHub OAuth code for a user token (needs the client secret). Runs on Cloudflare Workers or Node.",
+  "license": "AGPL-3.0-only",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/node.ts",
+    "start": "tsx src/node.ts",
+    "dev:worker": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "hono": "^4.6.14"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "wrangler": "^3.99.0",
+    "@mailmotion/mock-github": "workspace:*",
+    "@mailmotion/storage": "workspace:*"
+  }
+}
