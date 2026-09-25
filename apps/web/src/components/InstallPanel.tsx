@@ -10,6 +10,7 @@ import {
 } from '@mailmotion/serializer';
 import { buildTestEml } from '@/lib/eml';
 import { copyRichHtml, copyText, downloadText } from '@/lib/exports';
+import { env } from '@/lib/env';
 import { GUIDES, type Guide } from '@/lib/guides';
 import { assetsFromHosted } from '@/lib/hosting';
 import {
@@ -21,7 +22,7 @@ import {
 } from '@/lib/persist';
 import { useHosted } from '@/lib/useHosted';
 import { useStudioCtx } from '@/lib/useStudio';
-import { HostStep, loadServerSettings, type ServerSettings } from './install/HostStep';
+import { HostStep } from './install/HostStep';
 import { PhoneShare } from './install/PhoneShare';
 import { Notice } from './ui';
 
@@ -105,15 +106,11 @@ function Versions() {
 export function InstallPanel() {
   const s = useStudioCtx();
   const { hosted, setHosted } = useHosted();
-  const [server, setServerState] = useState<ServerSettings>({
-    endpoint: '',
-    token: '',
-    remember: false,
-  });
+  // The one storage server this deployment is configured to use (see lib/env.ts); the "short link
+  // via my server" phone-share option only appears when that's actually set up.
+  const server = { endpoint: env.uploadEndpoint, token: env.uploadToken, remember: false };
   const [copy, setCopy] = useState<CopyState>('idle');
   const [copySrc, setCopySrc] = useState<CopyState>('idle');
-
-  useEffect(() => setServerState(loadServerSettings()), []);
 
   const hostedAssets = useMemo(
     () => assetsFromHosted(s.render.assets, hosted),
@@ -183,24 +180,7 @@ export function InstallPanel() {
   return (
     <section className="install" aria-label="Install your signature">
       <h2 className="install-title">Get it into your email</h2>
-      <HostStep
-        hosted={hosted}
-        setHosted={setHosted}
-        server={server}
-        setServer={(next) => {
-          setServerState(next);
-          try {
-            if (next.remember) localStorage.setItem('mm:server:v1', JSON.stringify(next));
-            else
-              localStorage.setItem(
-                'mm:server:v1',
-                JSON.stringify({ endpoint: next.endpoint, remember: false }),
-              );
-          } catch {
-            /* ignore */
-          }
-        }}
-      />
+      <HostStep hosted={hosted} setHosted={setHosted} />
 
       <div className={`step${ready ? '' : ' disabled'}`}>
         <div className="step-head">

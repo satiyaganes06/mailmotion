@@ -5,6 +5,12 @@ order: 4
 
 # GitHub Pages publishing (Path B)
 
+> **Not currently in the builder UI.** The Install step now only offers the storage server
+> configured for this deployment (`NEXT_PUBLIC_UPLOAD_ENDPOINT`/`NEXT_PUBLIC_UPLOAD_TOKEN`, see
+> [Self-hosting](./self-hosting.md)) plus a ZIP download. The code and tests below are unchanged
+> and still work — `apps/mock-github` and `apps/publish-fn` still run — but nothing in the shipped
+> UI links to it. Wire `HostStep`'s component back up to `lib/github-flow.ts` if you want this path.
+
 The builder can publish your images to a GitHub Pages site in **your own account**. There is no MailMotion server that stores your files.
 
 ## What happens when you press Publish

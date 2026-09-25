@@ -5,7 +5,13 @@ const TOKEN = 'e2e-upload-token-0123456789abcdef';
 
 /**
  * End-to-end tests run against the *production* static export (with its strict CSP) and a real
- * storage server. Build first:  pnpm --filter @mailmotion/web build
+ * storage server. Build first, with the auto-upload button wired to that storage server (its
+ * MM_UPLOAD_TOKEN must match TOKEN above — NEXT_PUBLIC_* vars are baked in at build time, so this
+ * can't be set later at webServer/runtime):
+ *
+ *   NEXT_PUBLIC_UPLOAD_ENDPOINT=http://localhost:8787 \
+ *   NEXT_PUBLIC_UPLOAD_TOKEN=e2e-upload-token-0123456789abcdef \
+ *   pnpm --filter @mailmotion/web build
  */
 export default defineConfig({
   testDir: './test/e2e',

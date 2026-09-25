@@ -6,9 +6,9 @@ Get MailMotion running locally in minutes.
 
 - **Node.js 18+** and **pnpm 9+** installed
 - macOS (Docker not required for development)
-- Optional: A Supabase project with S3-compatible storage enabled
+- A storage server for images: disk (zero setup), or S3/R2/MinIO/Supabase (see [Self-hosting](docs/self-hosting.md))
 
-## One-Minute Start (Mock GitHub + Local Builder)
+## One-Minute Start
 
 ```bash
 # Clone and install
@@ -17,79 +17,82 @@ cd mailmotion
 pnpm install
 pnpm prepare  # Generate gallery, fonts, icons
 
-# Start all services (mock GitHub for Path B testing)
+# Copy the env template and fill in your storage backend (disk works with no edits)
+cp .env.example .env
+
+# Start the storage server + builder
 ./scripts/start-all.sh
 
 # Open your browser → http://localhost:3100
 ```
 
-That's it. The builder is live, mock GitHub is running on :8790, and you can test the full GitHub publish flow (Path B) without touching your real account.
+The builder's **Install → Upload images** button is now wired straight to your storage server —
+nothing to type in. If you left `NEXT_PUBLIC_UPLOAD_ENDPOINT`/`NEXT_PUBLIC_UPLOAD_TOKEN` unset in
+`.env`, that button won't appear; set them (see below) and restart.
 
 ---
 
-## Three Ways to Run It
+## Ways to Run It
 
-### 1️⃣ **Mock GitHub** (default)
-Full GitHub Pages flow locally, no authentication needed.
+### 1️⃣ **Storage + builder** (default)
+
+The normal way to run this: a storage server backed by whatever `.env` says (`disk` by default,
+or your own S3/R2/MinIO/Supabase bucket), and the builder pointed at it.
 
 ```bash
 ./scripts/start-all.sh
 ```
 
 **What's running:**
-- Builder dev server (`:3100`)
-- Mock GitHub OAuth + Git Data API (`:8790`)
-- Publish function (`:8788`)
 
-**Use for:** Testing GitHub publish (Path B) end-to-end.
+- Storage server (`:8787`) — backend controlled by `MM_STORAGE` in `.env`
+- Builder dev server (`:3100`) — its "Upload images" button auto-targets that server via
+  `NEXT_PUBLIC_UPLOAD_ENDPOINT`/`NEXT_PUBLIC_UPLOAD_TOKEN`, also set in `.env`
+
+**Use for:** normal day-to-day development and testing the full render → upload → copy flow.
+
+**Security note:** those `NEXT_PUBLIC_*` values ship in the built JS — fine for local dev and a
+single-tenant deployment you and your team use, not for a public multi-tenant one. See
+[Self-hosting](docs/self-hosting.md#wiring-the-builder-to-it-one-click-upload).
 
 ---
 
-### 2️⃣ **Supabase Storage** (your own bucket)
-Bring your own S3-compatible storage backend.
+### 2️⃣ **Mock GitHub** (Path B, not in the UI right now)
+
+The builder's Install step no longer has a GitHub Pages option — it was removed in favor of the
+single auto-upload button above. The underlying code (`apps/mock-github`, `apps/publish-fn`,
+`lib/github-flow.ts`) still works and is still tested; this just starts it standalone.
 
 ```bash
-export MM_STORAGE=supabase
-export MM_S3_ENDPOINT=https://<your-project>.supabase.co/storage/v1/s3
-export MM_S3_REGION=ap-northeast-2
-export MM_S3_BUCKET=mailmotion
-export MM_S3_ACCESS_KEY_ID=<your-key>
-export MM_S3_SECRET_ACCESS_KEY=<your-secret>
-export MM_PUBLIC_BASE_URL=https://<your-project>.supabase.co/storage/v1/object/public/mailmotion
-export MM_ALLOWED_ORIGINS=http://localhost:3100
-
-./scripts/start-all.sh supabase
+./scripts/start-all.sh github
 ```
 
-Then in the builder:
-1. Go **Install** → **Host your images** → **Your storage**
-2. Enter `http://localhost:8787` and a bearer token
-3. Click **Upload images**
-
-**Use for:** Testing real S3-compatible backends (Supabase, MinIO, Cloudflare R2).
+See [docs/github-pages.md](docs/github-pages.md) if you want to wire it back into `HostStep`.
 
 ---
 
-### 3️⃣ **Production Static Export** (no services)
-Just the built site, served statically.
+### 3️⃣ **Production Static Export**
+
+Just the built site, served statically, using whatever `NEXT_PUBLIC_UPLOAD_*` was baked in at
+build time.
 
 ```bash
 ./scripts/start-all.sh prod
 ```
 
-Opens on `:3200`, no dynamic uploads or GitHub flow. Images use placeholder URLs.
+Opens on `:3200`.
 
 ---
 
 ## Ports and Services
 
-| Port | Service | Purpose |
-|------|---------|---------|
-| 3100 | Builder (dev) | The editor UI |
-| 3200 | Builder (prod) | Static export viewer |
-| 8787 | Storage server | Upload endpoint (Path A) |
-| 8788 | Publish function | GitHub token exchange |
-| 8790 | Mock GitHub | OAuth + Git Data API |
+| Port | Service          | Purpose                                     |
+| ---- | ---------------- | ------------------------------------------- |
+| 3100 | Builder (dev)    | The editor UI                               |
+| 3200 | Builder (prod)   | Static export viewer                        |
+| 8787 | Storage server   | Upload endpoint the builder auto-uploads to |
+| 8788 | Publish function | GitHub token exchange (`github` mode only)  |
+| 8790 | Mock GitHub      | OAuth + Git Data API (`github` mode only)   |
 
 ---
 
@@ -121,43 +124,52 @@ mailmotion/
 ## Manual Commands (If You Don't Use the Script)
 
 **Prepare assets once (generates gallery, fonts, icons):**
+
 ```bash
 pnpm prepare
 ```
 
 **Type-check all packages:**
+
 ```bash
 pnpm typecheck
 ```
 
 **Run all tests (350+ tests):**
+
 ```bash
 pnpm test
 ```
 
 **Build for production:**
+
 ```bash
 pnpm --filter @mailmotion/web build
 ```
 
 **Build the CLI:**
+
 ```bash
 pnpm --filter mailmotion build
 ```
 
 **Start only the builder dev server:**
+
 ```bash
 pnpm --filter @mailmotion/web dev
 ```
 
 **Start only the mock GitHub server:**
+
 ```bash
 pnpm --filter @mailmotion/mock-github start
 ```
 
-**Start only the storage server (with Supabase):**
+**Start only the storage server (reads `MM_*` from its environment):**
+
 ```bash
-MM_STORAGE=supabase MM_S3_* ... pnpm --filter @mailmotion/storage-server start
+MM_STORAGE=supabase MM_S3_ENDPOINT=... MM_S3_BUCKET=... MM_UPLOAD_TOKEN=... \
+  pnpm --filter @mailmotion/storage-server start
 ```
 
 ---
@@ -177,7 +189,7 @@ Or if using the script, it auto-cleans on the next `./scripts/start-all.sh` call
 1. **Onboarding**: Pick a design (or skip)
 2. **Edit**: Customize details, avatar, mark, colors, socials
 3. **Preview**: See it on Gmail, Outlook, Apple Mail (desktop & mobile)
-4. **Host**: Choose GitHub Pages, Supabase, or your own server
+4. **Host**: Click **Upload images** (auto-configured), or fall back to **Download ZIP**
 5. **Install**: Copy signature or download files
 
 ---
@@ -197,24 +209,28 @@ curl http://localhost:8790/state # Mock GitHub state
 ## Troubleshooting
 
 **Port already in use?**
+
 ```bash
 lsof -i :3100  # or :8787, :8790, etc.
 kill -9 <PID>
 ```
 
 **Files not generated?**
+
 ```bash
 rm -rf public/gallery public/fonts public/icons src/generated
 pnpm prepare
 ```
 
 **Next.js dev server won't start?**
+
 ```bash
 rm -rf apps/web/.next
 pnpm --filter @mailmotion/web dev
 ```
 
 **Dependencies out of sync?**
+
 ```bash
 rm -rf node_modules .pnpm-lock.yaml
 pnpm install
@@ -231,7 +247,7 @@ See [docs/compat/index.md](docs/compat/index.md) for what's been tested and what
 - ✅ GIF encoding (12 fps, 300 KB budget)
 - ✅ HTML serialization (Gmail/Outlook/Apple Mail email format)
 - ✅ Storage (disk, S3, R2, MinIO, Supabase)
-- ✅ Mock GitHub flow (OAuth, Git Data API, Pages)
+- ✅ Mock GitHub flow (OAuth, Git Data API, Pages) — but not currently reachable from the builder UI
 - ⬜ Real GitHub against github.com (not tested, only mock)
 - ⬜ Real mail clients (Gmail/Outlook/Apple Mail on devices)
 - ⬜ Docker Compose build/up (daemon was unavailable)

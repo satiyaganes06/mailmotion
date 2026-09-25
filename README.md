@@ -52,11 +52,10 @@ docs/       guides and the compatibility matrix
 pnpm test           # unit + integration tests for every package
 pnpm typecheck
 pnpm format:check
-pnpm --filter @mailmotion/web build && pnpm e2e    # Playwright against the production build
+NEXT_PUBLIC_UPLOAD_ENDPOINT=http://localhost:8787 \
+NEXT_PUBLIC_UPLOAD_TOKEN=e2e-upload-token-0123456789abcdef \
+  pnpm --filter @mailmotion/web build && pnpm e2e   # Playwright against the production build
 ```
-
-Trying the GitHub Pages flow without registering a GitHub App: see
-[`docs/github-pages.md`](./docs/github-pages.md) (uses `apps/mock-github`).
 
 See [`CONTRIBUTING.md`](./CONTRIBUTING.md) (DCO sign-off), [`LICENSING.md`](./LICENSING.md) and
 [`SECURITY.md`](./SECURITY.md).
