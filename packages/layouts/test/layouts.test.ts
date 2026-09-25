@@ -16,7 +16,7 @@ describe('planAssets', () => {
   it('plans an animated avatar and mark by default', () => {
     const slots = planAssets(base);
     const avatar = slots.find((s) => s.id === 'avatar')!;
-    expect(avatar).toMatchObject({ width: 80, height: 80, format: 'gif', animated: true });
+    expect(avatar).toMatchObject({ width: 72, height: 72, format: 'gif', animated: true });
     expect(slots.find((s) => s.id === 'mark')?.format).toBe('gif');
   });
   it('uses PNG for static avatars and marks', () => {

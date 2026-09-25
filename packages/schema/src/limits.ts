@@ -28,7 +28,9 @@ export const LIMITS = {
   imageDataUrlChars: 600_000,
 } as const;
 
-export const AVATAR_SIZES = { S: 64, M: 80, L: 96 } as const;
+// Matches the six shipped designs' reference sizes (aurora 88, portrait 76, editorial 56,
+// wave 72, neon 64, equalizer 68) as closely as a 3-tier scale can (±4px each).
+export const AVATAR_SIZES = { S: 60, M: 72, L: 88 } as const;
 export const MARK_SIZES = {
   S: { w: 118, h: 29 },
   M: { w: 150, h: 37 },
