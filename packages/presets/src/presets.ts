@@ -121,7 +121,7 @@ export const PRESETS: Record<PresetId, PresetDef> = {
       avatar: {
         animation: 'neon',
         shape: 'rounded',
-        size: 'M',
+        size: 'S',
         ring: { from: '#e879f9', to: '#7c3aed' },
       },
       mark: {

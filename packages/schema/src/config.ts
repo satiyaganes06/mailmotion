@@ -289,7 +289,8 @@ export const socialsSchema = z
     iconStyle: z.enum(['filled', 'outline', 'circle', 'square']).default('circle'),
     iconColor: z.enum(['brand', 'single']).default('single'),
     singleColor: hexColor.optional(),
-    iconSize: z.union([z.literal(16), z.literal(20), z.literal(24), z.literal(32)]).default(24),
+    // 16px matches the reference designs' tight, crisp icon row; bigger sizes stay available.
+    iconSize: z.union([z.literal(16), z.literal(20), z.literal(24), z.literal(32)]).default(16),
     spacing: z.enum(['tight', 'normal', 'wide']).default('normal'),
     position: z.enum(['below', 'beside', 'row']).default('below'),
     textLinks: z.boolean().default(false),

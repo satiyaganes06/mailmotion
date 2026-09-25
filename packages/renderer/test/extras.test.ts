@@ -185,18 +185,18 @@ describe('social icons', () => {
         const icons = (await renderSignatureAssets(cfg, env)).filter((a) => a.kind === 'icon');
         expect(icons).toHaveLength(3);
         for (const i of icons) seen.add(i.hash);
-        expect(icons[0]!.width).toBe(24);
+        expect(icons[0]!.width).toBe(16);
       }
     }
     expect(seen.size).toBeGreaterThan(12);
   }, 120_000);
 
-  it('produces 2x PNGs (48px for a 24px icon)', async () => {
+  it('produces 2x PNGs (32px for a 16px icon)', async () => {
     const icons = (await renderSignatureAssets(sample('aurora'), env)).filter(
       (a) => a.kind === 'icon',
     );
     const img = await loadImage(Buffer.from(icons[0]!.bytes));
-    expect(img.width).toBe(48);
+    expect(img.width).toBe(32);
   });
 });
 

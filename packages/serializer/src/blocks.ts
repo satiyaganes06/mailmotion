@@ -151,9 +151,11 @@ export function fieldRows(ctx: Ctx, skip: FieldKey[] = []): string[] {
       case 'company': {
         if (!d.company) break;
         const href = safeHref(d.companyUrl);
+        // Bold and accent-colored either way (matches the reference designs' .sig-co) — a
+        // company name reads as branding, not body text, whether or not it happens to link out.
         const inner = href
           ? link(href, esc(d.company), linkStyle(ctx, 'font-weight:bold'))
-          : `<strong>${esc(d.company)}</strong>`;
+          : `<span style="color:${t.colors.link};font-weight:bold">${esc(d.company)}</span>`;
         rows.push(row(textTd(ctx, 'body', inner)));
         break;
       }
@@ -220,7 +222,8 @@ export function fieldRows(ctx: Ctx, skip: FieldKey[] = []): string[] {
 /* ------------------------------------------------------------------ socials */
 
 function socialGap(ctx: Ctx): number {
-  return { tight: 4, normal: 8, wide: 14 }[ctx.cfg.socials.spacing];
+  // Matches the reference designs' tight icon row (5px between 16px icons at 'normal').
+  return { tight: 3, normal: 5, wide: 10 }[ctx.cfg.socials.spacing];
 }
 
 export function socialBlock(ctx: Ctx): string {
