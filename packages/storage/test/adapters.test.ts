@@ -126,6 +126,29 @@ describe('createAdapterFromEnv', () => {
       createAdapterFromEnv({ MM_STORAGE: 'ftp', MM_PUBLIC_BASE_URL: 'https://x.example' }),
     ).toThrow(/Unknown MM_STORAGE/);
   });
+
+  it('builds a Supabase Storage adapter (path-style, like MinIO) and requires an endpoint', () => {
+    expect(() =>
+      createAdapterFromEnv({
+        MM_STORAGE: 'supabase',
+        MM_PUBLIC_BASE_URL: 'https://proj.supabase.co/storage/v1/object/public/mailmotion',
+        MM_S3_BUCKET: 'mailmotion',
+        MM_S3_ACCESS_KEY_ID: 'k',
+        MM_S3_SECRET_ACCESS_KEY: 's',
+      }),
+    ).toThrow(/MM_S3_ENDPOINT/);
+    expect(
+      createAdapterFromEnv({
+        MM_STORAGE: 'supabase',
+        MM_PUBLIC_BASE_URL: 'https://proj.supabase.co/storage/v1/object/public/mailmotion',
+        MM_S3_ENDPOINT: 'https://proj.supabase.co/storage/v1/s3',
+        MM_S3_REGION: 'us-east-1',
+        MM_S3_BUCKET: 'mailmotion',
+        MM_S3_ACCESS_KEY_ID: 'k',
+        MM_S3_SECRET_ACCESS_KEY: 's',
+      }).kind,
+    ).toBe('s3');
+  });
 });
 
 describe('http adapter', () => {

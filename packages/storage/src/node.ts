@@ -5,7 +5,7 @@ import type { StorageAdapter } from './types';
 export * from './disk';
 export * from './s3';
 
-export type StorageMode = 'disk' | 's3' | 'r2' | 'minio';
+export type StorageMode = 'disk' | 's3' | 'r2' | 'minio' | 'supabase';
 
 /** Build an adapter from the `MM_*` environment variables documented in `.env.example`. */
 export function createAdapterFromEnv(
@@ -16,11 +16,11 @@ export function createAdapterFromEnv(
   if (!publicBaseUrl) throw new Error('MM_PUBLIC_BASE_URL is required');
   if (mode === 'disk')
     return createDiskAdapter({ dir: env.MM_DATA_DIR ?? './.data/files', publicBaseUrl });
-  if (mode === 's3' || mode === 'r2' || mode === 'minio') {
+  if (mode === 's3' || mode === 'r2' || mode === 'minio' || mode === 'supabase') {
     for (const k of ['MM_S3_BUCKET', 'MM_S3_ACCESS_KEY_ID', 'MM_S3_SECRET_ACCESS_KEY']) {
       if (!env[k]) throw new Error(`${k} is required when MM_STORAGE=${mode}`);
     }
-    if ((mode === 'r2' || mode === 'minio') && !env.MM_S3_ENDPOINT)
+    if ((mode === 'r2' || mode === 'minio' || mode === 'supabase') && !env.MM_S3_ENDPOINT)
       throw new Error(`MM_S3_ENDPOINT is required when MM_STORAGE=${mode}`);
     return createS3Adapter({
       endpoint: env.MM_S3_ENDPOINT || undefined,
@@ -28,9 +28,11 @@ export function createAdapterFromEnv(
       bucket: env.MM_S3_BUCKET!,
       accessKeyId: env.MM_S3_ACCESS_KEY_ID!,
       secretAccessKey: env.MM_S3_SECRET_ACCESS_KEY!,
-      forcePathStyle: mode === 'minio',
+      // Supabase's S3-compatible endpoint, like MinIO, needs path-style addressing
+      // (bucket in the path); virtual-hosted-style (bucket.endpoint) isn't set up for either.
+      forcePathStyle: mode === 'minio' || mode === 'supabase',
       publicBaseUrl,
     });
   }
-  throw new Error(`Unknown MM_STORAGE: ${mode} (use disk | s3 | r2 | minio)`);
+  throw new Error(`Unknown MM_STORAGE: ${mode} (use disk | s3 | r2 | minio | supabase)`);
 }
