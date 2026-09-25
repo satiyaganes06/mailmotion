@@ -23,7 +23,7 @@ The compose file runs the builder, the storage server and Caddy (automatic HTTPS
 
 | Variable                                                                                           | Meaning                                                                                                               |
 | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `MM_STORAGE`                                                                                       | `disk` (default), `s3`, `r2` or `minio`                                                                               |
+| `MM_STORAGE`                                                                                       | `disk` (default), `s3`, `r2`, `minio` or `supabase`                                                                   |
 | `MM_PUBLIC_BASE_URL`                                                                               | Public URL the images are served from (must be https in production)                                                   |
 | `MM_UPLOAD_TOKEN`                                                                                  | Shared secret the builder sends to upload. At least 16 characters. The server refuses to start with the example value |
 | `MM_ALLOWED_ORIGINS`                                                                               | Comma-separated origins allowed to call the upload API from a browser (your builder's address)                        |
@@ -34,6 +34,26 @@ The compose file runs the builder, the storage server and Caddy (automatic HTTPS
 ### Cloudflare R2, S3 and MinIO
 
 Set `MM_STORAGE=r2|s3|minio`, the `MM_S3_*` values, and put a public domain or CDN in front of the bucket as `MM_PUBLIC_BASE_URL`. Uploads still go through the server, so validation applies everywhere.
+
+### Supabase Storage
+
+Supabase Storage exposes an S3-compatible API, so it's just another `MM_STORAGE` mode — no GitHub Pages or Path B setup needed. In your Supabase project:
+
+1. **Storage → New bucket.** Create one (e.g. `mailmotion`) and make it **public** — images in a signature have to be fetchable by every mail client, unauthenticated.
+2. **Project Settings → Storage → S3 Connection → New access key.** Note the access key ID/secret and the region shown there.
+3. Set:
+
+   ```bash
+   MM_STORAGE=supabase
+   MM_S3_ENDPOINT=https://<project-ref>.supabase.co/storage/v1/s3
+   MM_S3_REGION=<region from the S3 Connection panel>
+   MM_S3_BUCKET=mailmotion
+   MM_S3_ACCESS_KEY_ID=<access key id>
+   MM_S3_SECRET_ACCESS_KEY=<access key secret>
+   MM_PUBLIC_BASE_URL=https://<project-ref>.supabase.co/storage/v1/object/public/mailmotion
+   ```
+
+Uploads still go through your storage server (sanitized, bearer-token gated, content-hashed) — Supabase only holds the bytes and serves them publicly. Not yet verified against a real Supabase project in this environment; the adapter is the same generic S3 client used for R2/MinIO with path-style addressing, but please confirm one real upload/read round trip before relying on it.
 
 ## What the server enforces
 
