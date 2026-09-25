@@ -25,6 +25,11 @@ jobs:
       - run: pnpm test
       - run: pnpm format:check
       - run: pnpm --filter @mailmotion/web build
+        env:
+          # Bakes a one-click "Upload images" button into the build, pointed at the storage
+          # server the e2e job starts on :8787 (see apps/web/playwright.config.ts webServer).
+          NEXT_PUBLIC_UPLOAD_ENDPOINT: http://localhost:8787
+          NEXT_PUBLIC_UPLOAD_TOKEN: e2e-upload-token-0123456789abcdef
       - run: pnpm --filter mailmotion build
       - uses: actions/upload-artifact@v4
         with:

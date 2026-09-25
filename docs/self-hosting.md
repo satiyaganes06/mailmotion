@@ -19,6 +19,30 @@ The compose file runs the builder, the storage server and Caddy (automatic HTTPS
 
 > **Not verified in CI yet:** the Docker images and compose file could not be built in the environment they were written in (no Docker daemon). The storage server itself is tested and was smoke-tested as a bundled Node process. Please report problems with `docker compose up`.
 
+## Wiring the builder to it (one-click upload)
+
+The Install step's "Upload images" button uploads straight to whatever storage server this
+deployment was **built** with — nothing for the person using the builder to type in. Set these
+when you build the site (they must be present at `next build`/`next dev` time, not just at
+runtime, since `NEXT_PUBLIC_*` values are baked into the shipped JS):
+
+```bash
+NEXT_PUBLIC_UPLOAD_ENDPOINT=https://img.example.com
+NEXT_PUBLIC_UPLOAD_TOKEN=<the same value as MM_UPLOAD_TOKEN on that storage server>
+```
+
+**Security tradeoff:** these two values ship in the public JS bundle — anyone who loads the
+builder can read them (view-source, devtools) and use the token to upload to your bucket. That's
+fine for a **single-tenant** deployment (you run the builder and the storage server for your own
+team, and everyone who can reach the site is meant to be able to upload). Don't set these on a
+public multi-tenant deployment where strangers can load the builder; leave them unset there and
+people can still use the "Download ZIP" fallback, or you can re-enable a per-user entry form (see
+`apps/web/src/components/install/HostStep.tsx`) or GitHub Pages publishing (see
+[GitHub Pages publishing](./github-pages.md)).
+
+If they're left unset, the Install step shows a plain notice instead of a button and nothing is
+uploaded anywhere automatically.
+
 ## Configuration
 
 | Variable                                                                                           | Meaning                                                                                                               |

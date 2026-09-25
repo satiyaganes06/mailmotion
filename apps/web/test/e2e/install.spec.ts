@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test';
-import { UPLOAD_TOKEN, openStudio, waitForRender, watchErrors } from './helpers';
+import { openStudio, waitForRender, watchErrors } from './helpers';
 
 test('ZIP path: download bundle, set a base URL, then copy HTML and download files', async ({
   page,
 }) => {
   const problems = watchErrors(page);
   await openStudio(page);
-  await page.getByRole('tab', { name: 'Download ZIP' }).click();
+  await page.locator('summary', { hasText: 'Download ZIP instead' }).click();
 
   const [zip] = await Promise.all([
     page.waitForEvent('download'),
@@ -54,7 +54,7 @@ test('ZIP path: download bundle, set a base URL, then copy HTML and download fil
 
 test('copy formatted signature puts rich text/html on the clipboard', async ({ page }) => {
   await openStudio(page);
-  await page.getByRole('tab', { name: 'Download ZIP' }).click();
+  await page.locator('summary', { hasText: 'Download ZIP instead' }).click();
   await page
     .getByLabel('Where you uploaded the images (base URL)')
     .fill('https://cdn.example.com/sig');
@@ -71,19 +71,15 @@ test('copy formatted signature puts rich text/html on the clipboard', async ({ p
   expect(flavors['text/html']).toContain('<table');
 });
 
-test('Path A: upload to a real storage server, verify URLs, then create a phone link that opens', async ({
+test('Path A: one click uploads to the deployment-configured storage server, verifies URLs, then creates a phone link that opens', async ({
   page,
   context,
 }) => {
   const problems = watchErrors(page);
   await openStudio(page);
-  await page.getByRole('tab', { name: 'Your storage' }).click();
-  await page.getByLabel('Storage server address').fill('http://localhost:8787');
-  // wrong token first: clear error
-  await page.getByLabel('Upload token').fill('wrong-token-wrong-token-wrong');
-  await page.getByRole('button', { name: 'Upload images' }).click();
-  await expect(page.locator('.install .notice.bad')).toContainText('token was rejected');
-  await page.getByLabel('Upload token').fill(UPLOAD_TOKEN);
+
+  // No endpoint/token to enter: NEXT_PUBLIC_UPLOAD_ENDPOINT/NEXT_PUBLIC_UPLOAD_TOKEN are baked in
+  // at build time (see playwright.config.ts webServer build), so a single click uploads.
   await page.getByRole('button', { name: 'Upload images' }).click();
   await expect(page.locator('.install .notice.good')).toContainText('verified every URL');
   await expect(page.locator('.install .step-head .chip.ok').first()).toContainText('server');
@@ -92,7 +88,7 @@ test('Path A: upload to a real storage server, verify URLs, then create a phone 
   const src = await page.locator('iframe.preview-frame').getAttribute('srcdoc');
   expect(src).toBeTruthy();
 
-  // phone link + QR
+  // phone link + QR (the "short link via my server" option also uses the baked-in server)
   await page.getByRole('button', { name: 'Create private link' }).click();
   await expect(page.getByAltText(/QR code/)).toBeVisible();
   await page.evaluate(() => {
