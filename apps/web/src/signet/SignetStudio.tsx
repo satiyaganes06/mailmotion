@@ -1,9 +1,7 @@
 'use client';
 
-import '@fontsource-variable/bricolage-grotesque/opsz.css';
-import '@fontsource/public-sans/400.css';
-import '@fontsource/public-sans/600.css';
 import './signet.css';
+import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   DESIGNS,
@@ -14,13 +12,14 @@ import {
   type SignetData,
   type SignetDesign,
 } from '@mailmotion/signet';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { hostImages, hostingConfigured, missing, type Hosted, type HostProgress } from './host';
 
 /**
- * Simple Style: the Signet reference page (packages/signet/test/fixtures/signet-reference.html),
- * recreated element for element. The one functional change: instead of asking where you will
- * host the GIFs yourself, "Upload images" renders them and uploads them to this site's storage,
- * exactly like Custom Style — and copied signatures point at the uploaded images.
+ * Simple Style: the ten Signet designs (packages/signet) in a builder dressed in MailMotion's own
+ * design system. The signatures, their live CSS previews and the copied HTML are the Signet
+ * reference exactly; only the builder around them uses the site's look. "Upload images" renders
+ * the ten GIFs and uploads them to this site's storage, like Custom Style.
  */
 
 type FieldId = keyof SignetData | 'accent';
@@ -211,49 +210,55 @@ export function SignetStudio() {
   };
 
   let status: React.ReactNode;
-  if (!hostingConfigured)
+  let tone: 'plain' | 'good' | 'bad' = 'plain';
+  if (!hostingConfigured) {
+    tone = 'bad';
     status =
       'This site has no image storage configured (NEXT_PUBLIC_UPLOAD_ENDPOINT and NEXT_PUBLIC_UPLOAD_TOKEN), so the GIFs cannot be hosted yet.';
-  else if (progress) status = progressText(progress);
-  else if (error) status = error;
-  else if (!mounted) status = ' ';
-  else if (todo.length === 0)
-    status = (
-      <span className="sg-status-ok">
-        All {DESIGNS.length} animated images are uploaded. Copied signatures point to them.
-      </span>
-    );
-  else if (todo.length === DESIGNS.length)
+  } else if (progress) status = progressText(progress);
+  else if (error) {
+    tone = 'bad';
+    status = error;
+  } else if (!mounted) status = '\u00a0';
+  else if (todo.length === 0) {
+    tone = 'good';
+    status = `All ${DESIGNS.length} animated images are uploaded. Copied signatures point to them.`;
+  } else if (todo.length === DESIGNS.length)
     status =
       'Renders the ten animated GIFs in your browser and uploads them to this site’s image storage. Copied signatures then point to them.';
   else
     status = `${todo.length} of ${DESIGNS.length} images changed with your details — upload again before copying those.`;
 
   return (
-    <div className="sg">
-      <div className="sg-top">
-        <div className="sg-back">
-          <a href="/start/?change=1">← Change style</a>
+    <div className="sg studio">
+      <header className="studio-bar">
+        <Link href="/" className="brand" aria-label="MailMotion home">
+          <span className="brand-mark" aria-hidden="true" />
+          <span className="hide-sm">MailMotion</span>
+        </Link>
+        <div className="bar-actions">
+          <a href="/start/?change=1" className="btn ghost small">
+            ← Change style
+          </a>
+          <span className="saved hide-sm" aria-live="polite">
+            {mounted ? 'Saved in this browser' : 'Loading…'}
+          </span>
         </div>
-        <h1>Signet</h1>
-        <p>
-          Ten starter designs for animated email signatures that work in Gmail and Outlook. Each one
-          is table-based HTML with inline styles; only the outlined part is animated, and in the
-          real signature it ships as a hosted GIF.
-        </p>
-      </div>
+        <div className="bar-actions right">
+          <span className="chip hide-sm">Simple Style</span>
+          <ThemeToggle />
+        </div>
+      </header>
 
-      <div
-        className={`sg-wrap${staticPreview ? ' sg-static' : ''}${outline ? ' sg-outline' : ''}`}
-        id="wrap"
-      >
-        <aside>
-          <div className="sg-airmail" />
-          <div className="sg-inner">
-            <h2>Your details</h2>
-            <form autoComplete="off" onSubmit={(e) => e.preventDefault()}>
+      <div className={`sg-wrap${staticPreview ? ' sg-static' : ''}${outline ? ' sg-outline' : ''}`}>
+        <aside className="sg-editor" aria-label="Editor">
+          <form className="panel" autoComplete="off" onSubmit={(e) => e.preventDefault()}>
+            <h2 className="sg-panel-head">
+              Your details <small>Shown in all ten designs</small>
+            </h2>
+            <div className="panel-body">
               {FIELDS.map((f) => (
-                <div key={f.id} style={{ display: 'contents' }}>
+                <div className="field" key={f.id}>
                   <label htmlFor={`sg-${f.id}`}>{f.label}</label>
                   <input
                     type={f.type}
@@ -263,102 +268,140 @@ export function SignetStudio() {
                   />
                 </div>
               ))}
-              <label htmlFor="sg-accent">Accent colour</label>
-              <div className="sg-row">
-                <input
-                  type="color"
-                  id="sg-accent"
-                  value={/^#[0-9a-f]{6}$/i.test(values.accent) ? values.accent.toLowerCase() : a}
-                  onChange={(e) => setValues((v) => ({ ...v, accent: e.target.value }))}
-                />
-                <span className="sg-hint" style={{ margin: 0 }}>
-                  Used for the GIF and the links
-                </span>
+              <div className="field">
+                <label htmlFor="sg-accent">Accent colour</label>
+                <div className="sg-color">
+                  <input
+                    type="color"
+                    id="sg-accent"
+                    value={/^#[0-9a-f]{6}$/i.test(values.accent) ? values.accent.toLowerCase() : a}
+                    onChange={(e) => setValues((v) => ({ ...v, accent: e.target.value }))}
+                  />
+                  <code>{a.toLowerCase()}</code>
+                  <span className="field-hint">Used for the GIF and the links</span>
+                </div>
               </div>
-              {/* a heading for the section, not a label: the button keeps its own name */}
-              <label id="sg-images">Animated images</label>
+            </div>
+          </form>
+
+          <section className="panel" aria-labelledby="sg-images">
+            <h2 className="sg-panel-head" id="sg-images">
+              Animated images{' '}
+              <small>
+                {mounted ? `${DESIGNS.length - todo.length} of ${DESIGNS.length} uploaded` : ''}
+              </small>
+            </h2>
+            <div className="panel-body">
               <button
                 type="button"
-                id="sg-upload"
-                className="sg-upload"
+                className="btn primary"
                 disabled={busy || !hostingConfigured}
                 onClick={upload}
               >
                 {busy ? 'Uploading…' : 'Upload images'}
               </button>
-              <p className="sg-hint" role="status" aria-live="polite">
+              <p
+                className={tone === 'plain' ? 'field-hint' : `notice ${tone}`}
+                role="status"
+                aria-live="polite"
+              >
                 {status}
               </p>
-              <label className="sg-check">
+            </div>
+          </section>
+
+          <section className="panel" aria-labelledby="sg-preview">
+            <h2 className="sg-panel-head" id="sg-preview">
+              Preview
+            </h2>
+            <div className="panel-body">
+              <label className="sg-toggle">
                 <input
                   type="checkbox"
                   checked={staticPreview}
                   onChange={(e) => setStaticPreview(e.target.checked)}
-                />{' '}
+                />
                 Preview as classic Outlook for Windows (first frame only)
               </label>
-              <label className="sg-check">
+              <label className="sg-toggle">
                 <input
                   type="checkbox"
                   checked={outline}
                   onChange={(e) => setOutline(e.target.checked)}
-                />{' '}
+                />
                 Outline the animated parts
               </label>
-            </form>
-          </div>
+            </div>
+          </section>
         </aside>
 
-        <main>
+        <main className="sg-list">
+          <div className="sg-intro">
+            <p className="eyebrow">Simple Style</p>
+            <h1>Ten ready-made designs</h1>
+            <p className="lede">
+              Fill in your details once, upload the animated images in one click, then copy the
+              design you like. Each signature is table-based HTML with inline styles that works in
+              Gmail and Outlook; only the outlined part is animated, as a hosted GIF.
+            </p>
+          </div>
+
           {DESIGNS.map((t) => {
             const url = urlFor(t);
             const html = exportHtml(t, d, a, url ?? PLACEHOLDER_URL);
             return (
-              <section className="sg-spec" key={t.id} data-id={t.id}>
-                <header>
+              <section className="g-card sg-spec" key={t.id} data-id={t.id}>
+                <header className="g-head">
                   <div>
                     <h2>{t.name}</h2>
                     <p className="sg-use">{t.use}</p>
                   </div>
-                  <span className="sg-size">
+                  <span className={`chip${mounted && url ? ' ok' : ''} sg-size`}>
                     GIF {t.w} &times; {t.h}
                   </span>
                 </header>
-                <div className="sg-pane">
-                  <p className="sg-body">
-                    Hi Daniel, thanks for the call today. The revised proposal is attached.
-                    <br />
-                    <br />
-                    Best regards,
-                  </p>
-                  <p className="sg-dash">--</p>
-                  {/* Trusted: built by the Signet templates, which escape every user value. */}
-                  <div
-                    className="sg-sig"
-                    dangerouslySetInnerHTML={{ __html: previewHtml(t, d, a) }}
-                  />
+                <div className="g-stage sg-pane">
+                  <div className="sg-mail">
+                    <p className="sg-body">
+                      Hi Daniel, thanks for the call today. The revised proposal is attached.
+                      <br />
+                      <br />
+                      Best regards,
+                    </p>
+                    <p className="sg-dash">--</p>
+                    {/* Trusted: built by the Signet templates, which escape every user value. */}
+                    <div
+                      className="sg-sig"
+                      dangerouslySetInnerHTML={{ __html: previewHtml(t, d, a) }}
+                    />
+                  </div>
                 </div>
                 <div className="sg-actions">
-                  <button type="button" onClick={() => copy(t, 'rich')}>
+                  <button
+                    type="button"
+                    className="btn primary small"
+                    onClick={() => copy(t, 'rich')}
+                  >
                     Copy signature
                   </button>
-                  <button type="button" className="sg-ghost" onClick={() => copy(t, 'src')}>
+                  <button type="button" className="btn small" onClick={() => copy(t, 'src')}>
                     Copy HTML source
                   </button>
                   <span className={`sg-count${html.length > LIMIT ? ' sg-over' : ''}`}>
-                    {mounted ? `${html.length.toLocaleString()} / 10,000 characters` : ' '}
+                    {mounted ? `${html.length.toLocaleString()} / 10,000 characters` : '\u00a0'}
                   </span>
                 </div>
               </section>
             );
           })}
+
+          <p className="field-hint sg-foot">
+            Signatures stay under Gmail&apos;s 10,000-character limit. Text, phone numbers and links
+            stay live HTML so they remain clickable and readable when images are blocked.
+          </p>
         </main>
       </div>
 
-      <footer>
-        Signatures stay under Gmail&apos;s 10,000-character limit. Text, phone numbers and links
-        stay live HTML so they remain clickable and readable when images are blocked.
-      </footer>
       <div className={`sg-toast${toast.show ? ' sg-show' : ''}`} role="status" aria-live="polite">
         {toast.text}
       </div>
