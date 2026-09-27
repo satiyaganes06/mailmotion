@@ -1,3 +1,6 @@
+<p align="center">
+<img src="https://github.com/satiyaganes06/mailmotion/blob/main/apps/web/public/full-icon.png?raw=true" width = "306"  class="center"> </p>
+
 # MailMotion
 
 Open-source, self-hostable **animated email signatures** that render in Gmail, Outlook and Apple Mail.
