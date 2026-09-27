@@ -410,6 +410,7 @@ kbd,
 }
 .gallery {
   display: flex;
+  align-items: flex-start;
   gap: 20px;
   overflow-x: auto;
   overscroll-behavior-x: contain;
@@ -431,7 +432,7 @@ kbd,
   background: var(--faint);
 }
 .g-card {
-  flex: 0 0 min(85vw, 400px);
+  flex: 0 0 min(90vw, 520px);
   scroll-snap-align: start;
   border: 1px solid var(--line);
   background: var(--surface);
