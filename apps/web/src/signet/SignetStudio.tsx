@@ -35,14 +35,19 @@ type FieldId = keyof SignetData | 'accent';
 
 // the reference form's fields and default values, in order
 const FIELDS: { id: keyof SignetData; label: string; type: 'text' | 'email'; value: string }[] = [
-  { id: 'name', label: 'Full name', type: 'text', value: 'Aina Rahman' },
-  { id: 'title', label: 'Job title', type: 'text', value: 'Product Designer' },
-  { id: 'company', label: 'Company', type: 'text', value: 'Lumen Labs' },
-  { id: 'phone', label: 'Phone', type: 'text', value: '+60 12 345 6789' },
-  { id: 'email', label: 'Email', type: 'email', value: 'aina@lumenlabs.io' },
-  { id: 'website', label: 'Website', type: 'text', value: 'lumenlabs.io' },
-  { id: 'tagline', label: 'Tagline', type: 'text', value: 'Designing calmer fintech apps' },
-  { id: 'status', label: 'Status line', type: 'text', value: 'Available for calls this week' },
+  { id: 'name', label: 'Full name', type: 'text', value: 'Shatthiya Ganes' },
+  { id: 'title', label: 'Job title', type: 'text', value: 'Mobile Security Engineer' },
+  { id: 'company', label: 'Company', type: 'text', value: 'Vigilant Asia' },
+  { id: 'phone', label: 'Phone', type: 'text', value: '+60 1163348685' },
+  { id: 'email', label: 'Email', type: 'email', value: 'satiyaganes.sg@gmail.com' },
+  { id: 'website', label: 'Website', type: 'text', value: 'www.satiyaganes.site' },
+  {
+    id: 'tagline',
+    label: 'Tagline',
+    type: 'text',
+    value: 'Full-stack security & mobile engineering',
+  },
+  { id: 'status', label: 'Status line', type: 'text', value: 'Open to opportunities' },
 ];
 
 // A colour input reports its value in lowercase, so this is what the reference page actually uses.
