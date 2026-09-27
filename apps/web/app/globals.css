@@ -212,10 +212,8 @@ kbd,
   text-decoration: none;
 }
 .brand-mark {
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
-  background: conic-gradient(from 220deg, var(--accent), #e2793d, var(--accent-ink), var(--accent));
+  width: auto;
+  height: 26px;
 }
 .nav {
   display: flex;

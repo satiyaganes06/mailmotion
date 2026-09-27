@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { ThemeToggle } from './ThemeToggle';
 
@@ -8,7 +9,14 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="wrap">
         <Link href="/" className="brand">
-          <span className="brand-mark" aria-hidden="true" />
+          <Image
+            src="/brand-mark.png"
+            alt=""
+            width={159}
+            height={96}
+            className="brand-mark"
+            priority
+          />
           MailMotion
         </Link>
         <nav className="nav" aria-label="Main">
