@@ -396,13 +396,43 @@ kbd,
   color: var(--muted);
   font-size: 14px;
   margin: 0;
+  flex: 1 1 320px;
+}
+.gallery-hint {
+  color: var(--faint);
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+@media (hover: none) {
+  .gallery-hint {
+    display: none;
+  }
 }
 .gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr));
+  display: flex;
   gap: 20px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  padding: 2px 2px 14px;
+  margin: -2px -2px -12px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+.gallery::-webkit-scrollbar {
+  height: 8px;
+}
+.gallery::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 4px;
+}
+.gallery::-webkit-scrollbar-thumb:hover {
+  background: var(--faint);
 }
 .g-card {
+  flex: 0 0 min(85vw, 400px);
+  scroll-snap-align: start;
   border: 1px solid var(--line);
   background: var(--surface);
   border-radius: var(--radius);

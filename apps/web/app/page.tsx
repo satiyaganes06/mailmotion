@@ -49,6 +49,7 @@ export default function Home() {
             <div className="gallery-group-head">
               <h3>Custom Style · 6 designs</h3>
               <p>Fully customizable layouts — pick fonts, colors, socials and your own avatar.</p>
+              <span className="gallery-hint">Scroll for more →</span>
             </div>
             <div className="gallery">
               {PRESET_LIST.map((p) => {
@@ -78,6 +79,7 @@ export default function Home() {
               <p>
                 Ready-made designs, pixel-identical to the Signet reference — just add your details.
               </p>
+              <span className="gallery-hint">Scroll for more →</span>
             </div>
             <div className="gallery">
               {signetItems.map((g) => (
