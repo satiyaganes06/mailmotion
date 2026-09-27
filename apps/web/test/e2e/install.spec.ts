@@ -106,7 +106,7 @@ test('Path A: one click uploads to the deployment-configured storage server, ver
   await phone.goto(link);
   await expect(phone.getByRole('heading', { name: 'Your signature' })).toBeVisible();
   await expect(phone.frameLocator('iframe.phone-frame').locator('body')).toContainText(
-    'Alex Morgan',
+    'Shatthiya Ganes',
   );
   expect(await phone.locator('iframe.phone-frame').getAttribute('sandbox')).toBe('');
   await expect(phone.getByRole('button', { name: 'Copy signature' })).toBeVisible();

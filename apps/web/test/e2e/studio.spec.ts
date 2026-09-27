@@ -29,7 +29,7 @@ test('live editing updates the preview, meters and supports undo/redo; drafts pe
   await name.fill('Grace Hopper');
   await expect(previewText(page)).toContainText('Grace Hopper');
   await page.getByRole('button', { name: 'Undo' }).click();
-  await expect(previewText(page)).toContainText('Alex Morgan');
+  await expect(previewText(page)).toContainText('Shatthiya Ganes');
   await page.getByRole('button', { name: 'Redo' }).click();
   await expect(previewText(page)).toContainText('Grace Hopper');
   // meters
@@ -75,7 +75,7 @@ test('an invalid field shows an error and the preview keeps the last good versio
   await email.fill('not-an-email');
   await expect(page.locator('.field-error')).toContainText('valid email');
   await expect(page.locator('.notice.warn', { hasText: 'last valid' })).toBeVisible();
-  await expect(previewText(page)).toContainText('Alex Morgan');
+  await expect(previewText(page)).toContainText('Shatthiya Ganes');
   await email.fill('alex@example.com');
   await expect(page.locator('.field-error')).toHaveCount(0);
 });
