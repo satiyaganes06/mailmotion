@@ -67,7 +67,7 @@ export interface BannerParams {
   env: DrawEnv;
   width: number;
   height: number;
-  kind: 'wave' | 'ticker' | 'shimmer' | 'typewriter' | 'static';
+  kind: 'wave' | 'ticker' | 'shimmer' | 'static';
   colorA: string;
   colorB: string;
   /** Banner text converted to path data (for wave/ticker/shimmer). */

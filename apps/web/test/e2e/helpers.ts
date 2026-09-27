@@ -24,13 +24,6 @@ export async function openStudio(page: Page) {
   await waitForRender(page);
 }
 
-/** Open Simple Style's builder (no first-run dialog to skip — the panel is already minimal). */
-export async function openSimpleStudio(page: Page) {
-  await page.goto('/studio/simple/');
-  await expect(page.locator('.saved')).toContainText('Saved');
-  await waitForRender(page);
-}
-
 /** The preview iframe is present and the worker has finished rendering (meters show GIF sizes). */
 export async function waitForRender(page: Page) {
   await expect(page.locator('iframe.preview-frame')).toBeVisible();

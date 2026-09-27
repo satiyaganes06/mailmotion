@@ -1,0 +1,23 @@
+{
+  "name": "@mailmotion/signet",
+  "version": "0.1.0",
+  "description": "Simple Style: the ten Signet signature designs — exact HTML templates and the GIF renderer for their animated slots.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "gifenc": "^1.0.3"
+  },
+  "devDependencies": {
+    "@napi-rs/canvas": "^0.1.65",
+    "@types/omggif": "^1.0.5",
+    "fast-check": "^3.23.0",
+    "omggif": "^1.0.10"
+  }
+}

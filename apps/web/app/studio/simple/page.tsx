@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import { SimpleStudio } from '@/components/SimpleStudio';
+import { SignetStudio } from '@/signet/SignetStudio';
 
 export const metadata: Metadata = {
-  title: 'Builder · Simple Style',
+  title: 'Simple Style',
   description:
-    'Ten ready-made animated email signature designs, one accent colour, a handful of fields. Everything runs in your browser.',
+    'Ten ready-made animated email signature designs. Fill in your details, upload the images in one click, copy the signature.',
 };
 
-export default function SimpleStudioPage() {
-  return <SimpleStudio />;
+export default function SimpleStylePage() {
+  return <SignetStudio />;
 }

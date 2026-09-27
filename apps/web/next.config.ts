@@ -20,6 +20,7 @@ const config: NextConfig = {
     '@mailmotion/renderer',
     '@mailmotion/schema',
     '@mailmotion/serializer',
+    '@mailmotion/signet',
     '@mailmotion/storage',
   ],
 };
