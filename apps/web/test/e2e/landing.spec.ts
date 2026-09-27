@@ -1,11 +1,15 @@
 import { expect, test } from '@playwright/test';
 import { watchErrors } from './helpers';
 
-test('landing page shows six real designs and links to the builder and docs', async ({ page }) => {
+test('landing page shows sixteen real designs and links to the builder and docs', async ({
+  page,
+}) => {
   const problems = watchErrors(page);
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('actually render');
-  await expect(page.locator('.g-card')).toHaveCount(6);
+  await expect(page.getByText('Custom Style · 6 designs')).toBeVisible();
+  await expect(page.getByText('Simple Style · 10 designs')).toBeVisible();
+  await expect(page.locator('.g-card')).toHaveCount(16);
   // every gallery image loads
   const broken = await page.$$eval(
     '.g-stage img',

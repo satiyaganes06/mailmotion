@@ -1,8 +1,10 @@
 /**
  * Runs before `next dev` / `next build`:
  *  1. copies the bundled fonts into public/fonts (the in-browser renderer fetches them)
- *  2. renders the six designs with the real renderer + serializer into public/gallery and
- *     src/generated/gallery.json, so the landing page shows exactly what the product outputs.
+ *  2. renders the six Custom Style designs with the real renderer + serializer into public/gallery
+ *     and src/generated/gallery.json, so the landing page shows exactly what the product outputs.
+ *  3. renders the ten Simple Style (Signet) designs into public/gallery and
+ *     src/generated/signet-gallery.json, the same way.
  */
 import { copyFileSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -10,9 +12,16 @@ import { fileURLToPath } from 'node:url';
 import { createFromPreset, PRESET_LIST } from '@mailmotion/presets';
 import { createNodeEnv } from '@mailmotion/renderer/node';
 import { renderSignatureAssets, toSignatureAssets, uniqueFiles } from '@mailmotion/renderer';
-import { createCanvas } from '@napi-rs/canvas';
+import { createCanvas, GlobalFonts } from '@napi-rs/canvas';
 import { createConfig, type SignatureConfigInput } from '@mailmotion/schema';
 import { serializeSignature } from '@mailmotion/serializer';
+import {
+  DESIGNS,
+  DEFAULT_ACCENT,
+  exportHtml,
+  renderGif,
+  type SignetData,
+} from '@mailmotion/signet';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const fontsSrc = join(root, '..', '..', 'packages', 'ink', 'fonts');
@@ -71,6 +80,45 @@ for (const preset of PRESET_LIST) {
 }
 
 writeFileSync(join(genOut, 'gallery.json'), JSON.stringify(gallery));
+
+// Simple Style: the ten Signet designs, with the same sample details the builder starts from.
+GlobalFonts.registerFromPath(join(fontsOut, 'Caveat.ttf'), 'Caveat');
+const SIGNET_DETAILS: SignetData = {
+  name: 'Shatthiya Ganes',
+  title: 'Mobile Security Engineer',
+  company: 'Vigilant Asia',
+  phone: '+60 1163348685',
+  email: 'satiyaganes.sg@gmail.com',
+  website: 'www.satiyaganes.site',
+  tagline: 'Full-stack security & mobile engineering',
+  status: 'Open to opportunities',
+};
+
+const signetGallery: Record<
+  string,
+  { name: string; use: string; html: string; w: number; h: number }
+> = {};
+
+for (const design of DESIGNS) {
+  const gif = renderGif(
+    design.id,
+    SIGNET_DETAILS,
+    DEFAULT_ACCENT,
+    (w, h) => createCanvas(w, h) as never,
+  );
+  const file = `signet-${design.id}.gif`;
+  writeFileSync(join(galleryOut, file), gif.bytes);
+  signetGallery[design.id] = {
+    name: design.name,
+    use: design.use,
+    html: exportHtml(design, SIGNET_DETAILS, DEFAULT_ACCENT, `/gallery/${file}`),
+    w: design.w,
+    h: design.h,
+  };
+  console.log(`gallery: ${design.name} (Simple Style) ${gif.bytes.length} bytes`);
+}
+
+writeFileSync(join(genOut, 'signet-gallery.json'), JSON.stringify(signetGallery));
 
 // App icons (PNG for the manifest and iOS home screen). Same mark as public/icon.svg.
 const iconsOut = join(root, 'public', 'icons');
