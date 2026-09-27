@@ -9,13 +9,14 @@ order: 6.5
 your browser; "← Change style" in either builder always asks again.
 
 - **Custom Style** is the six-design builder with every option. See [Designs and limits](./designs.md).
-- **Simple Style** (`/studio/simple/`) is the ten-design **Signet** page, recreated exactly: the
-  same form, the same ten designs in the same order, the same live previews and the same copied
-  HTML.
+- **Simple Style** (`/studio/simple/`) has the ten **Signet** designs: the same designs in the same
+  order, the same live previews and the same copied HTML as the Signet reference page. The builder
+  around them uses MailMotion's design system, like the rest of the site.
 
-The two styles share no code except image hosting. Simple Style lives in
-`packages/signet` (templates, GIF renderer, encoder) and `apps/web/src/signet` (the page); it
-does not use Custom Style's schema, layouts, serializer, presets or components.
+Simple Style lives in `packages/signet` (templates, GIF renderer, encoder) and
+`apps/web/src/signet` (the page). Besides image hosting, it shares only the site-wide design system
+(CSS tokens and classes, and the theme toggle) with Custom Style; it does not use Custom Style's
+schema, layouts, serializer, presets or builder components.
 
 ## What "exactly" means here
 
@@ -23,11 +24,11 @@ does not use Custom Style's schema, layouts, serializer, presets or components.
   the Signet page as published. The tests run that page's own template code and compare it with
   ours for the sample details, edge cases (empty fields, long names, characters that need
   escaping) and 150 random inputs.
-- **The page layout matches it.** Measured in Chrome at the same size, 187 of 189 elements (every
-  element of every signature, plus every form field) are within 0.2px of the reference. The
-  remaining two are animated elements measured at different moments.
-- **The live previews are the reference's CSS**, transcribed rule for rule (scoped to the page,
-  with self-hosted fonts because this site's security policy blocks third-party fonts).
+- **Every signature preview is laid out like the reference.** The email mock-up and each
+  signature keep the reference's own styles, so they render the same inside MailMotion's page.
+- **The live previews are the reference's CSS**, transcribed rule for rule. Only the builder
+  chrome (header, form, buttons, cards) is MailMotion's: studio bar, panels, fields, buttons and
+  chips from `globals.css` / `studio.css`, in light and dark.
 
 ## The one functional change: no manual GIF hosting
 

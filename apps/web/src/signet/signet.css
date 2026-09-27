@@ -1,10 +1,8 @@
 /*
- * Simple Style — the Signet reference page's stylesheet, transcribed rule for rule
- * (packages/signet/test/fixtures/signet-reference.html). Differences are only mechanical:
- * everything is scoped under `.sg` so it neither leaks into nor inherits from the rest of the
- * site, page-chrome classes carry an `sg-` prefix (the site already uses `.wrap`, `.row` and
- * `.ghost`), keyframes are prefixed, and fonts are self-hosted (the site's CSP allows no
- * third-party fonts). Signature-slot classes (`.anim`, `.a-*`) keep their reference names.
+ * Simple Style builder. The page chrome uses MailMotion's design system (tokens and classes from
+ * globals.css / studio.css: studio-bar, panel, field, btn, chip, notice, g-card). Everything that
+ * is part of a signature — the email mock-up, the signature HTML and the animated-slot rules below
+ * — is the Signet reference, unchanged (packages/signet/test/fixtures/signet-reference.html).
  */
 
 @font-face {
@@ -15,221 +13,172 @@
   src: url('/fonts/Caveat.ttf') format('truetype');
 }
 
-.sg {
-  --bg: #edf0f5;
-  --ink: #16213a;
-  --muted: #5a6478;
-  --line: #ccd3df;
-  --surface: #ffffff;
-  --stamp: #c8372d;
-  --air: #2a5db0;
-  --focus: #2a5db0;
-  --sg-body: 'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --sg-display:
-    'Bricolage Grotesque Variable', 'Bricolage Grotesque', 'Public Sans', system-ui, sans-serif;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .sg {
-    --bg: #10151f;
-    --ink: #e6eaf2;
-    --muted: #97a1b5;
-    --line: #2a3244;
-    --surface: #182030;
-    --focus: #7fa6f0;
-  }
-}
-:root[data-theme='dark'] .sg {
-  --bg: #10151f;
-  --ink: #e6eaf2;
-  --muted: #97a1b5;
-  --line: #2a3244;
-  --surface: #182030;
-  --focus: #7fa6f0;
-}
-body:has(.sg) {
-  background: var(--bg);
-}
-.sg,
-.sg *,
-.sg *::before,
-.sg *::after {
-  box-sizing: border-box;
-}
-/* body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 "Public Sans",...} */
-.sg {
-  min-height: 100vh;
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font: 15px/1.55 var(--sg-body);
-  -webkit-font-smoothing: auto;
-}
-.sg ::selection {
-  background: revert;
-  color: revert;
-}
-/* the reference relies on UA defaults for these; the site's globals change them */
-.sg h1,
-.sg h2 {
-  font-family: var(--sg-display);
-  font-weight: bold;
-  line-height: inherit;
-  text-wrap: wrap;
-  margin: 0;
-  letter-spacing: -0.01em;
-}
-.sg p {
-  margin: 1em 0;
-}
-.sg a {
-  color: inherit;
-}
-.sg code {
-  font-family: monospace;
-}
-.sg-top {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 40px 24px 8px;
-}
-.sg-top h1 {
-  font-size: clamp(34px, 5vw, 52px);
-  line-height: 1.05;
-}
-.sg-top p {
-  max-width: 62ch;
-  color: var(--muted);
-  margin: 10px 0 0;
-}
+/* ---------- layout: editor on the left (sticky), designs on the right ---------- */
 .sg-wrap {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 24px;
   display: grid;
-  grid-template-columns: 300px minmax(0, 1fr);
-  gap: 32px;
+  grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
+  gap: 24px;
   align-items: start;
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding: 20px 16px 80px;
 }
-@media (max-width: 860px) {
+.sg-editor {
+  display: grid;
+  gap: 12px;
+  position: sticky;
+  top: 66px;
+  max-height: calc(100dvh - 82px);
+  overflow: auto;
+  padding-bottom: 2px;
+}
+@media (max-width: 900px) {
   .sg-wrap {
     grid-template-columns: 1fr;
   }
-}
-.sg aside {
-  position: sticky;
-  top: 16px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  overflow: hidden;
-}
-@media (max-width: 860px) {
-  .sg aside {
+  .sg-editor {
     position: static;
+    max-height: none;
+    overflow: visible;
   }
 }
-.sg-airmail {
-  height: 8px;
-  background: repeating-linear-gradient(
-    135deg,
-    var(--stamp) 0 12px,
-    transparent 12px 20px,
-    var(--air) 20px 32px,
-    transparent 32px 40px
-  );
-}
-.sg aside .sg-inner {
-  padding: 18px 18px 20px;
-}
-.sg aside h2 {
-  font-size: 19px;
-  margin-bottom: 12px;
-}
-.sg label {
-  display: block;
-  font-size: 13px;
-  font-weight: 600;
-  margin: 10px 0 4px;
-}
-.sg input[type='text'],
-.sg input[type='url'],
-.sg input[type='email'] {
-  width: 100%;
-  min-height: 0;
-  padding: 8px 10px;
-  border: 1px solid var(--line);
-  border-radius: 3px;
-  background: var(--bg);
-  color: var(--ink);
-  font: inherit;
-  font-size: 14px;
-}
-.sg input[type='color'] {
-  width: 48px;
-  height: 32px;
-  border: 1px solid var(--line);
-  border-radius: 3px;
-  background: none;
-  padding: 2px;
-}
-.sg-row {
+.sg-panel-head {
   display: flex;
-  gap: 10px;
-  align-items: center;
-}
-.sg .sg-check {
-  display: flex;
+  align-items: baseline;
   gap: 8px;
-  align-items: flex-start;
+  padding: 13px 16px;
+  min-height: 48px;
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+.sg-panel-head small {
+  font-family: var(--font-body);
   font-weight: 400;
-  font-size: 14px;
-  margin-top: 12px;
-}
-.sg-check input {
-  margin-top: 4px;
-}
-.sg .sg-hint {
   font-size: 12.5px;
   color: var(--muted);
-  margin: 6px 0 0;
+  margin-left: auto;
 }
-.sg :focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 2px;
-  border-radius: revert;
+.sg-color {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
-.sg main {
+.sg-color input[type='color'] {
+  width: 44px;
+  height: 36px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  cursor: pointer;
+}
+.sg-color code {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.sg-toggle {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14px;
+  cursor: pointer;
+}
+.sg-toggle input {
+  margin-top: 3px;
+  accent-color: var(--accent);
+}
+.sg-editor .notice {
+  margin: 0;
+}
+
+.sg-list {
   display: grid;
-  gap: 40px;
+  gap: 22px;
+  min-width: 0;
 }
-.sg-spec header {
+.sg-intro {
+  display: grid;
+  gap: 8px;
+  padding: 6px 2px 4px;
+}
+.sg-intro h1 {
+  font-size: clamp(30px, 4vw, 42px);
+}
+.sg-intro .lede {
+  font-size: 16px;
+}
+.sg-spec .g-head {
+  align-items: flex-start;
+}
+.sg-spec .g-head h2 {
+  font-size: 21px;
+}
+.sg-use {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 3px;
+}
+.sg-size {
+  white-space: nowrap;
+  flex: none;
+}
+.sg-actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 6px 16px;
-  align-items: baseline;
-  margin-bottom: 10px;
+  gap: 8px;
+  align-items: center;
+  padding: 12px 20px;
+  border-top: 1px solid var(--line);
+  background: var(--surface-2);
 }
-.sg-spec h2 {
-  font-size: 24px;
+.sg-count {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--faint);
+  margin-left: auto;
 }
-.sg-spec .sg-use {
-  color: var(--muted);
-  margin: 2px 0 0;
+.sg-count.sg-over {
+  color: var(--bad);
+  font-weight: 600;
+}
+.sg-foot {
+  padding: 0 2px;
+}
+.sg-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 50;
+  background: var(--ink);
+  color: var(--bg);
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
   font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
 }
-.sg-spec .sg-size {
-  font-size: 13px;
-  color: var(--muted);
-  white-space: nowrap;
+.sg-toast.sg-show {
+  opacity: 1;
 }
+
+/* ---------- the email mock-up around each signature (as on the reference) ---------- */
 .sg-pane {
-  background: #fff;
-  color: #222;
-  border: 1px solid var(--line);
-  border-radius: 4px;
+  display: block;
   padding: 22px 22px 26px;
+  min-height: 0;
   overflow-x: auto;
+  color: #222;
+  -webkit-font-smoothing: auto;
+}
+.sg-mail {
+  width: max-content;
+  min-width: 100%;
 }
 .sg-pane .sg-body {
   font:
@@ -246,93 +195,12 @@ body:has(.sg) {
   color: #999;
   margin: 0 0 8px;
 }
-/* the signature itself: its own inline styles only, like the reference */
-.sg-pane .sg-sig p {
-  margin: 0;
-}
-.sg-pane .sg-sig a:hover {
+/* the signature carries its own inline styles; keep the site's link styles off it */
+.sg-sig a:hover {
   text-decoration-thickness: auto;
 }
-.sg-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-  margin-top: 12px;
-}
-.sg button {
-  font: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 8px 14px;
-  border-radius: 3px;
-  border: 1px solid var(--ink);
-  background: var(--ink);
-  color: var(--bg);
-  cursor: pointer;
-}
-.sg button.sg-ghost {
-  background: transparent;
-  color: var(--ink);
-}
-.sg button:disabled {
-  opacity: 0.55;
-  cursor: progress;
-}
-.sg-count {
-  font-size: 13px;
-  color: var(--muted);
-  margin-left: auto;
-}
-.sg-count.sg-over {
-  color: var(--stamp);
-  font-weight: 600;
-}
-.sg-toast {
-  position: fixed;
-  left: 50%;
-  bottom: 24px;
-  transform: translateX(-50%);
-  background: var(--ink);
-  color: var(--bg);
-  padding: 10px 16px;
-  border-radius: 3px;
-  font-size: 14px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s;
-}
-.sg-toast.sg-show {
-  opacity: 1;
-}
-.sg footer {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 8px 24px 48px;
-  color: var(--muted);
-  font-size: 13px;
-}
-/* additions (not on the reference page): the way back to the style picker, and upload status */
-.sg-back {
-  font-size: 13px;
-  margin: 0 0 14px;
-}
-.sg-back a {
-  color: var(--muted);
-}
-.sg-upload {
-  margin-top: 6px;
-}
-.sg-status-ok {
-  color: #1f7a45;
-}
-:root[data-theme='dark'] .sg-status-ok {
-  color: #6fd39a;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .sg-status-ok {
-    color: #6fd39a;
-  }
+.sg-sig p {
+  margin: 0;
 }
 
 /* ---------- animated slots (each becomes a GIF in the real email) ---------- */
@@ -343,7 +211,7 @@ body:has(.sg) {
   overflow: hidden;
 }
 .sg-outline .anim {
-  outline: 1.5px dashed var(--stamp);
+  outline: 1.5px dashed #c8372d;
   outline-offset: 3px;
 }
 .sg-static .anim *,
