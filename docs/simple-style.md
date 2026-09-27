@@ -33,11 +33,26 @@ schema, layouts, serializer, presets or builder components.
 ## The one functional change: no manual GIF hosting
 
 The reference page asked for a "GIF host URL" and left rendering and uploading the GIFs to you.
-Here, **Upload images** renders all ten animated images in your browser and uploads them to this
-site's image storage, the same storage server Custom Style uses (`NEXT_PUBLIC_UPLOAD_ENDPOINT` /
-`NEXT_PUBLIC_UPLOAD_TOKEN`). Copied signatures then point to the uploaded images. Each image is
-re-uploaded only when something it actually draws changes: editing the job title re-uploads
-nothing, and editing the name re-uploads the three designs that show it.
+Here, **copying a design is what hosts it**: "Copy signature" or "Copy HTML source" renders that
+one design's animated image and uploads it to this site's image storage (the same storage server
+Custom Style uses, `NEXT_PUBLIC_UPLOAD_ENDPOINT` / `NEXT_PUBLIC_UPLOAD_TOKEN`). The copied
+signature then points to that image. It takes a second or two; the button shows "Preparing
+image…" meanwhile.
+
+- **Nothing is uploaded while you browse or edit**, so the bucket only ever holds designs you
+  actually copied. Uploaded images are never deleted, because emails you already sent keep
+  pointing at them.
+- **Uploads are re-used.** Each is keyed by only what that design draws. Copying it again,
+  or after changing something it doesn't show (for example the job title), re-uses the image;
+  changing something it does show (for example the name, on the three designs that draw it)
+  uploads a new one on the next copy.
+- **Rendering runs in a background worker** (with a main-thread fallback), and hovering a card
+  starts rendering its image early so the copy mostly waits on the upload.
+- **The clipboard write starts inside the click** and receives the signature once the upload is
+  done, which is what browsers require. If a browser can't do that, the card says "Image ready —
+  click Copy again", and the second click copies instantly.
+- **"Upload all … now"** in the Animated images panel is still there for anyone who wants every
+  design hosted up front.
 
 ## How the GIFs are made
 
