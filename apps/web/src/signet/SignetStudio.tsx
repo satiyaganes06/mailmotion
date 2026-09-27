@@ -13,13 +13,22 @@ import {
   type SignetDesign,
 } from '@mailmotion/signet';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { hostImages, hostingConfigured, missing, type Hosted, type HostProgress } from './host';
+import {
+  ensureHosted,
+  hostImages,
+  hostingConfigured,
+  missing,
+  warm,
+  type Hosted,
+  type HostProgress,
+} from './host';
 
 /**
  * Simple Style: the ten Signet designs (packages/signet) in a builder dressed in MailMotion's own
  * design system. The signatures, their live CSS previews and the copied HTML are the Signet
- * reference exactly; only the builder around them uses the site's look. "Upload images" renders
- * the ten GIFs and uploads them to this site's storage, like Custom Style.
+ * reference exactly; only the builder around them uses the site's look. Copying a design renders
+ * and uploads just that design's GIF to this site's storage (like Custom Style); nothing is
+ * uploaded while you browse or edit.
  */
 
 type FieldId = keyof SignetData | 'accent';
@@ -135,6 +144,36 @@ async function copyText(text: string): Promise<boolean> {
   }
 }
 
+const plainOf = (html: string) =>
+  html
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+/**
+ * Copy HTML that may still be on its way (the image is being uploaded). The clipboard write must
+ * start inside the click, so it is started now with promised contents; browsers that can't take
+ * promised contents get the reference's copy paths once the HTML is ready — which may fail
+ * without a fresh click, in which case the caller asks for one.
+ */
+async function copyLater(kind: 'rich' | 'src', html: Promise<string>): Promise<boolean> {
+  if (typeof ClipboardItem !== 'undefined' && navigator.clipboard?.write) {
+    const blob = (type: string, f: (h: string) => string) =>
+      html.then((h) => new Blob([f(h)], { type }));
+    const data: Record<string, Promise<Blob>> = kind === 'rich'
+      ? { 'text/html': blob('text/html', (h) => h), 'text/plain': blob('text/plain', plainOf) }
+      : { 'text/plain': blob('text/plain', (h) => h) };
+    try {
+      await navigator.clipboard.write([new ClipboardItem(data)]);
+      return true;
+    } catch {
+      /* promised contents unsupported, or the upload failed: see below */
+    }
+  }
+  const h = await html; // rethrows an upload failure
+  return kind === 'rich' ? copyRich(h) : copyText(h);
+}
+
 /* ------------------------------------------------------------------ page */
 
 function progressText(p: HostProgress): string {
@@ -153,6 +192,7 @@ export function SignetStudio() {
   const [progress, setProgress] = useState<HostProgress | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [toast, setToast] = useState<{ text: string; show: boolean }>({ text: '', show: false });
+  const [preparing, setPreparing] = useState<Partial<Record<SignetDesign['id'], boolean>>>({});
   const toastTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
@@ -192,23 +232,42 @@ export function SignetStudio() {
 
   const urlFor = (design: SignetDesign) => hosted[slotKey(design.id, d, a)];
 
-  const copy = async (design: SignetDesign, kind: 'rich' | 'src') => {
-    const url = urlFor(design);
-    if (!url) {
-      showToast('Upload the images first (“Upload images” on the left), then copy.');
+  // Copying is what uploads: render + upload just this design (unless it's already hosted for
+  // these details), then put the signature on the clipboard.
+  const copy = (design: SignetDesign, kind: 'rich' | 'src') => {
+    if (!hostingConfigured) {
+      showToast(
+        'This site has no image storage configured, so the animated image can’t be hosted.',
+      );
       return;
     }
-    const html = exportHtml(design, d, a, url);
-    const ok = kind === 'rich' ? await copyRich(html) : await copyText(html);
-    showToast(
-      ok
-        ? kind === 'rich'
-          ? 'Signature copied. Paste it into the Gmail or Outlook signature box.'
-          : 'HTML source copied.'
-        : 'Copy was blocked by the browser. Use Copy HTML source instead.',
-    );
+    const key = slotKey(design.id, d, a);
+    const known = hosted[key];
+    if (!known) setPreparing((p) => ({ ...p, [design.id]: true }));
+    const url = ensureHosted(design, d, a, hosted);
+    const html = url.then((u) => {
+      setHosted((h) => (h[key] === u ? h : { ...h, [key]: u }));
+      return exportHtml(design, d, a, u);
+    });
+    void copyLater(kind, html)
+      .then((ok) =>
+        showToast(
+          ok
+            ? kind === 'rich'
+              ? 'Signature copied. Paste it into the Gmail or Outlook signature box.'
+              : 'HTML source copied.'
+            : known
+              ? 'Copy was blocked by the browser. Use Copy HTML source instead.'
+              : 'Image ready — click Copy again to put the signature on the clipboard.',
+        ),
+      )
+      .catch((e: unknown) =>
+        showToast(e instanceof Error ? e.message : 'Could not upload the image.'),
+      )
+      .finally(() => setPreparing((p) => ({ ...p, [design.id]: false })));
   };
 
+  const hostedCount = DESIGNS.length - todo.length;
   let status: React.ReactNode;
   let tone: 'plain' | 'good' | 'bad' = 'plain';
   if (!hostingConfigured) {
@@ -220,14 +279,14 @@ export function SignetStudio() {
     tone = 'bad';
     status = error;
   } else if (!mounted) status = '\u00a0';
-  else if (todo.length === 0) {
+  else if (hostedCount === 0)
+    status =
+      'Nothing is uploaded while you browse or edit. Copying a design renders and uploads just that design’s animated image, in a second or two.';
+  else if (hostedCount === DESIGNS.length) {
     tone = 'good';
     status = `All ${DESIGNS.length} animated images are uploaded. Copied signatures point to them.`;
-  } else if (todo.length === DESIGNS.length)
-    status =
-      'Renders the ten animated GIFs in your browser and uploads them to this site’s image storage. Copied signatures then point to them.';
-  else
-    status = `${todo.length} of ${DESIGNS.length} images changed with your details — upload again before copying those.`;
+  } else
+    status = `${hostedCount} of ${DESIGNS.length} designs are hosted for your current details. Copying another uploads just that one.`;
 
   return (
     <div className="sg studio">
@@ -292,14 +351,6 @@ export function SignetStudio() {
               </small>
             </h2>
             <div className="panel-body">
-              <button
-                type="button"
-                className="btn primary"
-                disabled={busy || !hostingConfigured}
-                onClick={upload}
-              >
-                {busy ? 'Uploading…' : 'Upload images'}
-              </button>
               <p
                 className={tone === 'plain' ? 'field-hint' : `notice ${tone}`}
                 role="status"
@@ -307,6 +358,16 @@ export function SignetStudio() {
               >
                 {status}
               </p>
+              {todo.length > 0 && (
+                <button
+                  type="button"
+                  className="btn small"
+                  disabled={busy || !hostingConfigured}
+                  onClick={upload}
+                >
+                  {busy ? 'Uploading…' : `Upload all ${todo.length} now`}
+                </button>
+              )}
             </div>
           </section>
 
@@ -340,9 +401,10 @@ export function SignetStudio() {
             <p className="eyebrow">Simple Style</p>
             <h1>Ten ready-made designs</h1>
             <p className="lede">
-              Fill in your details once, upload the animated images in one click, then copy the
-              design you like. Each signature is table-based HTML with inline styles that works in
-              Gmail and Outlook; only the outlined part is animated, as a hosted GIF.
+              Fill in your details once, then copy the design you like. Its animated image is
+              uploaded for you when you copy it, and nothing else is. Each signature is table-based
+              HTML with inline styles that works in Gmail and Outlook; only the outlined part is
+              animated, as a hosted GIF.
             </p>
           </div>
 
@@ -350,7 +412,13 @@ export function SignetStudio() {
             const url = urlFor(t);
             const html = exportHtml(t, d, a, url ?? PLACEHOLDER_URL);
             return (
-              <section className="g-card sg-spec" key={t.id} data-id={t.id}>
+              <section
+                className="g-card sg-spec"
+                key={t.id}
+                data-id={t.id}
+                onPointerEnter={() => warm(t, d, a, hosted)}
+                onFocus={() => warm(t, d, a, hosted)}
+              >
                 <header className="g-head">
                   <div>
                     <h2>{t.name}</h2>
