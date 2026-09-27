@@ -23,19 +23,31 @@ test('landing page shows six real designs and links to the builder and docs', as
   expect(problems).toEqual([]);
 });
 
-test('the style gate remembers your choice and "Change style" always re-asks', async ({ page }) => {
+test('Open builder always shows the style picker, marking the style used last', async ({
+  page,
+}) => {
   const problems = watchErrors(page);
-  await page.goto('/start/');
-  await page.getByRole('button', { name: 'Simple Style' }).click();
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Open builder' }).click();
+  await expect(page).toHaveURL(/\/start\//);
+  await expect(page.getByText('Last used')).toHaveCount(0);
+  await page.getByRole('button', { name: /Simple Style/ }).click();
   await expect(page).toHaveURL(/\/studio\/simple\//);
 
-  // a second visit to the plain gate skips straight back to Simple
-  await page.goto('/start/');
-  await expect(page).toHaveURL(/\/studio\/simple\//);
+  // coming back through "Open builder" or "Build my signature" asks again — no auto-redirect
+  for (const link of ['Open builder', 'Build my signature']) {
+    await page.goto('/');
+    await page.getByRole('link', { name: link }).click();
+    await expect(page).toHaveURL(/\/start\//);
+    await expect(page.getByRole('button', { name: /Custom Style/ })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Simple Style/ })).toContainText('Last used');
+  }
+  await page.getByRole('button', { name: /Custom Style/ }).click();
+  await expect(page).toHaveURL(/\/studio\/$/);
 
-  // but the in-app "Change style" link always shows the chooser again
+  // the in-app "Change style" link lands on the same picker
   await page.goto('/start/?change=1');
-  await expect(page.getByRole('button', { name: 'Custom Style' })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Custom Style/ })).toContainText('Last used');
   expect(problems).toEqual([]);
 });
 

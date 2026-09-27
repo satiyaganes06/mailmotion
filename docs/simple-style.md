@@ -5,8 +5,9 @@ order: 6.5
 
 # Simple Style
 
-"Build my signature" first asks **Simple Style** or **Custom Style**. The choice is remembered in
-your browser; "← Change style" in either builder always asks again.
+"Open builder", "Build my signature" and "← Change style" (inside either builder) all open the
+style picker: **Simple Style** or **Custom Style**. It always asks; the style you used last is
+marked "Last used".
 
 - **Custom Style** is the six-design builder with every option. See [Designs and limits](./designs.md).
 - **Simple Style** (`/studio/simple/`) has the ten **Signet** designs: the same designs in the same
