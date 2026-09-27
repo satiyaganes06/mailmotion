@@ -37,21 +37,19 @@ const PLACEHOLDER = 'https://gallery.mailmotion.invalid';
 const env = createNodeEnv({ fontsDir: fontsSrc });
 
 const DETAILS: SignatureConfigInput['details'] = {
-  fullName: 'Alex Morgan',
-  title: 'Product Designer',
-  company: 'Northwind Studio',
-  companyUrl: 'https://example.com',
-  phones: [{ label: 'Mobile', number: '+1 415 555 0134' }],
-  email: 'alex@example.com',
-  websites: [{ url: 'https://example.com' }],
+  fullName: 'Shatthiya Ganes',
+  title: 'Mobile Security Engineer',
+  company: 'Google Inc.',
+  companyUrl: 'https://www.satiyaganes.site',
+  phones: [{ label: 'Mobile', number: '+60 1163348685' }],
+  email: 'satiyaganes.sg@gmail.com',
+  websites: [{ url: 'https://www.satiyaganes.site' }],
 };
 const SOCIALS: SignatureConfigInput['socials'] = {
   items: [
-    { platform: 'website', url: 'https://example.com' },
-    { platform: 'linkedin', url: 'https://linkedin.com/in/example' },
-    { platform: 'github', url: 'https://github.com/example' },
-    { platform: 'x', url: 'https://x.com/example' },
-    { platform: 'instagram', url: 'https://instagram.com/example' },
+    { platform: 'website', url: 'https://www.satiyaganes.site' },
+    { platform: 'linkedin', url: 'https://www.linkedin.com/in/satiya-ganes-b0a315209' },
+    { platform: 'github', url: 'https://github.com/satiyaganes06' },
   ],
 };
 
