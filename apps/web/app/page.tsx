@@ -22,7 +22,7 @@ export default function Home() {
             phone. Everything runs in your browser.
           </p>
           <div className="cta-row">
-            <Link href="/studio/" className="btn primary">
+            <Link href="/start/" className="btn primary">
               Build my signature
             </Link>
             <a href={REPO_URL} className="btn">

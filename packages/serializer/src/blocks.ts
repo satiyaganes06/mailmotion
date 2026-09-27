@@ -65,6 +65,14 @@ function linkStyle(ctx: Ctx, extra = ''): string {
   return `color:${ctx.t.colors.link};text-decoration:none${extra ? ';' + extra : ''}`;
 }
 
+/** The glyph joining inline fields: a middle dot, or Simple Style's light vertical pipe. */
+function contactSep(ctx: Ctx): string {
+  if (ctx.t.contactSeparator === 'pipe') {
+    return `<span style="color:${ctx.t.colors.rule}">&nbsp;&nbsp;|&nbsp;&nbsp;</span>`;
+  }
+  return ' &middot; ';
+}
+
 function applyCase(text: string, mode: 'normal' | 'upper' | 'smallcaps'): string {
   return mode === 'upper' ? text.toUpperCase() : text;
 }
@@ -145,7 +153,7 @@ export function fieldRows(ctx: Ctx, skip: FieldKey[] = []): string[] {
           if (d.department) parts.push(tt(d.department));
           i++;
         } else if (key === 'department' && d.department) parts.push(tt(d.department));
-        if (parts.length) rows.push(row(textTd(ctx, 'title', parts.join(' &middot; '))));
+        if (parts.length) rows.push(row(textTd(ctx, 'title', parts.join(contactSep(ctx)))));
         break;
       }
       case 'company': {
@@ -167,7 +175,7 @@ export function fieldRows(ctx: Ctx, skip: FieldKey[] = []): string[] {
             return label + link(href, esc(p.number), linkStyle(ctx));
           })
           .filter(Boolean);
-        if (items.length) rows.push(row(textTd(ctx, 'body', items.join(' &middot; '))));
+        if (items.length) rows.push(row(textTd(ctx, 'body', items.join(contactSep(ctx)))));
         break;
       }
       case 'email': {
@@ -185,7 +193,7 @@ export function fieldRows(ctx: Ctx, skip: FieldKey[] = []): string[] {
             return link(href, esc(w.label || displayUrl(href)), linkStyle(ctx));
           })
           .filter(Boolean);
-        if (items.length) rows.push(row(textTd(ctx, 'body', items.join(' &middot; '))));
+        if (items.length) rows.push(row(textTd(ctx, 'body', items.join(contactSep(ctx)))));
         break;
       }
       case 'address': {
@@ -204,7 +212,20 @@ export function fieldRows(ctx: Ctx, skip: FieldKey[] = []): string[] {
       }
       case 'tagline': {
         if (!d.tagline) break;
-        rows.push(row(textTd(ctx, 'body', esc(d.tagline), { 'font-style': 'italic' })));
+        const styleId = cfg.extras.taglineStyle;
+        if (styleId === 'status') {
+          // A coloured dot + text, e.g. "● Available for calls this week" (Simple Style's Pulse).
+          const dot = `<span style="color:${t.colors.accent}">&#9679;</span>&nbsp;`;
+          rows.push(row(textTd(ctx, 'body', dot + esc(d.tagline))));
+        } else {
+          rows.push(
+            row(
+              textTd(ctx, 'body', esc(d.tagline), {
+                'font-style': styleId === 'italic' ? 'italic' : undefined,
+              }),
+            ),
+          );
+        }
         break;
       }
       case 'custom': {
@@ -240,7 +261,7 @@ export function socialBlock(ctx: Ctx): string {
         return link(safeHref(it.url), esc(label), linkStyle(ctx));
       })
       .filter(Boolean);
-    return `<table ${TABLE_ATTRS}${centered ? ' align="center"' : ''}><tr>${textTd(ctx, 'body', parts.join(' &middot; '), { padding: '0' })}</tr></table>`;
+    return `<table ${TABLE_ATTRS}${centered ? ' align="center"' : ''}><tr>${textTd(ctx, 'body', parts.join(contactSep(ctx)), { padding: '0' })}</tr></table>`;
   }
 
   const gap = socialGap(ctx);

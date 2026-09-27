@@ -2,34 +2,44 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { SIMPLE_PRESET_LIST, applySimplePreset } from '@mailmotion/presets';
 import { exportConfig, importConfig } from '@mailmotion/schema';
 import { serializeSignature } from '@mailmotion/serializer';
 import { firstFrameAssets, revokeAll } from '@/lib/render-client';
-import { defaultDraft } from '@/lib/defaults';
+import { simpleDefaultDraft } from '@/lib/simple-defaults';
 import type { Draft } from '@/lib/draft';
 import { StudioContextProvider, useStudio } from '@/lib/useStudio';
 import { downloadText } from '@/lib/exports';
 import { ThemeToggle } from './ThemeToggle';
 import { Meters } from './Meters';
 import { Preview } from './Preview';
-import { DesignPanel } from './panels/DesignPanel';
-import { DetailsPanel } from './panels/DetailsPanel';
+import { SimplePanel } from './panels/SimplePanel';
 import { Notice } from './ui';
-import { Onboarding } from './Onboarding';
 import { RegisterServiceWorker } from './RegisterServiceWorker';
-import { EXTRA_PANELS, RightPanels } from './studio-slots';
+import { RightPanels } from './studio-slots';
 
 type View = 'edit' | 'preview' | 'install';
 
-export function Studio() {
-  const studio = useStudio();
+/** Simple Style's builder: the same render/upload pipeline as Custom Style, behind a much
+ * smaller editor (ten designs, one colour, a handful of fields — see SimplePanel). */
+export function SimpleStudio() {
+  const studio = useStudio(simpleDefaultDraft);
   const [view, setView] = useState<View>('edit');
   const [firstFrameHtml, setFirstFrameHtml] = useState<string | null>(null);
   const [message, setMessage] = useState<{ tone: 'good' | 'bad'; text: string } | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const { config, render } = studio;
 
-  // "classic Outlook shows frame 1 only": same HTML, animated GIFs swapped for their first frame
+  // A draft saved from Custom Style (or an older session) may not be one of the ten Simple
+  // designs — coerce it onto the closest one so the panel always has a design selected.
+  useEffect(() => {
+    if (!studio.hydrated) return;
+    if (SIMPLE_PRESET_LIST.some((p) => p.id === config.presetId)) return;
+    studio.replace(applySimplePreset(config, 'simple-aurora') as unknown as Draft);
+    // only re-run if hydration state or the preset id itself changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [studio.hydrated, config.presetId]);
+
   useEffect(() => {
     if (!render.assets.length) return;
     let live = true;
@@ -45,12 +55,6 @@ export function Studio() {
     };
   }, [render.assets, config]);
 
-  // returning from GitHub sign-in: jump to the install panel
-  useEffect(() => {
-    if (new URLSearchParams(window.location.search).get('publish') === '1') setView('install');
-  }, []);
-
-  // keyboard: undo/redo when not typing in a text field
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement;
@@ -61,11 +65,7 @@ export function Studio() {
           t.tagName === 'SELECT' ||
           t.isContentEditable)
       ) {
-        if (!(
-          t instanceof HTMLInputElement &&
-          (t.type === 'range' || t.type === 'checkbox' || t.type === 'radio')
-        ))
-          return;
+        return;
       }
       const mod = e.metaKey || e.ctrlKey;
       if (!mod) return;
@@ -96,7 +96,6 @@ export function Studio() {
   return (
     <StudioContextProvider value={studio}>
       <RegisterServiceWorker />
-      {studio.firstRun && <Onboarding />}
       <div className="studio">
         <header className="studio-bar">
           <Link href="/" className="brand" aria-label="MailMotion home">
@@ -165,7 +164,7 @@ export function Studio() {
               className="btn small hide-sm"
               onClick={() => {
                 if (confirm('Start over with the sample signature? You can undo this.'))
-                  studio.replace(defaultDraft());
+                  studio.replace(simpleDefaultDraft());
               }}
             >
               Reset
@@ -196,11 +195,7 @@ export function Studio() {
 
         <div className={`studio-body view-${view}`}>
           <aside className="editor" aria-label="Editor">
-            <DesignPanel />
-            <DetailsPanel />
-            {EXTRA_PANELS.map((P, i) => (
-              <P key={i} />
-            ))}
+            <SimplePanel />
           </aside>
           <div className="workspace">
             <Preview
