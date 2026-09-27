@@ -1,0 +1,729 @@
+/*
+ * Simple Style — the Signet reference page's stylesheet, transcribed rule for rule
+ * (packages/signet/test/fixtures/signet-reference.html). Differences are only mechanical:
+ * everything is scoped under `.sg` so it neither leaks into nor inherits from the rest of the
+ * site, page-chrome classes carry an `sg-` prefix (the site already uses `.wrap`, `.row` and
+ * `.ghost`), keyframes are prefixed, and fonts are self-hosted (the site's CSP allows no
+ * third-party fonts). Signature-slot classes (`.anim`, `.a-*`) keep their reference names.
+ */
+
+@font-face {
+  font-family: 'Caveat';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/Caveat.ttf') format('truetype');
+}
+
+.sg {
+  --bg: #edf0f5;
+  --ink: #16213a;
+  --muted: #5a6478;
+  --line: #ccd3df;
+  --surface: #ffffff;
+  --stamp: #c8372d;
+  --air: #2a5db0;
+  --focus: #2a5db0;
+  --sg-body: 'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --sg-display:
+    'Bricolage Grotesque Variable', 'Bricolage Grotesque', 'Public Sans', system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .sg {
+    --bg: #10151f;
+    --ink: #e6eaf2;
+    --muted: #97a1b5;
+    --line: #2a3244;
+    --surface: #182030;
+    --focus: #7fa6f0;
+  }
+}
+:root[data-theme='dark'] .sg {
+  --bg: #10151f;
+  --ink: #e6eaf2;
+  --muted: #97a1b5;
+  --line: #2a3244;
+  --surface: #182030;
+  --focus: #7fa6f0;
+}
+body:has(.sg) {
+  background: var(--bg);
+}
+.sg,
+.sg *,
+.sg *::before,
+.sg *::after {
+  box-sizing: border-box;
+}
+/* body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 "Public Sans",...} */
+.sg {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.55 var(--sg-body);
+  -webkit-font-smoothing: auto;
+}
+.sg ::selection {
+  background: revert;
+  color: revert;
+}
+/* the reference relies on UA defaults for these; the site's globals change them */
+.sg h1,
+.sg h2 {
+  font-family: var(--sg-display);
+  font-weight: bold;
+  line-height: inherit;
+  text-wrap: wrap;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.sg p {
+  margin: 1em 0;
+}
+.sg a {
+  color: inherit;
+}
+.sg code {
+  font-family: monospace;
+}
+.sg-top {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 40px 24px 8px;
+}
+.sg-top h1 {
+  font-size: clamp(34px, 5vw, 52px);
+  line-height: 1.05;
+}
+.sg-top p {
+  max-width: 62ch;
+  color: var(--muted);
+  margin: 10px 0 0;
+}
+.sg-wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .sg-wrap {
+    grid-template-columns: 1fr;
+  }
+}
+.sg aside {
+  position: sticky;
+  top: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+}
+@media (max-width: 860px) {
+  .sg aside {
+    position: static;
+  }
+}
+.sg-airmail {
+  height: 8px;
+  background: repeating-linear-gradient(
+    135deg,
+    var(--stamp) 0 12px,
+    transparent 12px 20px,
+    var(--air) 20px 32px,
+    transparent 32px 40px
+  );
+}
+.sg aside .sg-inner {
+  padding: 18px 18px 20px;
+}
+.sg aside h2 {
+  font-size: 19px;
+  margin-bottom: 12px;
+}
+.sg label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 10px 0 4px;
+}
+.sg input[type='text'],
+.sg input[type='url'],
+.sg input[type='email'] {
+  width: 100%;
+  min-height: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+}
+.sg input[type='color'] {
+  width: 48px;
+  height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: none;
+  padding: 2px;
+}
+.sg-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.sg .sg-check {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-weight: 400;
+  font-size: 14px;
+  margin-top: 12px;
+}
+.sg-check input {
+  margin-top: 4px;
+}
+.sg .sg-hint {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 6px 0 0;
+}
+.sg :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: revert;
+}
+.sg main {
+  display: grid;
+  gap: 40px;
+}
+.sg-spec header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 16px;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+.sg-spec h2 {
+  font-size: 24px;
+}
+.sg-spec .sg-use {
+  color: var(--muted);
+  margin: 2px 0 0;
+  font-size: 14px;
+}
+.sg-spec .sg-size {
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.sg-pane {
+  background: #fff;
+  color: #222;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 22px 22px 26px;
+  overflow-x: auto;
+}
+.sg-pane .sg-body {
+  font:
+    14px/1.5 Arial,
+    Helvetica,
+    sans-serif;
+  color: #333;
+  margin: 0 0 14px;
+}
+.sg-pane .sg-dash {
+  font:
+    13px Arial,
+    sans-serif;
+  color: #999;
+  margin: 0 0 8px;
+}
+/* the signature itself: its own inline styles only, like the reference */
+.sg-pane .sg-sig p {
+  margin: 0;
+}
+.sg-pane .sg-sig a:hover {
+  text-decoration-thickness: auto;
+}
+.sg-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 12px;
+}
+.sg button {
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 3px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+  cursor: pointer;
+}
+.sg button.sg-ghost {
+  background: transparent;
+  color: var(--ink);
+}
+.sg button:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+.sg-count {
+  font-size: 13px;
+  color: var(--muted);
+  margin-left: auto;
+}
+.sg-count.sg-over {
+  color: var(--stamp);
+  font-weight: 600;
+}
+.sg-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--bg);
+  padding: 10px 16px;
+  border-radius: 3px;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.sg-toast.sg-show {
+  opacity: 1;
+}
+.sg footer {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 8px 24px 48px;
+  color: var(--muted);
+  font-size: 13px;
+}
+/* additions (not on the reference page): the way back to the style picker, and upload status */
+.sg-back {
+  font-size: 13px;
+  margin: 0 0 14px;
+}
+.sg-back a {
+  color: var(--muted);
+}
+.sg-upload {
+  margin-top: 6px;
+}
+.sg-status-ok {
+  color: #1f7a45;
+}
+:root[data-theme='dark'] .sg-status-ok {
+  color: #6fd39a;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .sg-status-ok {
+    color: #6fd39a;
+  }
+}
+
+/* ---------- animated slots (each becomes a GIF in the real email) ---------- */
+.sg .anim {
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  overflow: hidden;
+}
+.sg-outline .anim {
+  outline: 1.5px dashed var(--stamp);
+  outline-offset: 3px;
+}
+.sg-static .anim *,
+.sg-static .anim *::before,
+.sg-static .anim *::after {
+  animation: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sg .anim *,
+  .sg .anim *::before,
+  .sg .anim *::after {
+    animation: none !important;
+  }
+}
+@keyframes sg-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sg .a-aurora {
+  position: absolute;
+  inset: 0;
+}
+.sg .a-aurora::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(var(--acc), #7c5cff, #22d3ee, var(--acc));
+  animation: sg-spin 3s linear infinite;
+}
+.sg .a-aurora b {
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  font:
+    700 26px Arial,
+    sans-serif;
+  color: var(--acc);
+}
+
+.sg .a-pulse {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+.sg .a-pulse b {
+  position: relative;
+  z-index: 1;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--acc);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font:
+    700 21px Arial,
+    sans-serif;
+}
+.sg .a-pulse::after {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 11px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 2px solid var(--acc);
+  opacity: 0;
+  animation: sg-pulse 1.8s ease-out infinite;
+}
+@keyframes sg-pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+.sg .a-type {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  font:
+    13px/22px 'Courier New',
+    Courier,
+    monospace;
+  width: var(--w);
+  border-right: 2px solid var(--acc);
+  animation:
+    sg-type 5s infinite,
+    sg-blink 0.7s step-end infinite;
+}
+@keyframes sg-type {
+  0% {
+    width: 0;
+  }
+  55%,
+  100% {
+    width: var(--w);
+  }
+}
+@keyframes sg-blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+.sg .a-wave {
+  position: absolute;
+  inset: 0;
+  background: var(--acc);
+  border-radius: 6px;
+}
+.sg .a-wave svg {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+.sg .a-wave .w1 {
+  animation: sg-slide 6s linear infinite;
+}
+.sg .a-wave .w2 {
+  animation: sg-slide 9s linear infinite reverse;
+}
+@keyframes sg-slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-460px);
+  }
+}
+.sg .a-wave b {
+  position: absolute;
+  left: 16px;
+  top: 17px;
+  font:
+    700 16px Arial,
+    sans-serif;
+  color: #fff;
+}
+.sg .a-wave i {
+  position: absolute;
+  right: 16px;
+  top: 19px;
+  font:
+    normal 12px Arial,
+    sans-serif;
+  color: #fff;
+  opacity: 0.9;
+}
+
+.sg .a-neon {
+  position: absolute;
+  inset: 4px;
+  border: 2px solid var(--acc);
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font:
+    700 26px Arial,
+    sans-serif;
+  color: #fff;
+  background: #0d1020;
+  text-shadow:
+    0 0 6px var(--acc),
+    0 0 14px var(--acc);
+  box-shadow:
+    0 0 10px var(--acc),
+    inset 0 0 10px var(--acc);
+  animation: sg-flicker 3.2s infinite;
+}
+@keyframes sg-flicker {
+  0%,
+  18%,
+  22%,
+  54%,
+  58%,
+  100% {
+    opacity: 1;
+  }
+  20%,
+  56% {
+    opacity: 0.35;
+  }
+}
+
+.sg .a-shim {
+  position: absolute;
+  inset: 0;
+  background: var(--acc);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  font:
+    700 17px Arial,
+    sans-serif;
+  letter-spacing: 0.03em;
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.sg .a-shim::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -90px;
+  width: 60px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  transform: skewX(-20deg);
+  animation: sg-sweep 3s ease-in-out infinite;
+}
+@keyframes sg-sweep {
+  0% {
+    left: -90px;
+  }
+  45%,
+  100% {
+    left: 340px;
+  }
+}
+
+.sg .a-orbit {
+  position: absolute;
+  inset: 0;
+}
+.sg .a-orbit::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  border: 1px dashed var(--acc);
+  opacity: 0.5;
+}
+.sg .a-orbit b {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--acc);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font:
+    700 16px Arial,
+    sans-serif;
+}
+.sg .a-orbit i {
+  position: absolute;
+  border-radius: 50%;
+}
+.sg .a-orbit .s1 {
+  inset: 6px;
+  animation: sg-spin 4s linear infinite;
+}
+.sg .a-orbit .s1::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: calc(50% - 4px);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--acc);
+}
+.sg .a-orbit .s2 {
+  inset: 14px;
+  animation: sg-spin 2.6s linear infinite reverse;
+}
+.sg .a-orbit .s2::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: calc(50% - 3px);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22b8cf;
+}
+
+.sg .a-tick {
+  position: absolute;
+  inset: 0;
+  background: var(--acc);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.sg .a-tick span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  font:
+    700 12px/28px Arial,
+    sans-serif;
+  color: #fff;
+  animation: sg-tick 16s linear infinite;
+}
+.sg .a-tick em {
+  font-style: normal;
+  opacity: 0.7;
+  padding: 0 12px;
+}
+@keyframes sg-tick {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.sg .a-eq {
+  position: absolute;
+  inset: 0;
+  background: var(--acc);
+  border-radius: 14px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 5px;
+  padding-bottom: 14px;
+}
+.sg .a-eq i {
+  width: 6px;
+  background: #fff;
+  border-radius: 3px;
+  transform-origin: bottom;
+  animation: sg-eq 0.9s ease-in-out infinite alternate;
+}
+.sg .a-eq i:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.sg .a-eq i:nth-child(3) {
+  animation-delay: -0.6s;
+}
+.sg .a-eq i:nth-child(4) {
+  animation-delay: -0.15s;
+}
+.sg .a-eq i:nth-child(5) {
+  animation-delay: -0.45s;
+}
+@keyframes sg-eq {
+  from {
+    transform: scaleY(0.3);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.sg .a-ink text {
+  font-family: 'Caveat', 'Segoe Script', 'Brush Script MT', cursive;
+  stroke-dasharray: 700;
+  stroke-dashoffset: 0;
+  animation: sg-ink 4.5s ease-in-out infinite;
+}
+@keyframes sg-ink {
+  0% {
+    stroke-dashoffset: 700;
+    fill-opacity: 0;
+  }
+  50% {
+    stroke-dashoffset: 0;
+    fill-opacity: 0;
+  }
+  70%,
+  100% {
+    stroke-dashoffset: 0;
+    fill-opacity: 1;
+  }
+}

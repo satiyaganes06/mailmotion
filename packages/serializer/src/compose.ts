@@ -151,19 +151,6 @@ function bannerLayout(ctx: Ctx): string {
   return out;
 }
 
-/** Same as `banner`, but the strip leads (Shimmer/Typewriter-style: the plate reads first). */
-function bannerTopLayout(ctx: Ctx): string {
-  const strip = bannerBlock(ctx);
-  const rest = sideBySide(ctx, { rule: 'none', info: { social: false, mark: false } });
-  const social = socialBlock(ctx);
-  const mark = markImg(ctx);
-  let out = strip ? row(`<td>${strip}</td>`) : '';
-  out += rest;
-  if (social && ctx.cfg.socials.position !== 'beside') out += padTd(ctx, social);
-  if (mark) out += padTd(ctx, mark, { padding: `${ctx.t.gap.row + 4}px 0 0` });
-  return out;
-}
-
 /** All rows for the chosen layout (no extras, no wrapper). */
 export function composeLayout(ctx: Ctx): string {
   const id = ctx.cfg.layout.id;
@@ -180,8 +167,6 @@ export function composeLayout(ctx: Ctx): string {
       return editorial(ctx);
     case 'banner':
       return bannerLayout(ctx);
-    case 'banner-top':
-      return bannerTopLayout(ctx);
     case 'stacked':
       return stacked(ctx);
   }

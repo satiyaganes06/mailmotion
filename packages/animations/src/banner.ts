@@ -2,7 +2,7 @@ import type { BannerParams, CanvasLike, Ctx2D, Frame, Speed } from './types';
 import { FRAME_DELAY_MS } from './types';
 import { TAU, clamp01, fillTextCentered, lerp, smoothstep, window01 } from './util';
 
-const FRAMES = { wave: 24, ticker: 32, shimmer: 24, typewriter: 28, static: 1 } as const;
+const FRAMES = { wave: 24, ticker: 32, shimmer: 24, static: 1 } as const;
 
 function base(ctx: Ctx2D, p: BannerParams): void {
   const r = Math.min(p.height * 0.18, 16);
@@ -94,60 +94,6 @@ function shimmer(ctx: Ctx2D, p: BannerParams, t: number): void {
   ctx.fillRect(0, 0, p.width, p.height);
 }
 
-/** Left-aligned text, clipped to a growing width so it reads as typed rather than centred. */
-function drawTypedSoFar(ctx: Ctx2D, p: BannerParams, revealW: number, padX: number): void {
-  const text = p.text;
-  if (!text || !text.d || text.width <= 0) return;
-  const maxW = p.width - padX * 2;
-  const maxH = p.height * 0.55;
-  const h = text.ascent + text.descent;
-  const scale = Math.min(maxW / text.width, maxH / Math.max(h, 1));
-  ctx.save();
-  ctx.beginPath();
-  ctx.rect(0, 0, padX + revealW, p.height);
-  ctx.clip();
-  ctx.translate(padX, p.height / 2 + ((text.ascent - text.descent) * scale) / 2);
-  ctx.scale(scale, scale);
-  ctx.fillStyle = p.textColor;
-  ctx.fill(p.env.path2d(text.d));
-  ctx.restore();
-}
-
-/**
- * A tagline types itself out letter by letter behind a blinking cursor, then holds complete
- * (frame 1 = fully typed, per the project's "classic Outlook shows frame 1 only" rule) before
- * clearing and retyping.
- */
-function typewriter(ctx: Ctx2D, p: BannerParams, t: number): void {
-  base(ctx, p);
-  const padX = p.width * 0.05;
-  if (!p.text || p.text.width <= 0) return;
-  const maxW = p.width - padX * 2;
-  const h = p.text.ascent + p.text.descent;
-  const scale = Math.min(maxW / p.text.width, (p.height * 0.55) / Math.max(h, 1));
-  const fullW = p.text.width * scale;
-  let reveal = fullW;
-  let cursor = false;
-  if (t >= 0.06 && t < 0.16) {
-    reveal = 0;
-  } else if (t >= 0.16 && t < 0.78) {
-    reveal = fullW * window01(0.16, 0.78, t); // linear: a typewriter has no ease-in/out
-    cursor = true;
-  } else if (t >= 0.78) {
-    cursor = Math.floor(t * 20) % 2 === 0; // blink while holding the complete line
-  }
-  drawTypedSoFar(ctx, p, reveal, padX);
-  if (cursor || t < 0.06) {
-    ctx.fillStyle = p.textColor;
-    ctx.fillRect(
-      padX + reveal + 1,
-      p.height * 0.22,
-      Math.max(1.5, p.width * 0.01),
-      p.height * 0.56,
-    );
-  }
-}
-
 function stat(ctx: Ctx2D, p: BannerParams): void {
   const r = Math.min(p.height * 0.18, 16);
   ctx.clip(p.env.path2d(roundedRect(0, 0, p.width, p.height, r)));
@@ -174,9 +120,6 @@ export function drawBanner(ctx: Ctx2D, p: BannerParams, t: number): void {
       break;
     case 'shimmer':
       shimmer(ctx, p, t);
-      break;
-    case 'typewriter':
-      typewriter(ctx, p, t);
       break;
     case 'static':
       stat(ctx, p);

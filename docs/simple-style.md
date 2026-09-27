@@ -5,65 +5,62 @@ order: 6.5
 
 # Simple Style
 
-Opening the builder ("Build my signature" or "Open builder") first asks **Simple Style** or
-**Custom Style**. Both use the exact same renderer, upload flow and `.mailmotion.json` format —
-picking one only decides how much of the builder you see. The choice is remembered in your
-browser; the "← Change style" link inside either builder always re-asks.
+"Build my signature" first asks **Simple Style** or **Custom Style**. The choice is remembered in
+your browser; "← Change style" in either builder always asks again.
 
-- **Custom Style** is the original six designs and every field: palettes, socials, banners, a
-  CTA button, badges, typography, drawn/uploaded signatures — see [Designs and limits](./designs.md).
-- **Simple Style** is a second, separate catalogue of **ten** designs recreating a companion demo
-  (Signet's ten-design set), with a single accent colour instead of a palette and a much smaller
-  field set: full name, job title, and — only where the design actually uses them — company,
-  phone, email, website, a tagline, or a status line.
+- **Custom Style** is the six-design builder with every option. See [Designs and limits](./designs.md).
+- **Simple Style** (`/studio/simple/`) is the ten-design **Signet** page, recreated exactly: the
+  same form, the same ten designs in the same order, the same live previews and the same copied
+  HTML.
 
-## The ten designs
+The two styles share no code except image hosting. Simple Style lives in
+`packages/signet` (templates, GIF renderer, encoder) and `apps/web/src/signet` (the page); it
+does not use Custom Style's schema, layouts, serializer, presets or components.
 
-| Design        | Layout                              | Avatar               | Fields shown                     |
-| ------------- | ----------------------------------- | -------------------- | -------------------------------- |
-| Aurora ring   | Card (avatar, thin rule, details)   | Aurora ring, 88px    | company, phone, email, website   |
-| Pulse         | Left Portrait (avatar, no rule)     | Pulse ring, 72px     | company, email, status line      |
-| Typewriter    | Editorial, no avatar                | —                    | tagline (typed out)              |
-| Wave banner   | Banner, no avatar                   | —                    | company, email, website          |
-| Neon night    | Bordered, dark card background      | Neon glow, 72px      | company, email                   |
-| Shimmer plate | Banner-top (strip leads), no avatar | —                    | company, email                   |
-| Orbit         | Left Portrait (avatar, no rule)     | Orbit ring, 88px     | company, email, website          |
-| News ticker   | Banner, no avatar                   | —                    | company, email, tagline          |
-| Equalizer     | Left Portrait (avatar, no rule)     | Equalizer bars, 72px | company, email, tagline (italic) |
-| Ink signature | Editorial, no avatar                | —                    | company, email                   |
+## What "exactly" means here
 
-Every design still ships an ink-drawn signature of the person's name (except Typewriter, Wave,
-Shimmer and Ticker, which don't — the design's own animated element, not a second signature, is
-the point there), still keeps frame 1 complete for classic Outlook, and still fits the same
-10,000-character / 300KB / 12fps budgets as Custom Style.
+- **The signature HTML is the reference, byte for byte.** `packages/signet/test/fixtures` holds
+  the Signet page as published. The tests run that page's own template code and compare it with
+  ours for the sample details, edge cases (empty fields, long names, characters that need
+  escaping) and 150 random inputs.
+- **The page layout matches it.** Measured in Chrome at the same size, 187 of 189 elements (every
+  element of every signature, plus every form field) are within 0.2px of the reference. The
+  remaining two are animated elements measured at different moments.
+- **The live previews are the reference's CSS**, transcribed rule for rule (scoped to the page,
+  with self-hosted fonts because this site's security policy blocks third-party fonts).
 
-## What's genuinely new vs. reused
+## The one functional change: no manual GIF hosting
 
-Seven of the ten avatar/mark animations already existed (aurora, pulse, neon, orbit, equalizer,
-ink, and the wave/ticker/shimmer banner strips were already built but unused by any Custom Style
-preset). Only the **typewriter** banner animation (`packages/animations/src/banner.ts`) and the
-**banner-top** layout (`packages/layouts/src/specs.ts`, `packages/serializer/src/compose.ts`) are
-new. A design's accent-only colouring (`theme.contactSeparator: 'pipe'`, `extras.taglineStyle`)
-are new schema fields shared with Custom Style, currently only ever set to non-default values by
-Simple Style's presets.
+The reference page asked for a "GIF host URL" and left rendering and uploading the GIFs to you.
+Here, **Upload images** renders all ten animated images in your browser and uploads them to this
+site's image storage, the same storage server Custom Style uses (`NEXT_PUBLIC_UPLOAD_ENDPOINT` /
+`NEXT_PUBLIC_UPLOAD_TOKEN`). Copied signatures then point to the uploaded images. Each image is
+re-uploaded only when something it actually draws changes: editing the job title re-uploads
+nothing, and editing the name re-uploads the three designs that show it.
 
-## Known deviations from the source demo
+## How the GIFs are made
 
-- **Orbit's company eyebrow.** The source shows the company name in small caps _above_ the
-  person's name. Every layout in this codebase renders the name first (it's the one row every
-  design relies on), so the closest match is company immediately _after_ the name, not above it.
-- **Aurora's ring gradient.** The source mixes the accent with two fixed extra hues in a 3-stop
-  conic gradient. `avatar.ring` only supports a solid colour or a 2-stop gradient, and — more
-  importantly — leaving it unset is what makes the _single_ accent picker reactive (see below), so
-  Aurora's ring is solid.
-- **The exact typing/scroll cadence** (typewriter's per-character timing, the ticker's scroll
-  speed) is a reasonable approximation of the source's CSS keyframes, translated into a discrete
-  GIF frame count — not a pixel-for-pixel timing match.
+Each design's animated slot is drawn frame by frame on a canvas, following its CSS rules exactly:
+sizes, offsets, keyframes, easing curves, shadows and blur radii. The GIFs follow the same limits
+as Custom Style: at most 300KB, at most 12 fps, and they loop forever. Nine of the ten designs
+render at 2x for sharp retina display. The News ticker's scrolling text changes almost every
+pixel on every frame, so it is encoded at 1x to keep its full 10 fps within 300KB. The tests
+decode every frame of every GIF, compositing as a mail client does, and check it against what was
+drawn.
 
-## Why the accent colour stays live
+The first frame is always the finished state, because classic Outlook only ever shows frame 1:
+the typewriter fully typed, the ink signature fully inked, the neon lit.
 
-None of the ten presets sets `avatar.ring` or `mark.color` explicitly. Both fall back to
-`theme.accent` at render time (`packages/renderer`'s `ringOf`/`renderMark`) unless a config sets
-them, so Simple Style's one colour picker actually drives every design — change it, and the
-avatar ring, the ink signature and every link colour update together, with no separate palette
-step like Custom Style's.
+### Where a GIF cannot match the CSS exactly
+
+- **Loop lengths.** A GIF has a single loop, but some designs combine motions of different
+  lengths. Wave (6s and 9s slides) loops at 18s, which is exact. Orbit's two satellites (4s and
+  2.6s) loop at 8s, so the inner satellite is 2.5% slower than on the page. The typewriter's cursor
+  blinks every 0.71s instead of 0.7s so it lines up with the 5s typing loop.
+- **Neon's flicker** eases in and out over 64ms on the page; the GIF shows the dimmed frame for
+  the 130ms dip (GIF timing works in 10ms steps, and 12 fps is the ceiling).
+- **Equalizer's first frame** shows the bars at their starting heights. With animations turned
+  off, the page's "Preview as classic Outlook" shows all five bars at full height, which the
+  running animation never does.
+- **Fonts.** GIFs are rendered with your browser's Arial and Courier New, like the live preview;
+  the ink design uses the self-hosted Caveat (weight 600, as on the reference).

@@ -69,15 +69,6 @@ export const LAYOUT_SPECS: Record<LayoutId, LayoutSpec> = {
     rule: 'none',
     alignable: true,
   },
-  'banner-top': {
-    id: 'banner-top',
-    label: 'Banner top',
-    description: 'A full-width colour strip leads, details sit beneath it.',
-    avatar: 'left',
-    align: 'left',
-    rule: 'none',
-    alignable: false,
-  },
 };
 
 export const LAYOUT_LIST = Object.values(LAYOUT_SPECS);

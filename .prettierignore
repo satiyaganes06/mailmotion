@@ -8,3 +8,5 @@ mailmotion-plan.md
 apps/LICENSE
 *.gif
 *.ttf
+# verbatim copy of the Signet reference page (Simple Style is checked against it byte for byte)
+packages/signet/test/fixtures

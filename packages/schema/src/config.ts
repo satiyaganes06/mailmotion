@@ -64,7 +64,7 @@ export type AvatarAnimationId = (typeof AVATAR_ANIMATIONS)[number];
 export const MARK_ANIMATIONS = ['ink', 'fade', 'none'] as const;
 export type MarkAnimationId = (typeof MARK_ANIMATIONS)[number];
 
-export const BANNER_KINDS = ['wave', 'ticker', 'shimmer', 'typewriter', 'static'] as const;
+export const BANNER_KINDS = ['wave', 'ticker', 'shimmer', 'static'] as const;
 export type BannerKind = (typeof BANNER_KINDS)[number];
 
 export const LAYOUT_IDS = [
@@ -74,29 +74,11 @@ export const LAYOUT_IDS = [
   'banner',
   'bordered',
   'stacked',
-  /** Same table as `banner`, but the colour strip renders before the name block, not after. */
-  'banner-top',
 ] as const;
 export type LayoutId = (typeof LAYOUT_IDS)[number];
 
 export const PRESET_IDS = ['aurora', 'portrait', 'editorial', 'wave', 'neon', 'equalizer'] as const;
 export type PresetId = (typeof PRESET_IDS)[number];
-
-/** The ten "Simple Style" designs — a separate catalogue from the six Custom-Style presets
- * above, sharing the same underlying `SignatureConfig`. */
-export const SIMPLE_PRESET_IDS = [
-  'simple-aurora',
-  'simple-pulse',
-  'simple-typewriter',
-  'simple-wave',
-  'simple-neon',
-  'simple-shimmer',
-  'simple-orbit',
-  'simple-ticker',
-  'simple-equalizer',
-  'simple-ink',
-] as const;
-export type SimplePresetId = (typeof SIMPLE_PRESET_IDS)[number];
 
 export const FONT_FAMILIES = [
   'arial',
@@ -263,9 +245,6 @@ export const themeSchema = z
       .union([z.enum(['transparent', 'white']), z.object({ color: hexColor })])
       .default('transparent'),
     darkMode: z.enum(['auto', 'force-dark-variant']).default('auto'),
-    /** The glyph joining inline fields (phones/websites/title+department): a middle dot, or a
-     * light vertical pipe (`Simple Style`'s look). */
-    contactSeparator: z.enum(['dot', 'pipe']).default('dot'),
   })
   .default({});
 export type Theme = z.output<typeof themeSchema>;
@@ -370,9 +349,6 @@ export const extrasSchema = z
     spacing: z.enum(['compact', 'normal', 'airy']).default('normal'),
     alignment: z.enum(['left', 'center']).default('left'),
     madeWith: z.boolean().default(false),
-    /** How the tagline row reads: italic quote, or a status line with a leading colour dot
-     * (`Simple Style`'s "Available for calls this week"). */
-    taglineStyle: z.enum(['italic', 'status', 'plain']).default('italic'),
   })
   .default({});
 export type Extras = z.output<typeof extrasSchema>;
@@ -462,7 +438,7 @@ export const SCHEMA_VERSION = 1 as const;
 export const signatureConfigSchema = z.object({
   schemaVersion: z.literal(SCHEMA_VERSION).default(SCHEMA_VERSION),
   name: optionalText(80),
-  presetId: z.enum([...PRESET_IDS, ...SIMPLE_PRESET_IDS]).optional(),
+  presetId: z.enum(PRESET_IDS).optional(),
   details: detailsSchema,
   avatar: avatarSchema,
   mark: markSchema,

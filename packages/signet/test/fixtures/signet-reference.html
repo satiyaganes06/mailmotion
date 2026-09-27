@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signet — 10 animated email signature designs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF0F5; --ink:#16213A; --muted:#5A6478; --line:#CCD3DF; --surface:#FFFFFF;
+  --stamp:#C8372D; --air:#2A5DB0; --focus:#2A5DB0;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#10151F; --ink:#E6EAF2; --muted:#97A1B5; --line:#2A3244; --surface:#182030; --focus:#7FA6F0;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10151F; --ink:#E6EAF2; --muted:#97A1B5; --line:#2A3244; --surface:#182030; --focus:#7FA6F0;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 "Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+h1,h2{font-family:"Bricolage Grotesque","Public Sans",system-ui,sans-serif;margin:0;letter-spacing:-.01em}
+.top{max-width:1180px;margin:0 auto;padding:40px 24px 8px}
+.top h1{font-size:clamp(34px,5vw,52px);line-height:1.05}
+.top p{max-width:62ch;color:var(--muted);margin:10px 0 0}
+.wrap{max-width:1180px;margin:0 auto;padding:24px;display:grid;grid-template-columns:300px minmax(0,1fr);gap:32px;align-items:start}
+@media (max-width:860px){.wrap{grid-template-columns:1fr}}
+aside{position:sticky;top:16px;background:var(--surface);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+@media (max-width:860px){aside{position:static}}
+.airmail{height:8px;background:repeating-linear-gradient(135deg,var(--stamp) 0 12px,transparent 12px 20px,var(--air) 20px 32px,transparent 32px 40px)}
+aside .inner{padding:18px 18px 20px}
+aside h2{font-size:19px;margin-bottom:12px}
+label{display:block;font-size:13px;font-weight:600;margin:10px 0 4px}
+input[type=text],input[type=url],input[type=email]{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:3px;background:var(--bg);color:var(--ink);font:inherit;font-size:14px}
+input[type=color]{width:48px;height:32px;border:1px solid var(--line);border-radius:3px;background:none;padding:2px}
+.row{display:flex;gap:10px;align-items:center}
+.check{display:flex;gap:8px;align-items:flex-start;font-weight:400;font-size:14px;margin-top:12px}
+.check input{margin-top:4px}
+.hint{font-size:12.5px;color:var(--muted);margin:6px 0 0}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+main{display:grid;gap:40px}
+.spec header{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;align-items:baseline;margin-bottom:10px}
+.spec h2{font-size:24px}
+.spec .use{color:var(--muted);margin:2px 0 0;font-size:14px}
+.spec .size{font-size:13px;color:var(--muted);white-space:nowrap}
+.pane{background:#fff;color:#222;border:1px solid var(--line);border-radius:4px;padding:22px 22px 26px;overflow-x:auto}
+.pane .body{font:14px/1.5 Arial,Helvetica,sans-serif;color:#333;margin:0 0 14px}
+.pane .dash{font:13px Arial,sans-serif;color:#999;margin:0 0 8px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+button{font:inherit;font-size:14px;font-weight:600;padding:8px 14px;border-radius:3px;border:1px solid var(--ink);background:var(--ink);color:var(--bg);cursor:pointer}
+button.ghost{background:transparent;color:var(--ink)}
+.count{font-size:13px;color:var(--muted);margin-left:auto}
+.count.over{color:var(--stamp);font-weight:600}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:3px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+footer{max-width:1180px;margin:0 auto;padding:8px 24px 48px;color:var(--muted);font-size:13px}
+
+/* ---------- animated slots (each becomes a GIF in the real email) ---------- */
+.anim{display:inline-block;position:relative;vertical-align:top;overflow:hidden}
+.outline .anim{outline:1.5px dashed var(--stamp);outline-offset:3px}
+.static .anim *, .static .anim *::before, .static .anim *::after{animation:none!important}
+@media (prefers-reduced-motion: reduce){.anim *, .anim *::before, .anim *::after{animation:none!important}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.a-aurora{position:absolute;inset:0}
+.a-aurora::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(var(--acc),#7C5CFF,#22D3EE,var(--acc));animation:spin 3s linear infinite}
+.a-aurora b{position:absolute;inset:5px;border-radius:50%;background:#fff;display:grid;place-items:center;font:700 26px Arial,sans-serif;color:var(--acc)}
+
+.a-pulse{position:absolute;inset:0;display:grid;place-items:center}
+.a-pulse b{position:relative;z-index:1;width:58px;height:58px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font:700 21px Arial,sans-serif}
+.a-pulse::after{content:"";position:absolute;left:11px;top:11px;width:54px;height:54px;border-radius:50%;border:2px solid var(--acc);opacity:0;animation:pulse 1.8s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.95);opacity:.8}100%{transform:scale(1.35);opacity:0}}
+
+.a-type{display:inline-block;overflow:hidden;white-space:nowrap;font:13px/22px "Courier New",Courier,monospace;width:var(--w);border-right:2px solid var(--acc);animation:type 5s infinite,blink .7s step-end infinite}
+@keyframes type{0%{width:0}55%,100%{width:var(--w)}}
+@keyframes blink{50%{border-color:transparent}}
+
+.a-wave{position:absolute;inset:0;background:var(--acc);border-radius:6px}
+.a-wave svg{position:absolute;left:0;bottom:0}
+.a-wave .w1{animation:slide 6s linear infinite}
+.a-wave .w2{animation:slide 9s linear infinite reverse}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-460px)}}
+.a-wave b{position:absolute;left:16px;top:17px;font:700 16px Arial,sans-serif;color:#fff}
+.a-wave i{position:absolute;right:16px;top:19px;font:normal 12px Arial,sans-serif;color:#fff;opacity:.9}
+
+.a-neon{position:absolute;inset:4px;border:2px solid var(--acc);border-radius:14px;display:grid;place-items:center;font:700 26px Arial,sans-serif;color:#fff;background:#0D1020;text-shadow:0 0 6px var(--acc),0 0 14px var(--acc);box-shadow:0 0 10px var(--acc),inset 0 0 10px var(--acc);animation:flicker 3.2s infinite}
+@keyframes flicker{0%,18%,22%,54%,58%,100%{opacity:1}20%,56%{opacity:.35}}
+
+.a-shim{position:absolute;inset:0;background:var(--acc);border-radius:6px;display:flex;align-items:center;padding:0 16px;font:700 17px Arial,sans-serif;letter-spacing:.03em;color:#fff;overflow:hidden;white-space:nowrap}
+.a-shim::after{content:"";position:absolute;top:0;bottom:0;left:-90px;width:60px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);transform:skewX(-20deg);animation:sweep 3s ease-in-out infinite}
+@keyframes sweep{0%{left:-90px}45%,100%{left:340px}}
+
+.a-orbit{position:absolute;inset:0}
+.a-orbit::before{content:"";position:absolute;inset:6px;border-radius:50%;border:1px dashed var(--acc);opacity:.5}
+.a-orbit b{position:absolute;left:20px;top:20px;width:44px;height:44px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font:700 16px Arial,sans-serif}
+.a-orbit i{position:absolute;border-radius:50%}
+.a-orbit .s1{inset:6px;animation:spin 4s linear infinite}
+.a-orbit .s1::before{content:"";position:absolute;top:-4px;left:calc(50% - 4px);width:8px;height:8px;border-radius:50%;background:var(--acc)}
+.a-orbit .s2{inset:14px;animation:spin 2.6s linear infinite reverse}
+.a-orbit .s2::before{content:"";position:absolute;top:-3px;left:calc(50% - 3px);width:6px;height:6px;border-radius:50%;background:#22B8CF}
+
+.a-tick{position:absolute;inset:0;background:var(--acc);border-radius:4px;overflow:hidden}
+.a-tick span{position:absolute;top:0;left:0;white-space:nowrap;font:700 12px/28px Arial,sans-serif;color:#fff;animation:tick 16s linear infinite}
+.a-tick em{font-style:normal;opacity:.7;padding:0 12px}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+.a-eq{position:absolute;inset:0;background:var(--acc);border-radius:14px;display:flex;align-items:flex-end;justify-content:center;gap:5px;padding-bottom:14px}
+.a-eq i{width:6px;background:#fff;border-radius:3px;transform-origin:bottom;animation:eq .9s ease-in-out infinite alternate}
+.a-eq i:nth-child(2){animation-delay:-.3s}.a-eq i:nth-child(3){animation-delay:-.6s}.a-eq i:nth-child(4){animation-delay:-.15s}.a-eq i:nth-child(5){animation-delay:-.45s}
+@keyframes eq{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+
+.a-ink text{font-family:"Caveat","Segoe Script","Brush Script MT",cursive;stroke-dasharray:700;stroke-dashoffset:0;animation:ink 4.5s ease-in-out infinite}
+@keyframes ink{0%{stroke-dashoffset:700;fill-opacity:0}50%{stroke-dashoffset:0;fill-opacity:0}70%,100%{stroke-dashoffset:0;fill-opacity:1}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <h1>Signet</h1>
+  <p>Ten starter designs for animated email signatures that work in Gmail and Outlook. Each one is table-based HTML with inline styles; only the outlined part is animated, and in the real signature it ships as a hosted GIF.</p>
+</div>
+
+<div class="wrap" id="wrap">
+  <aside>
+    <div class="airmail"></div>
+    <div class="inner">
+      <h2>Your details</h2>
+      <form id="f" autocomplete="off" onsubmit="return false">
+        <label for="name">Full name</label><input type="text" id="name" value="Aina Rahman">
+        <label for="title">Job title</label><input type="text" id="title" value="Product Designer">
+        <label for="company">Company</label><input type="text" id="company" value="Lumen Labs">
+        <label for="phone">Phone</label><input type="text" id="phone" value="+60 12 345 6789">
+        <label for="email">Email</label><input type="email" id="email" value="aina@lumenlabs.io">
+        <label for="website">Website</label><input type="text" id="website" value="lumenlabs.io">
+        <label for="tagline">Tagline</label><input type="text" id="tagline" value="Designing calmer fintech apps">
+        <label for="status">Status line</label><input type="text" id="status" value="Available for calls this week">
+        <label for="accent">Accent colour</label>
+        <div class="row"><input type="color" id="accent" value="#2A5DB0"><span class="hint" style="margin:0">Used for the GIF and the links</span></div>
+        <label for="base">GIF host URL</label><input type="url" id="base" value="https://cdn.example.com/signatures">
+        <p class="hint">Copied signatures point to <code>[host]/[design].gif</code>. Replace it with where you upload the rendered GIFs.</p>
+        <label class="check"><input type="checkbox" id="static"> Preview as classic Outlook for Windows (first frame only)</label>
+        <label class="check"><input type="checkbox" id="outline"> Outline the animated parts</label>
+      </form>
+    </div>
+  </aside>
+  <main id="list"></main>
+</div>
+
+<footer>Signatures stay under Gmail's 10,000-character limit. Text, phone numbers and links stay live HTML so they remain clickable and readable when images are blocked.</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const initials = s => (String(s).trim().split(/\s+/).filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join('')) || '?';
+const hostOf = u => String(u).replace(/^https?:\/\//,'').replace(/\/$/,'');
+const hrefOf = u => /^https?:\/\//.test(u) ? u : 'https://' + u;
+const F = 'font-family:Arial,Helvetica,sans-serif;';
+const P = (style, inner) => `<p style="margin:0;${F}${style}">${inner}</p>`;
+const T = (inner, extra='') => `<table role="presentation" cellpadding="0" cellspacing="0" border="0" ${extra} style="border-collapse:collapse;">${inner}</table>`;
+
+function contacts(d, color, link){
+  const p = [];
+  if (d.phone) p.push(`<a href="tel:${esc(d.phone.replace(/[^+\d]/g,''))}" style="color:${color};text-decoration:none;">${esc(d.phone)}</a>`);
+  if (d.email) p.push(`<a href="mailto:${esc(d.email)}" style="color:${link};text-decoration:none;">${esc(d.email)}</a>`);
+  if (d.website) p.push(`<a href="${esc(hrefOf(d.website))}" style="color:${link};text-decoration:none;">${esc(hostOf(d.website))}</a>`);
+  return p.join('<span style="color:#b5bccb;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>');
+}
+const roleLine = (d, a) => `${esc(d.title)}${d.title && d.company ? ' at ' : ''}<b style="color:${a};">${esc(d.company)}</b>`;
+const bar = (a, w=36) => T(`<tr><td width="${w}" height="3" bgcolor="${a}" style="font-size:0;line-height:0;background:${a};">&nbsp;</td></tr>`);
+
+const designs = [
+  { id:'aurora', name:'Aurora ring', use:'A spinning gradient ring around your initials. Works for most roles.', w:88, h:88,
+    alt:d => `${d.name}`,
+    anim:(d,a) => `<span class="a-aurora" style="--acc:${a}"><b>${esc(initials(d.name))}</b></span>`,
+    layout:(d,a,slot) => T(`<tr><td style="padding:0 16px 0 0;vertical-align:middle;">${slot}</td><td style="border-left:2px solid ${a};padding:2px 0 2px 16px;vertical-align:middle;">${P('font-size:18px;font-weight:bold;color:#16213a;line-height:24px;', esc(d.name))}${P('font-size:13px;color:#5a6478;line-height:20px;', roleLine(d,a))}${P('font-size:12px;color:#5a6478;line-height:20px;padding-top:6px;', contacts(d,'#5a6478',a))}</td></tr>`) },
+
+  { id:'pulse', name:'Pulse', use:'An availability ping beside your initials. Good for sales, support and consultants.', w:80, h:80,
+    alt:d => `${d.name}`,
+    anim:(d,a) => `<span class="a-pulse" style="--acc:${a}"><b>${esc(initials(d.name))}</b></span>`,
+    layout:(d,a,slot) => T(`<tr><td style="padding:0 14px 0 0;vertical-align:middle;">${slot}</td><td style="vertical-align:middle;">${P('font-size:17px;font-weight:bold;color:#16213a;line-height:23px;', esc(d.name))}${P('font-size:13px;color:#5a6478;line-height:20px;', roleLine(d,a))}${P('font-size:12px;color:#1f7a45;line-height:20px;', `<span style="color:#1f9d55;">&#9679;</span>&nbsp;${esc(d.status)}`)}${P('font-size:12px;color:#5a6478;line-height:20px;padding-top:4px;', contacts(d,'#5a6478',a))}</td></tr>`) },
+
+  { id:'typewriter', name:'Typewriter', use:'Your tagline types itself out. Suits writers, founders and developers.', w:340, h:22,
+    alt:d => d.tagline,
+    anim:(d,a) => { const t = String(d.tagline).slice(0,42); return `<span class="a-type" style="--acc:${a};--w:${t.length}ch;color:#16213a;animation-timing-function:steps(${Math.max(t.length,1)},end),step-end;">${esc(t)}</span>`; },
+    layout:(d,a,slot) => T(`<tr><td style="padding:0 0 10px 0;">${bar(a)}</td></tr><tr><td>${P('font-size:20px;font-weight:bold;color:#16213a;line-height:26px;', esc(d.name))}${P('font-size:13px;color:#5a6478;line-height:20px;', roleLine(d,a))}</td></tr><tr><td style="padding:8px 0;">${slot}</td></tr><tr><td>${P('font-size:12px;color:#5a6478;line-height:20px;', contacts(d,'#5a6478',a))}</td></tr>`) },
+
+  { id:'wave', name:'Wave banner', use:'A rolling company banner under your details. Good for brand-led teams.', w:460, h:56,
+    alt:d => d.company,
+    anim:(d,a) => { const path = y => `M0 ${y} Q115 ${y-18} 230 ${y} T460 ${y} T690 ${y} T920 ${y} V56 H0 Z`;
+      return `<span class="a-wave" style="--acc:${a}"><svg class="w1" viewBox="0 0 920 56" width="920" height="56" aria-hidden="true"><path d="${path(36)}" fill="#fff" fill-opacity=".22"/></svg><svg class="w2" viewBox="0 0 920 56" width="920" height="56" aria-hidden="true"><path d="${path(42)}" fill="#fff" fill-opacity=".16"/></svg><b>${esc(d.company)}</b><i>${esc(hostOf(d.website))}</i></span>`; },
+    layout:(d,a,slot) => T(`<tr><td>${P('font-size:17px;font-weight:bold;color:#16213a;line-height:23px;', esc(d.name))}${P('font-size:13px;color:#5a6478;line-height:20px;', roleLine(d,a))}${P('font-size:12px;color:#5a6478;line-height:20px;padding-top:4px;', contacts(d,'#5a6478',a))}</td></tr><tr><td style="padding-top:10px;">${slot}</td></tr>`) },
+
+  { id:'neon', name:'Neon night', use:'A dark card with a flickering neon mark. For gaming, nightlife and creative studios.', w:72, h:72,
+    alt:d => d.company,
+    anim:(d,a) => `<span class="a-neon" style="--acc:${a}">${esc(initials(d.company))}</span>`,
+    layout:(d,a,slot) => T(`<tr><td style="padding:18px 18px 18px 18px;vertical-align:middle;">${slot}</td><td style="padding:18px 22px 18px 0;vertical-align:middle;">${P('font-size:17px;font-weight:bold;color:#ffffff;line-height:23px;', esc(d.name))}${P('font-size:13px;color:#a9b1c7;line-height:20px;', `${esc(d.title)}${d.title && d.company ? ' at ' : ''}<b style="color:#ffffff;">${esc(d.company)}</b>`)}${P('font-size:12px;color:#a9b1c7;line-height:20px;padding-top:6px;', contacts(d,'#a9b1c7','#c9d6ff'))}</td></tr>`, 'bgcolor="#0d1020"').replace('style="border-collapse:collapse;"','style="border-collapse:separate;background:#0d1020;border-radius:12px;"') },
+
+  { id:'shimmer', name:'Shimmer plate', use:'A company nameplate with a light sweep. Clean and corporate.', w:300, h:44,
+    alt:d => d.company,
+    anim:(d,a) => `<span class="a-shim" style="--acc:${a}">${esc(d.company)}</span>`,
+    layout:(d,a,slot) => T(`<tr><td>${slot}</td></tr><tr><td style="padding-top:10px;">${P('font-size:16px;font-weight:bold;color:#16213a;line-height:22px;', esc(d.name))}${P('font-size:13px;color:#5a6478;line-height:20px;', esc(d.title))}${P('font-size:12px;color:#5a6478;line-height:20px;padding-top:4px;', contacts(d,'#5a6478',a))}</td></tr>`) },
+
+  { id:'orbit', name:'Orbit', use:'Two satellites circling your company mark. For tech and product teams.', w:84, h:84,
+    alt:d => `${d.company} logo`,
+    anim:(d,a) => `<span class="a-orbit" style="--acc:${a}"><b>${esc(initials(d.company))}</b><i class="s1"></i><i class="s2"></i></span>`,
+    layout:(d,a,slot) => T(`<tr><td style="padding:0 16px 0 0;vertical-align:middle;">${slot}</td><td style="vertical-align:middle;">${P(`font-size:12px;font-weight:bold;color:${a};line-height:18px;letter-spacing:.3px;`, esc(d.company))}${P('font-size:18px;font-weight:bold;color:#16213a;line-height:24px;', esc(d.name))}${P('font-size:13px;color:#5a6478;line-height:20px;', esc(d.title))}${P('font-size:12px;color:#5a6478;line-height:20px;padding-top:4px;', contacts(d,'#5a6478',a))}</td></tr>`) },
+
+  { id:'ticker', name:'News ticker', use:'A scrolling strip for launches, events or hiring news. Change it as often as you like.', w:460, h:28,
+    alt:d => d.tagline,
+    anim:(d,a) => { const item = `<em>&#10022;</em>${esc(d.tagline)}<em>&#10022;</em>${esc(hostOf(d.website))}`; const half = item.repeat(4); return `<span class="a-tick" style="--acc:${a}"><span>${half}${half}</span></span>`; },
+    layout:(d,a,slot) => T(`<tr><td>${P('font-size:17px;font-weight:bold;color:#16213a;line-height:23px;', esc(d.name))}${P('font-size:13px;color:#5a6478;line-height:20px;', roleLine(d,a))}${P('font-size:12px;color:#5a6478;line-height:20px;padding-top:4px;', contacts(d,'#5a6478',a))}</td></tr><tr><td style="padding-top:10px;">${slot}</td></tr>`) },
+
+  { id:'equalizer', name:'Equalizer', use:'Bouncing audio bars. Made for podcasters, musicians and audio brands.', w:64, h:64,
+    alt:() => 'Audio bars',
+    anim:(d,a) => `<span class="a-eq" style="--acc:${a}">${[18,30,38,24,32].map(h => `<i style="height:${h}px"></i>`).join('')}</span>`,
+    layout:(d,a,slot) => T(`<tr><td style="padding:0 14px 0 0;vertical-align:top;">${slot}</td><td style="vertical-align:top;">${P('font-size:17px;font-weight:bold;color:#16213a;line-height:23px;', esc(d.name))}${P('font-size:13px;color:#5a6478;line-height:20px;', roleLine(d,a))}${P('font-size:13px;font-style:italic;color:#16213a;line-height:20px;', esc(d.tagline))}${P('font-size:12px;color:#5a6478;line-height:20px;padding-top:4px;', contacts(d,'#5a6478',a))}</td></tr>`) },
+
+  { id:'ink', name:'Ink signature', use:'Your name written by hand, stroke by stroke. For lawyers, artists and personal brands.', w:260, h:64,
+    alt:d => d.name,
+    anim:(d,a) => { const long = String(d.name).length > 15 ? ' textLength="248" lengthAdjust="spacingAndGlyphs"' : ''; return `<svg class="a-ink" viewBox="0 0 260 64" width="260" height="64" role="img" aria-label="${esc(d.name)}"><text x="4" y="48" font-size="46" fill="${a}" stroke="${a}" stroke-width="1.2"${long}>${esc(d.name)}</text></svg>`; },
+    layout:(d,a,slot) => T(`<tr><td>${slot}</td></tr><tr><td style="padding:6px 0 8px 0;">${bar(a,48)}</td></tr><tr><td>${P('font-size:13px;color:#16213a;line-height:20px;', roleLine(d,a))}${P('font-size:12px;color:#5a6478;line-height:20px;padding-top:2px;', contacts(d,'#5a6478',a))}</td></tr>`) },
+];
+
+const $ = id => document.getElementById(id);
+const fields = ['name','title','company','phone','email','website','tagline','status','accent','base'];
+const list = $('list');
+const exports = {};
+
+designs.forEach(t => {
+  const s = document.createElement('section');
+  s.className = 'spec';
+  s.innerHTML = `<header><div><h2>${t.name}</h2><p class="use">${t.use}</p></div><span class="size">GIF ${t.w} &times; ${t.h}</span></header>
+    <div class="pane"><p class="body">Hi Daniel, thanks for the call today. The revised proposal is attached.<br><br>Best regards,</p><p class="dash">--</p><div class="sig"></div></div>
+    <div class="actions"><button type="button" data-copy="rich">Copy signature</button><button type="button" class="ghost" data-copy="src">Copy HTML source</button><span class="count"></span></div>`;
+  s.dataset.id = t.id;
+  list.appendChild(s);
+});
+
+function data(){
+  const d = {}; fields.forEach(f => d[f] = $(f).value.trim());
+  d.accent = /^#[0-9a-f]{6}$/i.test(d.accent) ? d.accent : '#2A5DB0';
+  d.base = (d.base || 'https://cdn.example.com/signatures').replace(/\/+$/,'');
+  return d;
+}
+
+function render(){
+  const d = data(), a = d.accent;
+  designs.forEach(t => {
+    const sec = list.querySelector(`[data-id="${t.id}"]`);
+    const preview = `<span class="anim" style="width:${t.w}px;height:${t.h}px">${t.anim(d,a)}</span>`;
+    const img = `<img src="${esc(d.base)}/${t.id}.gif" width="${t.w}" height="${t.h}" alt="${esc(t.alt(d))}" style="display:block;border:0;outline:none;text-decoration:none;width:${t.w}px;height:${t.h}px;">`;
+    sec.querySelector('.sig').innerHTML = t.layout(d, a, preview);
+    const html = `<!-- Signet: ${t.id} -->\n` + t.layout(d, a, img);
+    exports[t.id] = html;
+    const c = sec.querySelector('.count');
+    c.textContent = `${html.length.toLocaleString()} / 10,000 characters`;
+    c.classList.toggle('over', html.length > 10000);
+  });
+}
+
+async function copyRich(html){
+  const plain = html.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+  try {
+    await navigator.clipboard.write([new ClipboardItem({'text/html': new Blob([html],{type:'text/html'}), 'text/plain': new Blob([plain],{type:'text/plain'})})]);
+    return true;
+  } catch(e) {
+    const el = document.createElement('div');
+    el.contentEditable = 'true'; el.innerHTML = html;
+    el.style.cssText = 'position:fixed;left:-9999px;top:0';
+    document.body.appendChild(el);
+    const r = document.createRange(); r.selectNodeContents(el);
+    const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    let ok = false; try { ok = document.execCommand('copy'); } catch(_) {}
+    sel.removeAllRanges(); el.remove();
+    return ok;
+  }
+}
+async function copyText(text){
+  try { await navigator.clipboard.writeText(text); return true; }
+  catch(e){
+    const ta = document.createElement('textarea'); ta.value = text;
+    ta.style.cssText = 'position:fixed;left:-9999px;top:0';
+    document.body.appendChild(ta); ta.select();
+    let ok = false; try { ok = document.execCommand('copy'); } catch(_) {}
+    ta.remove(); return ok;
+  }
+}
+let tt;
+function toast(msg){ const el = $('toast'); el.textContent = msg; el.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => el.classList.remove('show'), 2600); }
+
+list.addEventListener('click', async e => {
+  const b = e.target.closest('button[data-copy]'); if (!b) return;
+  const id = b.closest('.spec').dataset.id, html = exports[id];
+  const ok = b.dataset.copy === 'rich' ? await copyRich(html) : await copyText(html);
+  toast(ok ? (b.dataset.copy === 'rich' ? 'Signature copied. Paste it into the Gmail or Outlook signature box.' : 'HTML source copied.') : 'Copy was blocked by the browser. Use Copy HTML source instead.');
+});
+
+$('f').addEventListener('input', render);
+$('static').addEventListener('change', e => $('wrap').classList.toggle('static', e.target.checked));
+$('outline').addEventListener('change', e => $('wrap').classList.toggle('outline', e.target.checked));
+render();
+</script>
+</body>
+</html>
