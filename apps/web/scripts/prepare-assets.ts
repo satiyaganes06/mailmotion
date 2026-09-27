@@ -86,7 +86,7 @@ GlobalFonts.registerFromPath(join(fontsOut, 'Caveat.ttf'), 'Caveat');
 const SIGNET_DETAILS: SignetData = {
   name: 'Shatthiya Ganes',
   title: 'Mobile Security Engineer',
-  company: 'Vigilant Asia',
+  company: 'Google Inc.',
   phone: '+60 1163348685',
   email: 'satiyaganes.sg@gmail.com',
   website: 'www.satiyaganes.site',

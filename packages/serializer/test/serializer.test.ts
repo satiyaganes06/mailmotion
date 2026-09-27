@@ -116,7 +116,7 @@ describe('layouts', () => {
     } as never);
     const { html } = serializeWithPlaceholders(c);
     expect(html).not.toContain('mailto:');
-    expect(html.indexOf('Vigilant Asia')).toBeLessThan(html.indexOf('Mobile Security Engineer'));
+    expect(html.indexOf('Google Inc.')).toBeLessThan(html.indexOf('Mobile Security Engineer'));
   });
 
   it('applies the reply variant (no banner, no mark)', () => {

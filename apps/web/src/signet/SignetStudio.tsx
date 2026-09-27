@@ -37,7 +37,7 @@ type FieldId = keyof SignetData | 'accent';
 const FIELDS: { id: keyof SignetData; label: string; type: 'text' | 'email'; value: string }[] = [
   { id: 'name', label: 'Full name', type: 'text', value: 'Shatthiya Ganes' },
   { id: 'title', label: 'Job title', type: 'text', value: 'Mobile Security Engineer' },
-  { id: 'company', label: 'Company', type: 'text', value: 'Vigilant Asia' },
+  { id: 'company', label: 'Company', type: 'text', value: 'Google Inc.' },
   { id: 'phone', label: 'Phone', type: 'text', value: '+60 1163348685' },
   { id: 'email', label: 'Email', type: 'email', value: 'satiyaganes.sg@gmail.com' },
   { id: 'website', label: 'Website', type: 'text', value: 'www.satiyaganes.site' },

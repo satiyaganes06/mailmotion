@@ -5,7 +5,7 @@ import type { Draft } from './draft';
 export const SAMPLE = {
   fullName: 'Shatthiya Ganes',
   title: 'Mobile Security Engineer',
-  company: 'Vigilant Asia',
+  company: 'Google Inc.',
   email: 'satiyaganes.sg@gmail.com',
   websites: [{ url: 'https://www.satiyaganes.site' }],
   phones: [{ label: 'Mobile', number: '+60 1163348685' }],

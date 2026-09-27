@@ -37,7 +37,7 @@ test('Simple Style: copying a design uploads just that design’s animated image
 
   // preview shows your details from the form (pre-filled with your info)
   await expect(aurora.locator('.sg-sig')).toContainText(
-    'Mobile Security Engineer at Vigilant Asia',
+    'Mobile Security Engineer at Google Inc.',
   );
 
   // browsing and editing uploads nothing

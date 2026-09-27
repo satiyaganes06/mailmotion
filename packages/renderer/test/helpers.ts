@@ -16,7 +16,7 @@ export const env = createNodeEnv();
 export const DETAILS: SignatureConfigInput['details'] = {
   fullName: 'Shatthiya Ganes',
   title: 'Mobile Security Engineer',
-  company: 'Vigilant Asia',
+  company: 'Google Inc.',
   email: 'ganes@vigilantasia.com',
 };
 

@@ -10,7 +10,7 @@ export const SAMPLE_DETAILS: SignatureConfigInput['details'] = {
   fullName: 'Shatthiya Ganes',
   pronouns: 'he/him',
   title: 'Mobile Security Engineer',
-  company: 'Vigilant Asia',
+  company: 'Google Inc.',
   companyUrl: 'https://vigilantasia.com',
   phones: [{ label: 'Mobile', number: '+60 12-345 6789' }],
   email: 'ganes@vigilantasia.com',
