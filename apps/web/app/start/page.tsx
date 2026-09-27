@@ -24,38 +24,36 @@ function remember(pref: StylePref) {
 }
 
 /**
- * Pick-a-style gate in front of the builder. `/start/` (from the landing page or the top nav)
- * skips straight to whichever style you used last; `/start/?change=1` (the "Change style" link
- * inside each builder) always shows the chooser, so switching is never a dead end.
+ * Pick-a-style page in front of the builder ("Open builder", "Build my signature" and the
+ * "Change style" link inside each builder all land here). It always asks; the style you used
+ * last is only marked, never auto-opened, so the other one is always one click away.
  */
 export default function StartPage() {
-  const [checked, setChecked] = useState(false);
-  const [redirecting, setRedirecting] = useState<StylePref | null>(null);
+  const [last, setLast] = useState<StylePref | null>(null);
+  const [opening, setOpening] = useState(false);
 
-  useEffect(() => {
-    const change = new URLSearchParams(window.location.search).get('change') === '1';
-    const remembered = change ? null : rememberedStyle();
-    if (remembered) {
-      setRedirecting(remembered);
-      window.location.replace(remembered === 'simple' ? '/studio/simple/' : '/studio/');
-      return;
-    }
-    setChecked(true);
-  }, []);
+  useEffect(() => setLast(rememberedStyle()), []);
 
   const go = (pref: StylePref) => {
     remember(pref);
-    setRedirecting(pref);
+    setOpening(true);
     window.location.href = pref === 'simple' ? '/studio/simple/' : '/studio/';
   };
 
-  if (!checked || redirecting) {
-    return (
-      <main className="start-gate">
-        <p className="field-hint">Opening the builder…</p>
-      </main>
-    );
-  }
+  const card = (pref: StylePref, title: string, text: string) => (
+    <button
+      type="button"
+      className={`start-card${last === pref ? ' last' : ''}`}
+      onClick={() => go(pref)}
+      disabled={opening}
+    >
+      <span className="start-card-head">
+        <strong>{title}</strong>
+        {last === pref && <span className="chip">Last used</span>}
+      </span>
+      <span className="field-hint">{text}</span>
+    </button>
+  );
 
   return (
     <main className="start-gate">
@@ -63,27 +61,23 @@ export default function StartPage() {
         <p className="eyebrow">Before you start</p>
         <h1>Pick your style</h1>
         <p className="lede">
-          Both use the same real renderer and one-click image hosting — this only decides how much
-          you get to configure. You can switch any time from inside the builder.
+          Both use the same real renderer and image hosting. This only decides how much you get to
+          configure, and you can switch any time from inside the builder.
         </p>
         <div className="start-cards">
-          <button type="button" className="start-card" onClick={() => go('simple')}>
-            <strong>Simple Style</strong>
-            <span className="field-hint">
-              Ten ready-made designs, one accent colour, a handful of fields. Fastest way to a
-              good-looking signature.
-            </span>
-          </button>
-          <button type="button" className="start-card" onClick={() => go('custom')}>
-            <strong>Custom Style</strong>
-            <span className="field-hint">
-              Six designs, every field, full control: palettes, socials, banners, CTAs, badges,
-              typography and more.
-            </span>
-          </button>
+          {card(
+            'simple',
+            'Simple Style',
+            'Ten ready-made designs, one accent colour, a handful of fields. Fastest way to a good-looking signature.',
+          )}
+          {card(
+            'custom',
+            'Custom Style',
+            'Six designs, every field, full control: palettes, socials, banners, CTAs, badges, typography and more.',
+          )}
         </div>
         <p className="field-hint">
-          <Link href="/">← Back home</Link>
+          {opening ? 'Opening the builder…' : <Link href="/">← Back home</Link>}
         </p>
       </div>
     </main>
