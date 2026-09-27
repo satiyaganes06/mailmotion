@@ -25,7 +25,7 @@ export function SiteHeader() {
             GitHub
           </a>
           <ThemeToggle />
-          <Link href="/studio/" className="btn primary small">
+          <Link href="/start/" className="btn primary small">
             Open builder
           </Link>
         </nav>

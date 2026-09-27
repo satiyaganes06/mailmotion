@@ -16,7 +16,26 @@ test('landing page shows six real designs and links to the builder and docs', as
   );
   expect(broken).toBe(0);
   await page.getByRole('link', { name: 'Build my signature' }).click();
+  // first visit: no style remembered yet, so it's the Simple-vs-Custom gate, not the builder
+  await expect(page).toHaveURL(/\/start\//);
+  await page.getByRole('button', { name: 'Custom Style' }).click();
   await expect(page).toHaveURL(/\/studio\//);
+  expect(problems).toEqual([]);
+});
+
+test('the style gate remembers your choice and "Change style" always re-asks', async ({ page }) => {
+  const problems = watchErrors(page);
+  await page.goto('/start/');
+  await page.getByRole('button', { name: 'Simple Style' }).click();
+  await expect(page).toHaveURL(/\/studio\/simple\//);
+
+  // a second visit to the plain gate skips straight back to Simple
+  await page.goto('/start/');
+  await expect(page).toHaveURL(/\/studio\/simple\//);
+
+  // but the in-app "Change style" link always shows the chooser again
+  await page.goto('/start/?change=1');
+  await expect(page.getByRole('button', { name: 'Custom Style' })).toBeVisible();
   expect(problems).toEqual([]);
 });
 

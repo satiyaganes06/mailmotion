@@ -5,9 +5,9 @@ import { LAYOUT_LIST, markSize, placeholderAssets, planAssets } from '../src';
 const base = createConfig({ details: { fullName: 'Ada Lovelace' } });
 
 describe('layout specs', () => {
-  it('describes all six layouts', () => {
+  it('describes all seven layouts', () => {
     expect(LAYOUT_LIST.map((l) => l.id).sort()).toEqual(
-      ['banner', 'bordered', 'card', 'editorial', 'left-portrait', 'stacked'].sort(),
+      ['banner', 'banner-top', 'bordered', 'card', 'editorial', 'left-portrait', 'stacked'].sort(),
     );
   });
 });

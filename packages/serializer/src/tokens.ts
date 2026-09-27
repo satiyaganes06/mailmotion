@@ -38,6 +38,7 @@ export interface Tokens {
   width: number;
   dark: boolean;
   padding: number;
+  contactSeparator: 'dot' | 'pipe';
 }
 
 const LETTER_SPACING = { tight: '-0.2px', normal: '0', wide: '0.6px' } as const;
@@ -104,6 +105,7 @@ export function buildTokens(cfg: SignatureConfig): Tokens {
     width: mainWidth(cfg),
     dark,
     padding: bg ? 12 : 0,
+    contactSeparator: theme.contactSeparator,
   };
 }
 

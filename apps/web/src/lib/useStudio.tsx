@@ -79,8 +79,8 @@ export function useField<T = unknown>(path: string) {
   return { value, set: (v: unknown) => s.set(p, v), error: s.errors[path] };
 }
 
-export function useStudio(): StudioApi {
-  const [hist, dispatch] = useReducer(reduce, undefined, () => initHistory(defaultDraft()));
+export function useStudio(initial: () => Draft = defaultDraft): StudioApi {
+  const [hist, dispatch] = useReducer(reduce, undefined, () => initHistory(initial()));
   const [hydrated, setHydrated] = useState(false);
   const [firstRun, setFirstRun] = useState(false);
 
@@ -101,7 +101,7 @@ export function useStudio(): StudioApi {
   const parsed = useMemo(() => parseDraft(hist.present), [hist.present]);
   const lastValid = useRef<SignatureConfig | null>(null);
   if (parsed.config) lastValid.current = parsed.config;
-  const config = (parsed.config ?? lastValid.current ?? parseDraft(defaultDraft()).config)!;
+  const config = (parsed.config ?? lastValid.current ?? parseDraft(initial()).config)!;
   const valid = parsed.config !== null;
 
   // autosave (debounced) + occasional version snapshots
