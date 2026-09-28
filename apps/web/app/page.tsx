@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { PRESET_LIST } from '@mailmotion/presets';
 import gallery from '@/generated/gallery.json';
@@ -216,7 +217,32 @@ export default function Home() {
           </p>
         </section>
 
-        <section className="section">
+        <section className="section support-section">
+          <div className="support-stickers">
+            <a href={COFFEE_URL} className="sticker sticker-creator" aria-label="Buy me a coffee">
+              <Image src="/stickers/creator-text.png" alt="" width={440} height={132} />
+            </a>
+            <a
+              href={COFFEE_URL}
+              className="sticker sticker-badge-yellow"
+              aria-label="Buy me a coffee"
+            >
+              <Image src="/stickers/badge-yellow.png" alt="" width={220} height={219} />
+            </a>
+            <a href={COFFEE_URL} className="sticker sticker-cup" aria-label="Buy me a coffee">
+              <Image src="/stickers/cup-large.png" alt="" width={220} height={296} />
+            </a>
+            <a
+              href={COFFEE_URL}
+              className="sticker sticker-badge-black"
+              aria-label="Buy me a coffee"
+            >
+              <Image src="/stickers/badge-black.png" alt="" width={220} height={220} />
+            </a>
+            <a href={COFFEE_URL} className="sticker sticker-heart" aria-label="Buy me a coffee">
+              <Image src="/stickers/heart.png" alt="" width={180} height={178} />
+            </a>
+          </div>
           <h2>Support the project</h2>
           <p className="lede">
             MailMotion is free, open source and self-hosted — no subscription, no paywall. If it
