@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { PRESET_LIST } from '@mailmotion/presets';
 import gallery from '@/generated/gallery.json';
 import signetGallery from '@/generated/signet-gallery.json';
-import { REPO_URL, SiteFooter, SiteHeader } from '@/components/SiteChrome';
+import { COFFEE_URL, REPO_URL, SiteFooter, SiteHeader } from '@/components/SiteChrome';
 
 type GalleryEntry = { name: string; bestFor: string; html: string; chars: number };
 type SignetGalleryEntry = { name: string; use: string; html: string; w: number; h: number };
@@ -214,6 +214,17 @@ export default function Home() {
             Prefer not to host anything yourself? Download a ZIP, host the files anywhere, and
             MailMotion regenerates the HTML with your base URL.
           </p>
+        </section>
+
+        <section className="section">
+          <h2>Support the project</h2>
+          <p className="lede">
+            MailMotion is free, open source and self-hosted — no subscription, no paywall. If it
+            saved you some time, a coffee goes a long way.
+          </p>
+          <a href={COFFEE_URL} className="btn">
+            Buy me a coffee
+          </a>
         </section>
       </main>
       <SiteFooter />
