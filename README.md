@@ -32,13 +32,16 @@
 
 ## Demo
 
+GitHub's README renderer strips `<video>` embeds sourced outside its own upload CDN, so click through
+to watch it playing for real on the live site instead of downloading the raw file:
+
 <p align="center">
-  <a href="https://github.com/satiyaganes06/mailmotion/raw/main/apps/web/public/launch.mp4">
-    <img src="https://github.com/satiyaganes06/mailmotion/raw/main/apps/web/public/launch-poster.jpg" width="720" alt="MailMotion demo — click to play the video">
+  <a href="https://mailmotion-ten.vercel.app/#demo">
+    <img src="https://github.com/satiyaganes06/mailmotion/raw/main/apps/web/public/launch-poster.jpg" width="720" alt="MailMotion demo — click to watch it play on the live site">
   </a>
 </p>
 <p align="center">
-  <a href="https://github.com/satiyaganes06/mailmotion/raw/main/apps/web/public/launch.mp4"><img src="https://img.shields.io/badge/%E2%96%B6-Watch%20the%2024s%20demo-2a5db0?style=for-the-badge" alt="Watch the demo"></a>
+  <a href="https://mailmotion-ten.vercel.app/#demo"><img src="https://img.shields.io/badge/%E2%96%B6-Watch%20the%2024s%20demo-2a5db0?style=for-the-badge" alt="Watch the demo"></a>
 </p>
 
 <p align="center"><sub>Pick a design, add your details, copy into Gmail or Outlook. That's the whole workflow.</sub></p>

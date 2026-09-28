@@ -39,7 +39,7 @@ export default function Home() {
               under 10,000 characters, and ships GIFs of 300 KB or less at 12 fps or less.
             </p>
           </div>
-          <div className="hero-video">
+          <div className="hero-video" id="demo">
             <div className="hero-video-frame">
               <video
                 controls
