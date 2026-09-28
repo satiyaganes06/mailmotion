@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ThemeToggle } from './ThemeToggle';
 
 export const REPO_URL = 'https://github.com/satiyaganes06/mailmotion';
+export const COFFEE_URL = 'https://buymeacoffee.com/satiyaganes';
 
 export function SiteHeader() {
   return (
@@ -66,6 +67,9 @@ export function SiteFooter() {
           </li>
           <li>
             <a href={REPO_URL}>GitHub</a>
+          </li>
+          <li>
+            <a href={COFFEE_URL}>Buy me a coffee</a>
           </li>
         </ul>
       </div>

@@ -6,6 +6,14 @@
 Open-source, self-hostable **animated email signatures** that render in Gmail, Outlook and Apple Mail.
 Private by default: no tracking pixels, no accounts, no subscription.
 
+<p align="center">
+<video src="https://github.com/satiyaganes06/mailmotion/raw/main/apps/web/public/launch.mp4" controls width="720"></video>
+</p>
+
+<p align="center">
+<a href="https://buymeacoffee.com/satiyaganes"><img src="https://img.shields.io/badge/Buy%20me%20a%20coffee-FFDD00?style=flat-square&logo=buymeacoffee&logoColor=black" alt="Buy me a coffee"></a>
+</p>
+
 - **Six designs** (Aurora, Portrait, Editorial, Wave, Neon, Equalizer) built from a layout x animation
   x signature-style system you can remix.
 - **Email-safe output:** table-based HTML with inline styles and hosted GIF/PNG images. Frame 1 is always
