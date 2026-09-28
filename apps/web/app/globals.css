@@ -169,9 +169,13 @@ kbd,
   background: var(--accent-ink);
   border-color: var(--accent-ink);
 }
-:root[data-theme='dark'] .btn.primary,
-:root:not([data-theme='light']) .btn.primary {
+:root[data-theme='dark'] .btn.primary {
   color: #1a1207;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .btn.primary {
+    color: #1a1207;
+  }
 }
 .btn.ghost {
   background: transparent;

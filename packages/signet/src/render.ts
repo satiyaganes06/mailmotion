@@ -196,13 +196,13 @@ const pulse: SlotRenderer = {
     const p = easeOut(frac(t / 1.8));
     const s = 0.95 + (1.35 - 0.95) * p;
     const o = 0.8 * (1 - p);
-    // the ring sits under the disc (the disc has z-index 1), centred on its own box (38, 38)
+    // the ring sits under the disc (the disc has z-index 1), concentric with it
     if (o > 0) {
       ctx.save();
       ctx.globalAlpha = o;
       ctx.strokeStyle = a;
       ctx.lineWidth = 2 * s;
-      circle(ctx, 38, 38, 26 * s);
+      circle(ctx, 40, 40, 26 * s);
       ctx.stroke();
       ctx.restore();
     }
@@ -467,7 +467,9 @@ const orbit: SlotRenderer = {
     ctx.lineWidth = 1;
     ctx.setLineDash([dash, dash]);
     ctx.beginPath();
-    ctx.arc(42, 42, r, -Math.PI / 2, (3 * Math.PI) / 2);
+    // @napi-rs/canvas silently draws nothing for a negative start angle, even though
+    // this span is a full circle — use the equivalent (0, 2π) form instead.
+    ctx.arc(42, 42, r, 0, Math.PI * 2);
     ctx.stroke();
     ctx.restore();
 
