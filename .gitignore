@@ -11,6 +11,7 @@ coverage/
 .DS_Store
 .wrangler/
 .data/
+.vercel/
 playwright-report/
 test-results/
 *.tsbuildinfo
@@ -22,3 +23,8 @@ apps/web/public/gallery/
 apps/web/src/generated/
 .claude/
 .data-e2e/
+
+# scratch output from the /brag video-generation skill — never meant to be committed
+brag-output/
+brag-output-*/
+.vercel
