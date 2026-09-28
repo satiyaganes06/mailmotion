@@ -43,11 +43,13 @@ export default function Home() {
             <div className="hero-video-frame">
               <video
                 controls
-                preload="none"
+                autoPlay
+                loop
+                muted
                 poster="/launch-poster.jpg"
                 aria-label="MailMotion product tour"
               >
-                <source src="/launch.mp4" type="video/mp4" />
+                <source src="/launch.mp4" type="video/mp4"  />
               </video>
             </div>
             <p className="hero-video-caption">A 24-second tour of the builder</p>
