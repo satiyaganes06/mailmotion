@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
   "buildCommand": "pnpm --filter @mailmotion/web build",
   "outputDirectory": "apps/web/out",
   "headers": [
