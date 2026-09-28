@@ -32,7 +32,7 @@ describe('fonts', () => {
   it('never produces NaN in glyph outlines (regression: variable-font control points)', async () => {
     for (const f of INK_FONTS) {
       const font = await loadFont(loader, f.file);
-      for (const text of ['Shatthiya Ganes', 'Ada Lovelace', 'Grace Hopper-Smith', 'Zoë Åström']) {
+      for (const text of ['Jordan Rivera', 'Ada Lovelace', 'Grace Hopper-Smith', 'Zoë Åström']) {
         const layout = layoutInk(font, text, 300, 74);
         expect(layout.glyphs.length).toBeGreaterThan(3);
         for (const g of layout.glyphs) {
@@ -55,7 +55,7 @@ describe('fonts', () => {
 describe('layout', () => {
   it('fits the word inside the box with padding', async () => {
     const font = await loadFont(loader, 'DancingScript.ttf');
-    const l = layoutInk(font, 'Shatthiya Ganes', 300, 74);
+    const l = layoutInk(font, 'Jordan Rivera', 300, 74);
     const min = Math.min(...l.glyphs.map((g) => g.minX));
     const max = Math.max(...l.glyphs.map((g) => g.maxX));
     expect(min).toBeGreaterThanOrEqual(0);

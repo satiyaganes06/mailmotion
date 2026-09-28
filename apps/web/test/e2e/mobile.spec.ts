@@ -14,7 +14,7 @@ test('builder is usable on a phone: tabs switch between edit, preview and instal
   await expect(page.locator('.editor')).toBeVisible();
   await page.getByRole('button', { name: 'Preview', exact: true }).click();
   await waitForRender(page);
-  await expect(previewText(page)).toContainText('Shatthiya Ganes');
+  await expect(previewText(page)).toContainText('Alex Morgan');
   await expect(page.locator('.editor')).toBeHidden();
   await page.getByRole('button', { name: 'Install', exact: true }).click();
   await expect(page.locator('.install')).toBeVisible();
