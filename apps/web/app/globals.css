@@ -263,8 +263,13 @@ kbd,
 .hero {
   padding: 72px 0 40px;
   display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
+  gap: 20px 48px;
+  align-items: center;
+}
+.hero-copy {
+  display: grid;
   gap: 22px;
-  max-width: 780px;
 }
 .hero h1 {
   font-size: clamp(38px, 6.4vw, 64px);
@@ -273,6 +278,36 @@ kbd,
 .hero h1 em {
   font-style: italic;
   color: var(--accent-ink);
+}
+.hero-video {
+  display: grid;
+  gap: 10px;
+}
+.hero-video-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  background: #0c0a08;
+}
+.hero-video-frame video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-video-caption {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--faint);
+  text-align: center;
+}
+@media (max-width: 880px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
 }
 .lede {
   font-size: clamp(16px, 2.2vw, 19px);

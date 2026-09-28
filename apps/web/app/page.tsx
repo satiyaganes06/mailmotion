@@ -15,27 +15,42 @@ export default function Home() {
       <SiteHeader />
       <main className="wrap">
         <section className="hero">
-          <p className="eyebrow">Open source · self-hosted · no tracking</p>
-          <h1>
-            Animated email signatures that <em>actually render.</em>
-          </h1>
-          <p className="lede">
-            Pick a design, add your details, and get a signature with an animated avatar and a
-            hand-inked mark that works in Gmail, Outlook and Apple Mail, on desktop and on your
-            phone. Everything runs in your browser.
-          </p>
-          <div className="cta-row">
-            <Link href="/start/" className="btn primary">
-              Build my signature
-            </Link>
-            <a href={REPO_URL} className="btn">
-              Star on GitHub
-            </a>
+          <div className="hero-copy">
+            <p className="eyebrow">Open source · self-hosted · no tracking</p>
+            <h1>
+              Animated email signatures that <em>actually render.</em>
+            </h1>
+            <p className="lede">
+              Pick a design, add your details, and get a signature with an animated avatar and a
+              hand-inked mark that works in Gmail, Outlook and Apple Mail, on desktop and on your
+              phone. Everything runs in your browser.
+            </p>
+            <div className="cta-row">
+              <Link href="/start/" className="btn primary">
+                Build my signature
+              </Link>
+              <a href={REPO_URL} className="btn">
+                Star on GitHub
+              </a>
+            </div>
+            <p className="fineprint">
+              Every design keeps frame 1 complete (classic Outlook shows only that frame), stays
+              under 10,000 characters, and ships GIFs of 300 KB or less at 12 fps or less.
+            </p>
           </div>
-          <p className="fineprint">
-            Every design keeps frame 1 complete (classic Outlook shows only that frame), stays under
-            10,000 characters, and ships GIFs of 300 KB or less at 12 fps or less.
-          </p>
+          <div className="hero-video">
+            <div className="hero-video-frame">
+              <video
+                controls
+                preload="none"
+                poster="/launch-poster.jpg"
+                aria-label="MailMotion product tour"
+              >
+                <source src="/launch.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <p className="hero-video-caption">A 24-second tour of the builder</p>
+          </div>
         </section>
 
         <section className="section" id="designs">
