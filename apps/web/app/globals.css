@@ -697,9 +697,149 @@ table.plain tr:last-child td {
   }
 }
 
+/* ---------- support section: scattered coffee stickers ---------- */
+.support-section {
+  position: relative;
+  overflow: hidden;
+  padding-top: 96px;
+  padding-bottom: 96px;
+}
+.support-stickers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.sticker {
+  position: absolute;
+  display: block;
+  pointer-events: auto;
+  filter: drop-shadow(0 8px 16px rgba(28, 27, 25, 0.16));
+  cursor: pointer;
+}
+.sticker img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.sticker:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+.sticker-creator {
+  top: 6%;
+  left: 1%;
+  width: clamp(140px, 16vw, 190px);
+  animation: float-creator 6s ease-in-out infinite;
+}
+.sticker-creator:hover,
+.sticker-creator:focus-visible {
+  animation-play-state: paused;
+  transform: rotate(-5deg) scale(1.08);
+}
+.sticker-badge-yellow {
+  top: -6%;
+  right: 5%;
+  width: clamp(70px, 9vw, 96px);
+  animation: float-badge-yellow 5.5s ease-in-out infinite;
+}
+.sticker-badge-yellow:hover,
+.sticker-badge-yellow:focus-visible {
+  animation-play-state: paused;
+  transform: rotate(11deg) scale(1.14);
+}
+.sticker-cup {
+  top: 36%;
+  right: 18%;
+  width: clamp(52px, 6vw, 68px);
+  animation: float-cup 4.5s ease-in-out infinite;
+}
+.sticker-cup:hover,
+.sticker-cup:focus-visible {
+  animation-play-state: paused;
+  transform: rotate(-9deg) scale(1.16);
+}
+.sticker-badge-black {
+  bottom: -8%;
+  right: 3%;
+  width: clamp(64px, 8vw, 84px);
+  animation: float-badge-black 6.5s ease-in-out infinite;
+}
+.sticker-badge-black:hover,
+.sticker-badge-black:focus-visible {
+  animation-play-state: paused;
+  transform: rotate(14deg) scale(1.14);
+}
+.sticker-heart {
+  bottom: 4%;
+  left: 9%;
+  width: clamp(44px, 5vw, 58px);
+  animation: float-heart 5s ease-in-out infinite;
+}
+.sticker-heart:hover,
+.sticker-heart:focus-visible {
+  animation-play-state: paused;
+  transform: rotate(-11deg) scale(1.2);
+}
+
+@keyframes float-creator {
+  0%,
+  100% {
+    transform: rotate(-5deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-5deg) translateY(-7px);
+  }
+}
+@keyframes float-badge-yellow {
+  0%,
+  100% {
+    transform: rotate(11deg) translateY(0);
+  }
+  50% {
+    transform: rotate(11deg) translateY(-8px);
+  }
+}
+@keyframes float-cup {
+  0%,
+  100% {
+    transform: rotate(-9deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-9deg) translateY(-6px);
+  }
+}
+@keyframes float-badge-black {
+  0%,
+  100% {
+    transform: rotate(14deg) translateY(0);
+  }
+  50% {
+    transform: rotate(14deg) translateY(-9px);
+  }
+}
+@keyframes float-heart {
+  0%,
+  100% {
+    transform: rotate(-11deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-11deg) translateY(-5px);
+  }
+}
+
+@media (max-width: 760px) {
+  .support-stickers {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     scroll-behavior: auto !important;
     transition: none !important;
+  }
+  .sticker {
+    animation: none !important;
   }
 }

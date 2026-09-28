@@ -14,20 +14,20 @@ import { createNodeEnv } from '../src/node';
 export const env = createNodeEnv();
 
 export const DETAILS: SignatureConfigInput['details'] = {
-  fullName: 'Shatthiya Ganes',
-  title: 'Mobile Security Engineer',
-  company: 'Google Inc.',
-  email: 'ganes@vigilantasia.com',
+  fullName: 'Jordan Rivera',
+  title: 'Product Manager',
+  company: 'Example Corp',
+  email: 'jordan@example.com',
 };
 
 export const SOCIALS: SignatureConfigInput['socials'] = {
   items: [
-    { platform: 'website', url: 'https://shatthiyaganes.com' },
-    { platform: 'linkedin', url: 'https://linkedin.com/in/shatthiya-ganes' },
-    { platform: 'github', url: 'https://github.com/shatthiyaganes' },
-    { platform: 'x', url: 'https://x.com/shatthiyaganes' },
-    { platform: 'instagram', url: 'https://instagram.com/shatthiyaganes' },
-    { platform: 'whatsapp', url: 'https://wa.me/60123456789' },
+    { platform: 'website', url: 'https://example.com' },
+    { platform: 'linkedin', url: 'https://linkedin.com/in/example' },
+    { platform: 'github', url: 'https://github.com/example' },
+    { platform: 'x', url: 'https://x.com/example' },
+    { platform: 'instagram', url: 'https://instagram.com/example' },
+    { platform: 'whatsapp', url: 'https://wa.me/15555550123' },
   ],
 };
 

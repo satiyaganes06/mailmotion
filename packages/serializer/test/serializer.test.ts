@@ -7,18 +7,15 @@ import { PNG_DATA_URL, SAMPLE_DETAILS, sampleFor } from './fixtures';
 describe('serializer output for the six designs', () => {
   it.each(PRESET_IDS)('%s: lint-clean, within budget, snapshot', (id) => {
     const cfg = sampleFor(id);
-    const out = serializeWithPlaceholders(
-      cfg,
-      'https://satiyaganes06.github.io/mailmotion-signatures',
-    );
+    const out = serializeWithPlaceholders(cfg, 'https://img.example.com');
     expect(out.issues).toEqual([]);
     expect(out.chars).toBeLessThanOrEqual(10_000);
     expect(out.html).not.toMatch(/\n/);
     expect(out.html).not.toContain('<style');
     expect(out.html).not.toContain('<script');
-    expect(out.html).toContain('Shatthiya Ganes');
-    expect(out.html).toContain('mailto:ganes@vigilantasia.com');
-    expect(out.html).toContain('tel:+60123456789');
+    expect(out.html).toContain('Jordan Rivera');
+    expect(out.html).toContain('mailto:jordan@example.com');
+    expect(out.html).toContain('tel:+14155550142');
     expect(out.html).toMatchSnapshot();
   });
 
@@ -84,14 +81,14 @@ describe('layouts', () => {
       return serializeWithPlaceholders(c).html;
     };
     const mark = /mark0+[a-z0-9]*\.gif/;
-    const idxName = (h: string) => h.indexOf('Shatthiya Ganes');
+    const idxName = (h: string) => h.indexOf('Jordan Rivera');
     const idxMark = (h: string) => h.search(mark);
     expect(idxMark(at('above'))).toBeLessThan(idxName(at('above')));
     expect(idxMark(at('below'))).toBeGreaterThan(idxName(at('below')));
     // "replace" swaps the name text for the mark image, the name survives in alt text only
     const replaced = at('replace');
-    expect(replaced).not.toMatch(/>Shatthiya Ganes(<| )/);
-    expect(replaced).toContain('alt="Shatthiya Ganes signature"');
+    expect(replaced).not.toMatch(/>Jordan Rivera(<| )/);
+    expect(replaced).toContain('alt="Jordan Rivera signature"');
   });
 
   it('honours field order and visibility', () => {
@@ -116,7 +113,7 @@ describe('layouts', () => {
     } as never);
     const { html } = serializeWithPlaceholders(c);
     expect(html).not.toContain('mailto:');
-    expect(html.indexOf('Google Inc.')).toBeLessThan(html.indexOf('Mobile Security Engineer'));
+    expect(html.indexOf('Example Corp')).toBeLessThan(html.indexOf('Product Manager'));
   });
 
   it('applies the reply variant (no banner, no mark)', () => {

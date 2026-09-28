@@ -35,10 +35,8 @@ test('Simple Style: copying a design uploads just that design’s animated image
   }
   const aurora = sections.first();
 
-  // preview shows your details from the form (pre-filled with your info)
-  await expect(aurora.locator('.sg-sig')).toContainText(
-    'Mobile Security Engineer at Google Inc.',
-  );
+  // preview shows the sample details from the form
+  await expect(aurora.locator('.sg-sig')).toContainText('Product Designer at Lumen Labs');
 
   // browsing and editing uploads nothing
   await expect(page.getByText('Nothing is uploaded while you browse or edit')).toBeVisible();
@@ -52,7 +50,7 @@ test('Simple Style: copying a design uploads just that design’s animated image
   expect(uploads).toBe(1);
   const html = await page.evaluate(() => navigator.clipboard.readText());
   expect(html.startsWith('<!-- Signet: aurora -->\n<table role="presentation"')).toBe(true);
-  const src = /<img src="([^"]+)" width="88" height="88" alt="Shatthiya Ganes"/.exec(html)?.[1];
+  const src = /<img src="([^"]+)" width="88" height="88" alt="Aina Rahman"/.exec(html)?.[1];
   expect(src).toMatch(/^http:\/\/localhost:8787\/[0-9a-f]{64}\.gif$/);
   const gif = await page.request.get(src!);
   expect(gif.headers()['content-type']).toBe('image/gif');

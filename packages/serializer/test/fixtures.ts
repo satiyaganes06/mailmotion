@@ -7,25 +7,25 @@ import {
 } from '@mailmotion/schema';
 
 export const SAMPLE_DETAILS: SignatureConfigInput['details'] = {
-  fullName: 'Shatthiya Ganes',
-  pronouns: 'he/him',
-  title: 'Mobile Security Engineer',
-  company: 'Google Inc.',
-  companyUrl: 'https://vigilantasia.com',
-  phones: [{ label: 'Mobile', number: '+60 12-345 6789' }],
-  email: 'ganes@vigilantasia.com',
-  websites: [{ url: 'https://shatthiyaganes.com' }],
+  fullName: 'Jordan Rivera',
+  pronouns: 'they/them',
+  title: 'Product Manager',
+  company: 'Example Corp',
+  companyUrl: 'https://example.com',
+  phones: [{ label: 'Mobile', number: '+1 415-555 0142' }],
+  email: 'jordan@example.com',
+  websites: [{ url: 'https://example.com' }],
 };
 
 export const SAMPLE_SOCIALS: SignatureConfigInput['socials'] = {
   items: [
-    { platform: 'website', url: 'https://shatthiyaganes.com' },
-    { platform: 'linkedin', url: 'https://linkedin.com/in/shatthiya-ganes' },
-    { platform: 'github', url: 'https://github.com/shatthiyaganes' },
-    { platform: 'x', url: 'https://x.com/shatthiyaganes' },
-    { platform: 'instagram', url: 'https://instagram.com/shatthiyaganes' },
-    { platform: 'facebook', url: 'https://facebook.com/shatthiyaganes' },
-    { platform: 'whatsapp', url: 'https://wa.me/60123456789' },
+    { platform: 'website', url: 'https://example.com' },
+    { platform: 'linkedin', url: 'https://linkedin.com/in/example' },
+    { platform: 'github', url: 'https://github.com/example' },
+    { platform: 'x', url: 'https://x.com/example' },
+    { platform: 'instagram', url: 'https://instagram.com/example' },
+    { platform: 'facebook', url: 'https://facebook.com/example' },
+    { platform: 'whatsapp', url: 'https://wa.me/15555550123' },
   ],
 };
 

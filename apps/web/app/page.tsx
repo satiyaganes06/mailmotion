@@ -1,8 +1,9 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { PRESET_LIST } from '@mailmotion/presets';
 import gallery from '@/generated/gallery.json';
 import signetGallery from '@/generated/signet-gallery.json';
-import { REPO_URL, SiteFooter, SiteHeader } from '@/components/SiteChrome';
+import { COFFEE_URL, REPO_URL, SiteFooter, SiteHeader } from '@/components/SiteChrome';
 
 type GalleryEntry = { name: string; bestFor: string; html: string; chars: number };
 type SignetGalleryEntry = { name: string; use: string; html: string; w: number; h: number };
@@ -214,6 +215,42 @@ export default function Home() {
             Prefer not to host anything yourself? Download a ZIP, host the files anywhere, and
             MailMotion regenerates the HTML with your base URL.
           </p>
+        </section>
+
+        <section className="section support-section">
+          <div className="support-stickers">
+            <a href={COFFEE_URL} className="sticker sticker-creator" aria-label="Buy me a coffee">
+              <Image src="/stickers/creator-text.png" alt="" width={440} height={132} />
+            </a>
+            <a
+              href={COFFEE_URL}
+              className="sticker sticker-badge-yellow"
+              aria-label="Buy me a coffee"
+            >
+              <Image src="/stickers/badge-yellow.png" alt="" width={220} height={219} />
+            </a>
+            <a href={COFFEE_URL} className="sticker sticker-cup" aria-label="Buy me a coffee">
+              <Image src="/stickers/cup-large.png" alt="" width={220} height={296} />
+            </a>
+            <a
+              href={COFFEE_URL}
+              className="sticker sticker-badge-black"
+              aria-label="Buy me a coffee"
+            >
+              <Image src="/stickers/badge-black.png" alt="" width={220} height={220} />
+            </a>
+            <a href={COFFEE_URL} className="sticker sticker-heart" aria-label="Buy me a coffee">
+              <Image src="/stickers/heart.png" alt="" width={180} height={178} />
+            </a>
+          </div>
+          <h2>Support the project</h2>
+          <p className="lede">
+            MailMotion is free, open source and self-hosted — no subscription, no paywall. If it
+            saved you some time, a coffee goes a long way.
+          </p>
+          <a href={COFFEE_URL} className="btn">
+            Buy me a coffee
+          </a>
         </section>
       </main>
       <SiteFooter />
