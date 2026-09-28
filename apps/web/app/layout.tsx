@@ -6,17 +6,35 @@ import './globals.css';
 import './studio.css';
 import { Analytics } from '@/components/Analytics';
 
+const SITE_URL = 'https://mailmotion-ten.vercel.app';
+const DESCRIPTION =
+  'Open-source, self-hostable animated email signatures for Gmail, Outlook and Apple Mail. Private by default: no tracking pixels, no accounts.';
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'MailMotion: animated email signatures that render',
     template: '%s · MailMotion',
   },
-  description:
-    'Open-source, self-hostable animated email signatures for Gmail, Outlook and Apple Mail. Private by default: no tracking pixels, no accounts.',
+  description: DESCRIPTION,
   applicationName: 'MailMotion',
   manifest: '/manifest.webmanifest',
   icons: { icon: '/icon.svg', apple: '/icons/icon-180.png' },
   robots: { index: true, follow: true },
+  openGraph: {
+    type: 'website',
+    url: SITE_URL,
+    siteName: 'MailMotion',
+    title: 'MailMotion: animated email signatures that render',
+    description: DESCRIPTION,
+    images: [{ url: '/og.jpg', width: 1920, height: 1080, alt: 'MailMotion' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'MailMotion: animated email signatures that render',
+    description: DESCRIPTION,
+    images: ['/og.jpg'],
+  },
 };
 
 export const viewport: Viewport = {
