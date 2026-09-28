@@ -1,0 +1,1 @@
+I built MailMotion: animated email signatures that actually render in Gmail, Outlook and Apple Mail. Pick one of ten ready-made designs or customise every field, right in your browser. Open source, self-hosted, no tracking. github.com/satiyaganes06/mailmotion
