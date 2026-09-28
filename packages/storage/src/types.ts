@@ -12,7 +12,7 @@ export interface StoredFile {
   bytes: number;
 }
 
-/** Where signature images live. Cloud CDN, disk, S3 and GitHub Pages are all just adapters. */
+/** Where signature images live. Cloud CDN, disk and S3 are all just adapters. */
 export interface StorageAdapter {
   readonly kind: string;
   put(file: UploadFile): Promise<StoredFile>;

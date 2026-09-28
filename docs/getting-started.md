@@ -13,11 +13,10 @@ Open the [builder](/studio/), pick a design, enter your details and photo, and t
 
 To use the signature you need to **host its images** somewhere public (Gmail and Outlook do not show images embedded in an email or signature). Choose one:
 
-|                  | Best for                  | What it is                                                                                 |
-| ---------------- | ------------------------- | ------------------------------------------------------------------------------------------ |
-| **GitHub Pages** | Most people               | Sign in with GitHub and press Publish. Images go to a public repo in _your_ account. Free. |
-| **Your storage** | Teams and technical users | Run the storage server with Docker (disk, S3, R2 or MinIO) and upload from the builder.    |
-| **ZIP**          | Anything else             | Download a ZIP, upload the images anywhere public, enter the address.                      |
+|                  | Best for                  | What it is                                                                              |
+| ---------------- | ------------------------- | --------------------------------------------------------------------------------------- |
+| **Your storage** | Teams and technical users | Run the storage server with Docker (disk, S3, R2 or MinIO) and upload from the builder. |
+| **ZIP**          | Anything else             | Download a ZIP, upload the images anywhere public, enter the address.                   |
 
 Then follow the [install guide](/docs/install/) for your email app.
 

@@ -45,11 +45,6 @@ export function Studio() {
     };
   }, [render.assets, config]);
 
-  // returning from GitHub sign-in: jump to the install panel
-  useEffect(() => {
-    if (new URLSearchParams(window.location.search).get('publish') === '1') setView('install');
-  }, []);
-
   // keyboard: undo/redo when not typing in a text field
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

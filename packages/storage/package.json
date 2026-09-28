@@ -1,7 +1,7 @@
 {
   "name": "@mailmotion/storage",
   "version": "0.1.0",
-  "description": "Storage adapters (disk, S3/R2/MinIO, HTTP upload, GitHub Pages) and the upload sanitizer.",
+  "description": "Storage adapters (disk, S3/R2/MinIO, HTTP upload) and the upload sanitizer.",
   "license": "MIT",
   "type": "module",
   "exports": {

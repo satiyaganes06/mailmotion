@@ -68,7 +68,7 @@ jobs:
       - name: compose file is valid
         env:
           MM_UPLOAD_TOKEN: ci-token-ci-token-ci-token-ci-token
-        run: docker compose --profile minio --profile github config -q
+        run: docker compose --profile minio config -q
       - name: images build
         env:
           MM_UPLOAD_TOKEN: ci-token-ci-token-ci-token-ci-token

@@ -1,7 +1,7 @@
 # MailMotion self-hosted stack.
 #   cp .env.example .env   (set MM_UPLOAD_TOKEN at least)
 #   docker compose up -d
-# Optional: --profile minio  (local S3), --profile github (GitHub sign-in function)
+# Optional: --profile minio  (local S3)
 
 services:
   caddy:
@@ -9,9 +9,6 @@ services:
       context: .
       dockerfile: docker/web.Dockerfile
       args:
-        NEXT_PUBLIC_GITHUB_APP_CLIENT_ID: ${GITHUB_APP_CLIENT_ID:-}
-        NEXT_PUBLIC_GITHUB_APP_SLUG: ${NEXT_PUBLIC_GITHUB_APP_SLUG:-}
-        NEXT_PUBLIC_PUBLISH_FN_URL: ${NEXT_PUBLIC_PUBLISH_FN_URL:-}
         NEXT_PUBLIC_ANALYTICS_SRC: ${NEXT_PUBLIC_ANALYTICS_SRC:-}
         NEXT_PUBLIC_ANALYTICS_DOMAIN: ${NEXT_PUBLIC_ANALYTICS_DOMAIN:-}
     environment:
@@ -62,20 +59,6 @@ services:
     expose:
       - '9000'
       - '9001'
-
-  # --profile github: the token-exchange function for one-click GitHub Pages publishing (Path B)
-  publish-fn:
-    profiles: ['github']
-    build:
-      context: .
-      dockerfile: docker/publish-fn.Dockerfile
-    environment:
-      GITHUB_APP_CLIENT_ID: ${GITHUB_APP_CLIENT_ID:-}
-      GITHUB_APP_CLIENT_SECRET: ${GITHUB_APP_CLIENT_SECRET:-}
-      ALLOWED_ORIGINS: ${MM_ALLOWED_ORIGINS:-https://localhost}
-    ports:
-      - '8788:8788'
-    restart: unless-stopped
 
 volumes:
   caddy-data:

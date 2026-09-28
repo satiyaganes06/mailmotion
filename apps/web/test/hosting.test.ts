@@ -31,7 +31,7 @@ const rendered = [asset('avatar', A), asset('mark', B)];
 describe('assetsFromHosted', () => {
   it('maps every slot to its hosted URL', () => {
     const h: Hosted = {
-      via: 'github',
+      via: 'server',
       at: 1,
       fileUrls: { [`${A}.gif`]: `https://x.io/${A}.gif`, [`${B}.gif`]: `https://x.io/${B}.gif` },
     };
@@ -42,7 +42,7 @@ describe('assetsFromHosted', () => {
     });
   });
   it('returns null when anything is unhosted, so stale HTML is never offered', () => {
-    const h: Hosted = { via: 'github', at: 1, fileUrls: { [`${A}.gif`]: `https://x.io/${A}.gif` } };
+    const h: Hosted = { via: 'server', at: 1, fileUrls: { [`${A}.gif`]: `https://x.io/${A}.gif` } };
     expect(assetsFromHosted(rendered, h)).toBeNull();
     expect(missingFiles(rendered, h)).toEqual([`${B}.gif`]);
     expect(assetsFromHosted(rendered, null)).toBeNull();

@@ -59,7 +59,6 @@ These run in CI on every change:
 - **GIFs:** decoded from the real output and checked for ≤ 300 KB, ≤ 12 fps, loop count, and that **frame 1 is the complete state** (ring closed, photo revealed, mark inked, banner drawn).
 - **Contrast:** text colours meet 4.5:1 on the signature background for random palettes; accents sit in the light/dark-readable range.
 - **Uploads:** GIF/PNG sanitizer, size/pixel caps, metadata stripping.
-- **Publishing:** the GitHub flow (PKCE, single commit, Pages wait) end to end against a local mock.
 
 What automation **cannot** tell you: how a specific mail client and version actually draws the result. That needs the manual matrix above.
 

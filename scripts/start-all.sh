@@ -4,8 +4,6 @@
 #
 # Usage:
 #   ./scripts/start-all.sh              # Storage server (from .env) + builder — the default
-#   ./scripts/start-all.sh github       # Mock GitHub + publish-fn + builder (Path B; not linked
-#                                        # from the builder UI anymore, see docs/github-pages.md)
 #   ./scripts/start-all.sh prod         # Production static export only
 #   ./scripts/start-all.sh help         # Show this message
 #
@@ -56,8 +54,6 @@ MailMotion startup script
 
 Usage:
   ./scripts/start-all.sh              # Storage server (from .env) + builder (default)
-  ./scripts/start-all.sh github       # Mock GitHub + publish-fn + builder (Path B, not linked
-                                       # from the builder UI anymore — see docs/github-pages.md)
   ./scripts/start-all.sh prod         # Production static export only
 
 Config lives in .env at the repo root (copy .env.example). Loaded automatically. Key variables:
@@ -68,53 +64,20 @@ Config lives in .env at the repo root (copy .env.example). Loaded automatically.
 
 Services started:
   storage (default): storage server (:8787) + builder dev (:3100)
-  github:            mock GitHub (:8790) + publish-fn (:8788) + builder dev (:3100)
   prod:              production static export (:3200) only
 
 Logs:
   /tmp/mm-storage-server.log
-  /tmp/mm-mock-github.log
-  /tmp/mm-publish-fn.log
 
 Stop all services:
-  pkill -f "apps/mock-github|apps/publish-fn|apps/storage-server|@mailmotion/web"
+  pkill -f "apps/storage-server|@mailmotion/web"
 EOF
 }
 
 cleanup_processes() {
   log_info "Stopping any existing services..."
-  pkill -f "apps/mock-github" 2>/dev/null || true
-  pkill -f "apps/publish-fn" 2>/dev/null || true
   pkill -f "apps/storage-server" 2>/dev/null || true
   sleep 2
-}
-
-start_mock_github() {
-  log_info "Starting mock GitHub on :8790..."
-  cd "$REPO_ROOT"
-  nohup pnpm --filter @mailmotion/mock-github start > /tmp/mm-mock-github.log 2>&1 &
-  sleep 2
-  if curl -s http://localhost:8790/state > /dev/null 2>&1; then
-    log_success "Mock GitHub running on http://localhost:8790"
-  else
-    log_warn "Mock GitHub may not be ready yet. Check /tmp/mm-mock-github.log"
-  fi
-}
-
-start_publish_fn() {
-  log_info "Starting publish function on :8788..."
-  cd "$REPO_ROOT"
-  GITHUB_APP_CLIENT_ID="${GITHUB_APP_CLIENT_ID:-mock-client-id}" \
-  GITHUB_APP_CLIENT_SECRET="${GITHUB_APP_CLIENT_SECRET:-mock-secret}" \
-  ALLOWED_ORIGINS="${ALLOWED_ORIGINS:-http://localhost:3100}" \
-  GITHUB_OAUTH_BASE="${GITHUB_OAUTH_BASE:-http://localhost:8790}" \
-  nohup pnpm --filter @mailmotion/publish-fn start > /tmp/mm-publish-fn.log 2>&1 &
-  sleep 2
-  if curl -s http://localhost:8788 > /dev/null 2>&1; then
-    log_success "Publish function running on http://localhost:8788"
-  else
-    log_warn "Publish function may not be ready yet. Check /tmp/mm-publish-fn.log"
-  fi
 }
 
 start_storage_server() {
@@ -163,18 +126,6 @@ start_storage_mode() {
   start_builder_dev
 }
 
-start_github_mode() {
-  cleanup_processes
-  start_mock_github
-  start_publish_fn
-  log_info "Starting builder dev server..."
-  log_info "→ Open http://localhost:3100 in your browser"
-  log_info "→ Note: GitHub publishing is not currently linked from the Install step UI."
-  log_info "→ See docs/github-pages.md to wire HostStep back up to it."
-  echo
-  start_builder_dev
-}
-
 start_prod_mode() {
   cleanup_processes
   log_info "Production mode: just the static export, no dynamic services"
@@ -188,9 +139,6 @@ case "$MODE" in
     ;;
   storage|supabase)
     start_storage_mode
-    ;;
-  github)
-    start_github_mode
     ;;
   prod)
     start_prod_mode

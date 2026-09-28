@@ -2,7 +2,7 @@ import type { SignatureAssets } from '@mailmotion/layouts';
 import type { RenderedAsset } from '@mailmotion/renderer';
 import { createHttpAdapter, toHttpsUrlOrNull } from './storage-shim';
 
-export type HostVia = 'github' | 'server' | 'manual';
+export type HostVia = 'server' | 'manual';
 
 /** Where the current signature's images are publicly available. */
 export interface Hosted {

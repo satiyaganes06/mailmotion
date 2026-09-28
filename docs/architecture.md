@@ -16,12 +16,10 @@ packages/   MIT
   ink           handwriting fonts, glyph outlines, pen tracing, stroke tracing (drawn/scanned)
   icons         social glyphs in four styles
   renderer      GIF/PNG encoding, budget ladder, Node + browser environments, bundles
-  storage       adapters (disk, S3/R2/MinIO, HTTP, GitHub Pages) and the upload sanitizer
+  storage       adapters (disk, S3/R2/MinIO, HTTP) and the upload sanitizer
 apps/       AGPL-3.0
   web           Next.js builder, landing and docs (static export)
-  storage-server  Path A upload server
-  publish-fn    GitHub token exchange (Workers or Node)
-  mock-github   local stand-in for GitHub
+  storage-server  upload server
   cli           npx mailmotion
 ```
 

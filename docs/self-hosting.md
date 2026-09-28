@@ -37,8 +37,7 @@ fine for a **single-tenant** deployment (you run the builder and the storage ser
 team, and everyone who can reach the site is meant to be able to upload). Don't set these on a
 public multi-tenant deployment where strangers can load the builder; leave them unset there and
 people can still use the "Download ZIP" fallback, or you can re-enable a per-user entry form (see
-`apps/web/src/components/install/HostStep.tsx`) or GitHub Pages publishing (see
-[GitHub Pages publishing](./github-pages.md)).
+`apps/web/src/components/install/HostStep.tsx`).
 
 If they're left unset, the Install step shows a plain notice instead of a button and nothing is
 uploaded anywhere automatically.
@@ -61,7 +60,7 @@ Set `MM_STORAGE=r2|s3|minio`, the `MM_S3_*` values, and put a public domain or C
 
 ### Supabase Storage
 
-Supabase Storage exposes an S3-compatible API, so it's just another `MM_STORAGE` mode — no GitHub Pages or Path B setup needed. In your Supabase project:
+Supabase Storage exposes an S3-compatible API, so it's just another `MM_STORAGE` mode. In your Supabase project:
 
 1. **Storage → New bucket.** Create one (e.g. `mailmotion`) and make it **public** — images in a signature have to be fetchable by every mail client, unauthenticated.
 2. **Project Settings → Storage → S3 Connection → New access key.** Note the access key ID/secret and the region shown there.

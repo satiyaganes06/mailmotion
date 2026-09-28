@@ -149,10 +149,7 @@ export default function Home() {
             </div>
             <div className="step">
               <h3>Host the images</h3>
-              <p>
-                Gmail needs public image URLs. Publish free to your own GitHub Pages in one click,
-                or use your own storage.
-              </p>
+              <p>Gmail needs public image URLs. Run your own storage server in one command.</p>
             </div>
             <div className="step">
               <h3>Install</h3>
@@ -165,49 +162,42 @@ export default function Home() {
         </section>
 
         <section className="section">
-          <h2>Two ways to host the images</h2>
+          <h2>Hosting the images</h2>
           <div className="table-wrap">
             <table className="plain">
               <thead>
                 <tr>
                   <th />
-                  <th>Path A: your storage</th>
-                  <th>Path B: GitHub Pages</th>
+                  <th>Your storage</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>For</td>
                   <td>Technical users and teams</td>
-                  <td>Everyone else</td>
                 </tr>
                 <tr>
                   <td>How</td>
                   <td>
                     <code>docker compose up</code> with disk, S3, R2 or MinIO
                   </td>
-                  <td>Sign in with GitHub, click Publish</td>
                 </tr>
                 <tr>
                   <td>Image URL</td>
                   <td>
                     <code>https://img.yourdomain.com/&lt;hash&gt;.gif</code>
                   </td>
-                  <td>
-                    <code>https://&lt;you&gt;.github.io/mailmotion-signatures/…</code>
-                  </td>
                 </tr>
                 <tr>
                   <td>Cost</td>
                   <td>Your own storage (often free)</td>
-                  <td>Free</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <p className="fineprint" style={{ marginTop: 12 }}>
-            Prefer neither? Download a ZIP, host the files anywhere, and MailMotion regenerates the
-            HTML with your base URL.
+            Prefer not to host anything yourself? Download a ZIP, host the files anywhere, and
+            MailMotion regenerates the HTML with your base URL.
           </p>
         </section>
       </main>

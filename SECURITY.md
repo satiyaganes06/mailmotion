@@ -13,12 +13,10 @@ Please **do not open a public issue**. Use GitHub's private vulnerability report
 
 - HTML/XSS in serializer output (`packages/serializer`)
 - Upload validation and file handling (`apps/storage-server`)
-- GitHub token handling and the token-exchange function (`apps/publish-fn`)
 - Anything that leaks tokens, or lets a request reach private network addresses
 
 ## Design commitments
 
-- The GitHub user token lives in browser memory only; it is never persisted or logged.
 - Uploads are allow-listed, size- and pixel-capped, magic-byte checked and sanitized.
 - The builder ships a strict Content-Security-Policy.
 - No tracking pixels, no open tracking, and analytics are cookieless.
