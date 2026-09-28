@@ -7,6 +7,6 @@ export default defineConfig({
   target: 'node20',
   platform: 'node',
   clean: true,
-  noExternal: [/^@mailmotion\//],
+  noExternal: [/^@mailmotion\//, 'hono', '@hono/node-server'],
   external: ['@aws-sdk/client-s3'],
 });
